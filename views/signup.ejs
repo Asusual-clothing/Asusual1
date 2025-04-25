@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up / Sign In</title>
+  <link rel="stylesheet" href="styles/signup.css">
+  <link rel="stylesheet" href="styles/styles.css" />
+  <link rel="stylesheet" href="styles/navbar.css" />
+  <link rel="stylesheet" href="styles/footer.css">
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+/>
+</head>
+
+<body>
+
+  <div class="notification-bar">
+    <span class="notification-text"> </span>
+  </div>
+  <!-- this is the responsive navbar -->
+  <nav class="As-navbar">
+    <div class="As-container">
+      <ul class="As-nav-links">
+        <li>
+          <a href="*/><i class="fas fa-home"></i> <span>Home</span></a>
+        </li>
+        <li>
+          <a href="/about"
+            ><i class="fas fa-info-circle"></i> <span>About Us</span></a
+          >
+        </li>
+        <li>
+          <a href="/Products"
+            ><i class="fas fa-box"></i> <span>All Products</span></a
+          >
+        </li>
+        <li>
+          <a href="/contact"
+            ><i class="fas fa-phone"></i><span>Contact us</span></a
+          >
+        </li>
+      </ul>
+      <div class="As-logo">
+        <a href="/"
+          ><img
+            src="assests/horizontalLogo-removebg-preview.png"
+            alt="Logo"
+        /></a>
+      </div>
+      <div class="AS-nav-btn">
+        <!-- Sign-up link for all users -->
+      </div>
+
+      <div class="As-hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+  <div class="wrapper">
+    <img src="assests/login_ninja.png" alt="Ninja" class="ninja-image">
+    <div class="container" id="container">
+      <!-- Sign Up Form -->
+      <!-- Sign Up Form -->
+      <div class="form-container sign-up-container">
+        <form action="/user/signup" method="POST" id="signupForm">
+          <h1>Create Account</h1>
+          <span>or use your email for registration</span>
+          <input type="text" name="name" placeholder="Name" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="tel" name="phone" id="phone" placeholder="Phone" required />
+          <input type="password" name="password" id="passwordSignup" placeholder="Password" required disabled />
+          <input type="password" name="confirmPassword" id="confirmPasswordSignup" placeholder="Confirm Password"
+            required disabled />
+
+
+          <button type="button" id="generateOtpSignup">Generate OTP</button>
+          <input type="text" name="otp" id="otpSignup" placeholder="Enter OTP" style="display: none;" required />
+          <button type="button" id="verifyOtpSignup" style="display: none;">Verify OTP</button>
+          <input type="hidden" id="otpVerifiedSignup" name="otpVerified" value="false" />
+
+
+          <button type="submit" id="signUp" disabled>Sign Up</button>
+        </form>
+      </div>
+
+      <!-- Sign In Form -->
+      <div class="form-container sign-in-container">
+        <form action="/user/login" method="POST" id="loginForm">
+          <h1>Sign in</h1>
+          <span>or use your account</span>
+          <input type="email" name="email" placeholder="Email" required />
+          <input type="password" name="password" id="passwordSignin" placeholder="Password" required />
+
+
+          <a href="/forget-password">Forgot your password?</a>
+          <button type="submit" id="signIn">Sign In</button>
+        </form>
+      </div>
+      <!-- Overlay -->
+      <div class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel overlay-left">
+            <h1 class="ninjaste">Ninjaste</h1>
+            <p>You know the drill. Log in & shop to look great, As Usual</p>
+            <button class="ghost" id="signInOverlay">Sign In</button>
+          </div>
+          <div class="overlay-panel overlay-right">
+            <h1>Hello, Ninja's!</h1>
+            <p>Sign Up and start your journey with us</p>
+            <button class="ghost" id="signUpOverlay">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer__parralax">
+      <div class="footer__parralax-trees"></div>
+      <div class="footer__parralax-moto"></div>
+      <div class="footer__parralax-secondplan"></div>
+      <div class="footer__parralax-premierplan"></div>
+      <div class="footer__parralax-voiture"></div>
+    </div>
+    <div class=" footer-container">
+      <div class="footer__columns">
+        <div class="footer__col">
+          <h3 class="footer__col-title">
+            <i data-feather="shopping-bag"></i> <span>About</span>
+          </h3>
+          <nav class="footer__nav">
+            <ul class="footer__nav-list">
+              <li class="footer__nav-item">
+                <a href="/about" class="/about">
+                  About Us
+                </a>
+              </li>
+              <li class="footer__nav-item">
+                <a href="/contact" class="/contact">
+                  Contact Us
+                </a>
+              </li>
+              <li class="footer__nav-item">
+                <a href="/Terms-and-conditions" class="/Terms-and-conditions">
+                  Terms & Conditions
+                </a>
+              </li>
+              <li class="footer__nav-item">
+                <a href="/privacy_policy" class="footer__nav-link">
+                  Privacy Policy
+                </a>
+              </li>
+
+            </ul>
+          </nav>
+        </div>
+        <div class="footer__col">
+          <h3 class="footer__col-title">
+            <i data-feather="share-2"></i> <span>Social Media</span>
+          </h3>
+          <nav class="footer__nav">
+            <ul class="footer__nav-list">
+              <li class="footer__nav-item">
+                <a href class="footer__nav-link">
+                  <i data-feather="youtube"></i><span>Youtube</span>
+                </a>
+              </li>
+              <li class="footer__nav-item">
+                <a href class="footer__nav-link">
+                  <i data-feather="facebook"></i><span>Facebook</span>
+
+                </a>
+              </li>
+              <li class="footer__nav-item">
+                <a href="https://www.instagram.com/as_usual.clothing/" class="footer__nav-link">
+                  <i data-feather="https://www.instagram.com/as_usual.clothing/"></i><span>Instagram</span>
+
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="footer__col_last">
+          <h3 class="footer__col-title">
+            <i data-feather="send"></i> <span>Contact us</span>
+          </h3>
+          <nav class="footer__nav">
+            <ul class="footer__nav-list">
+              <li class="footer__nav-item">
+                <a href="mailto:contact.laboiserie@gmail.com" class="footer__nav-link">
+                  asusualclothing@gmail.com
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Function to generate and send OTP
+    function generateAndSendOTP(email, otpFieldId, verifyButtonId) {
+      fetch('/generate-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            document.getElementById(otpFieldId).style.display = 'block';
+            document.getElementById(verifyButtonId).style.display = 'block';
+            alert('OTP sent to your email!');
+          } else {
+            alert('Failed to send OTP. Maybe user already exists');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Failed to send OTP.');
+        });
+    }
+
+    // Function to verify OTP
+    function verifyOTP(email, otp, verifiedFieldId, passwordFieldId, confirmPasswordFieldId, submitButtonId) {
+      fetch('/verify-otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, otp })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            document.getElementById(verifiedFieldId).value = 'true';
+            document.getElementById(passwordFieldId).disabled = false;
+            if (confirmPasswordFieldId) {
+              document.getElementById(confirmPasswordFieldId).disabled = false;
+            }
+            document.getElementById(submitButtonId).disabled = false;
+            alert('OTP verified successfully!');
+          } else {
+            alert(data.message || 'Invalid OTP.');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Failed to verify OTP.');
+        });
+    }
+
+    // Signup OTP Generation
+    document.getElementById('generateOtpSignup').addEventListener('click', function () {
+      const email = document.querySelector('#signupForm input[name="email"]').value;
+      if (!email) {
+        alert('Please enter your email first.');
+        return;
+      }
+      generateAndSendOTP(email, 'otpSignup', 'verifyOtpSignup');
+    });
+
+    // Signup OTP Verification
+    document.getElementById('verifyOtpSignup').addEventListener('click', function () {
+      const email = document.querySelector('#signupForm input[name="email"]').value;
+      const otp = document.getElementById('otpSignup').value;
+      if (email && otp) {
+        verifyOTP(email, otp, 'otpVerifiedSignup', 'passwordSignup', 'confirmPasswordSignup', 'signUp');
+      }
+    });
+
+    // Toggle between Sign Up and Sign In forms
+    document.getElementById('signInOverlay').addEventListener('click', () => {
+      document.getElementById('container').classList.remove('right-panel-active');
+    });
+
+    document.getElementById('signUpOverlay').addEventListener('click', () => {
+      document.getElementById('container').classList.add('right-panel-active');
+    });
+  </script>
+    <script src="scripts/script.js"></script>
+
+</body>
+
+</html>

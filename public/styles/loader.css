@@ -1,0 +1,141 @@
+  #loader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+      background: linear-gradient(180deg, #330c0c, #1a1a1a, #9b1717);
+    overflow-x: hidden;
+    /* position: relative;   */
+    font-family: 'Arial', sans-serif;
+  }
+
+  .loader-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+ .loader-container img {
+    position: absolute;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* Moon Styling */
+  .moon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    opacity: 0.9;
+    z-index: 1;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow:
+      inset 8px 8px 45px 4px rgba(255, 255, 255, 0.1),
+      0 0 50px 20px rgba(255, 255, 255, 0.2);
+  }
+
+  /* Ninja Styling */
+  .ninja {
+    z-index: 4;
+    top: 10%;
+    left: 50%;
+    width: 300px;
+    transform: translateX(-50%);
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+  }
+
+  /* Sword Left Styling */
+  .sword-left {
+    transform-origin: center;
+    top: 18%;
+    right: 100%;
+    z-index: 2;
+    width: 200px;
+
+    /* transform: scaleX(-1); */
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* Sword Right Styling */
+  .sword-right {
+    top: 18%;
+    transform-origin: center;
+    left: 100%;
+    z-index: 2;
+    width: 200px;
+
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* Brand Name Styling */
+  .brand-name {
+    position: absolute;
+    top: 80%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+    color: white;
+    font-family: 'Arial Black', sans-serif;
+    font-weight: bold;
+    text-shadow:
+      0 0 10px rgba(255, 255, 255, 0.8),
+      0 0 20px rgba(255, 255, 255, 0.6),
+      0 0 30px rgba(255, 255, 255, 0.4);
+    z-index: 0;
+    opacity: 0;
+  }
+  .brand-name img {
+    height: 7rem;
+  }
+
+
+  /* Loader Styles */
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #330c0c, #1a1a1a, #9b1717);
+    z-index: 9999; /* Ensure it's on top */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Hide the loader after the animation completes */
+  #loader.hidden {
+    display: none;
+  }
+  
+
+  /* responsive */
+  @media (max-width: 768px) {
+    .brand-name{
+      left: 30%;
+    }
+    .brand-name img{
+      height: 5rem;
+    }
+    .ninja{
+      width: 250px;
+    }
+  }
+  @media (max-width: 576px) {
+    .brand-name{
+      left: 20%;
+    }
+    .brand-name img{
+      height: 4rem;
+    }
+    .ninja{
+      width: 290px;
+    }
+  }

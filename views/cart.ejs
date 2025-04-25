@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - Dark Theme</title>
+    <link rel="stylesheet" href="/styles/cart.css">
+    <link rel="stylesheet" href="/styles/bookingBtn.css">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/footer.css">
+    <link rel="stylesheet" href="styles/navbar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <style>
+        .coupon-error {
+            color: #ff4444;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+
+        .coupon-success {
+            color: #4CAF50;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+
+        .discount-message {
+            color: #4CAF50;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .coupon-input-group {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        #cart-code {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #444;
+            background: #222;
+            color: #fff;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .apply-coupon-btn,
+        .remove-coupon-btn {
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .apply-coupon-btn {
+            background: #4CAF50;
+            color: white;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .remove-coupon-btn {
+            background: #f44336;
+            color: white;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Order Controls */
+        .order-controls {
+            margin: 20px 0;
+        }
+
+        .proceed-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .shipping-form-container {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ddd;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #444;
+            background: #222;
+            color: #fff;
+            border-radius: 4px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .cancel-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .submit-order-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="notification-bar">
+        <span class="notification-text"></span>
+    </div>
+    <!-- this is the responsive navbar -->
+    <nav class="As-navbar">
+        <div class="As-container">
+            <ul class="As-nav-links">
+                <li>
+                    <a href="/"><i class="fas fa-home"></i> <span>Home</span></a>
+                </li>
+                <li>
+                    <a href="/about"><i class="fas fa-info-circle"></i> <span>About Us</span></a>
+                </li>
+                <li>
+                    <a href="/Products"><i class="fas fa-box"></i> <span>All Products</span></a>
+                </li>
+                <li>
+                    <a href="/contact"><i class="fas fa-phone"></i><span>Contact us</span></a>
+                </li>
+            </ul>
+            <div class="As-logo">
+                <a href="/"><img src="assests/horizontalLogo-removebg-preview.png" alt="Logo"/></a>
+            </div>
+            <div class="AS-nav-btn">
+                <% if (user) { %>
+                    <li>
+                        <a href="/cart"><i class="fas fa-shopping-cart"></i> <span>Cart</span></a>
+                    </li>
+                    <li>
+                        <a href="/all-orders"><i class="fa fa-tshirt"></i><span>Your Orders</span></a>
+                    </li>
+                    <!-- Dropdown for logged-in users -->
+                    <!-- Profile Dropdown -->
+                    <div class="profile-dropdown">
+                        <div class="profile-trigger">
+                            <li>
+                                <a href="#"><i class="fas fa-user-circle"></i><span>Profile</span></a>
+                            </li>
+                        </div>
+                        <div class="profile-details">
+                            <p><i class="fas fa-user"></i> Name: <%= user.name %></p>
+                            <p><i class="fas fa-envelope"></i> Email: <%= user.email %></p>
+                            <p><i class="fas fa-phone"></i> Phone: <%= user.phone || 'N/A' %></p>
+                            <p><i class="fas fa-calendar"></i> Member Since: <%= user.createdAt ? new Date(user.createdAt).toDateString() : 'N/A' %></p>
+                        </div>
+                    </div>
+                    <li>
+                        <a href="/logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+                    </li>
+                <% } else { %>
+                    <!-- Sign-up link for guests -->
+                    <li>
+                        <a href="/signup"><i class="fas fa-user-plus"></i> <span>Sign-Up</span></a>
+                    </li>
+                <% } %>
+            </div>
+
+            <div class="As-hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="cart-container">
+        <div class="cart-row">
+            <div class="cart-items-section">
+                <div class="cart-header">
+                    <h4><b>Shopping Cart</b></h4>
+                    <p>Welcome, <b><%= user ? user.name : "Guest" %></b></p>
+                </div>
+
+                <% if (cart && cart.items && cart.items.length > 0) { %>
+                    <div class="cart-header">
+                        <span class="cart-items-count"><%= cart.items.length %> items</span>
+                    </div>
+
+                    <% cart.items.forEach(item => { %>
+                        <% if (item.product) { %>
+                            <div class="cart-item" data-price="<%= item.product.price %>" data-product-id="<%= item.product._id %>">
+                                <img class="cart-item-image" src="<%= item.product.front_image %>" alt="<%= item.product.name %>">
+                                <div class="cart-item-details">
+                                    <p class="cart-item-category"><%= item.product.category %></p>
+                                    <p class="cart-item-name"><%= item.product.name %></p>
+                                    <p class="cart-item-size">Size: <%= item.size %></p>
+                                </div>
+                                <div class="cart-item-price">
+                                    Rs <span class="item-total"><%= item.product.price * item.quantity %></span>
+                                    <span class="cart-remove">&#10005;</span>
+                                </div>
+                                <div class="cart-item-quantity">
+                                    <button class="decrease">-</button>
+                                    <span class="cart-quantity"><%= item.quantity %></span>
+                                    <button class="increase">+</button>
+                                </div>
+                            </div>
+                        <% } else { %>
+                            <p style="color: red;">Product not found.</p>
+                        <% } %>
+                    <% }) %>
+                <% } else { %>
+                    <div class="empty-cart-message">
+                        <p>No items in cart. Please continue shopping.</p>
+                        <a href="/" class="continue-shopping-btn">Continue Shopping</a>
+                    </div>
+                <% } %>
+
+                <div class="cart-back">
+                    <a href="/">&leftarrow; Back to shop</a>
+                </div>
+            </div>
+
+            <% if (cart && cart.items && cart.items.length > 0) { 
+                let subtotal = 0;
+                cart.items.forEach(item => {
+                    if (item.product && item.product.price) {
+                        subtotal += item.product.price * item.quantity;
+                    }
+                });
+                
+                const shipping = 5.00;
+                let total = subtotal + shipping - (discountAmount || 0);
+            %>
+                <div class="cart-summary">
+                    <h5><b>Summary</b></h5>
+                    <hr>
+                    <div class="summary-details">
+                        <p>ITEMS <span id="total-items"><%= cart.items.length %></span></p>
+                        <p>Rs <span id="total-price"><%= subtotal.toFixed(2) %></span></p>
+                    </div>
+
+                    <form id="coupon-form" action="/cart/apply-coupon" method="POST">
+                        <p>SHIPPING</p>
+                        <select>
+                            <option>Standard Delivery - Rs<%= shipping.toFixed(2) %></option>
+                        </select>
+
+                        <p>DISCOUNT CODE</p>
+                        <div class="coupon-input-group">
+                            <input id="cart-code" name="couponCode" placeholder="Enter your code" 
+                                   value="<%= cart.appliedCoupon ? cart.appliedCoupon.code : '' %>">
+                            <% if (!cart.appliedCoupon) { %>
+                                <button type="submit" class="apply-coupon-btn">Apply</button>
+                            <% } else { %>
+                                <a href="/cart/remove-coupon" class="remove-coupon-btn">Remove</a>
+                            <% } %>
+                        </div>
+
+                        <% if (cart.appliedCoupon) { %>
+                            <p class="coupon-success">
+                                Coupon: <b><%= cart.appliedCoupon.code %></b> - 
+                                <%= cart.appliedCoupon.discountType === 'percentage' ? 
+                                    `${cart.appliedCoupon.discountValue}% off` : 
+                                    `Rs${cart.appliedCoupon.discountValue} off` %>
+                            </p>
+                        <% } %>
+
+                        <% if (message) { %>
+                            <p class="<%= message.includes('successfully') ? 'coupon-success' : 'coupon-error' %>">
+                                <%= message %>
+                            </p>
+                        <% } %>
+                    </form>
+
+                    <div class="summary-total">
+                        <div class="price-breakdown">
+                            <div class="price-line total-line">
+                                <span>TOTAL PRICE:</span>
+                                <span>Rs <%= total.toFixed(2) %></span>
+                            </div>
+                        </div>
+
+                        <% if (discountAmount > 0) { %>
+                            <p class="discount-message">You saved: Rs <%= discountAmount.toFixed(2) %></p>
+                        <% } %>
+                    </div>
+
+                    <div class="order-controls">
+                        <button id="proceed-to-order" class="proceed-btn">Proceed to Order</button>
+
+                        <div id="shipping-form-container" class="shipping-form-container">
+                            <h5><b>Shipping Details</b></h5>
+                            <hr>
+                            <form id="shipping-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="shipping-line1">Address Line 1*</label>
+                                        <input type="text" id="shipping-line1" name="line1" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="shipping-line2">Address Line 2</label>
+                                        <input type="text" id="shipping-line2" name="line2">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="shipping-city">City*</label>
+                                        <input type="text" id="shipping-city" name="city" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="shipping-state">State*</label>
+                                        <input type="text" id="shipping-state" name="state" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="shipping-postalCode">Postal Code*</label>
+                                        <input type="text" id="shipping-postalCode" name="postalCode" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="shipping-country">Country*</label>
+                                        <input type="text" id="shipping-country" name="country" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="shipping-contactNumber">Contact Number*</label>
+                                    <input type="tel" id="shipping-contactNumber" name="contactNumber" required>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="button" id="cancel-order" class="cancel-btn">Cancel</button>
+                                    <button class="order">
+                                        <span class="default">Complete Order</span>
+                                        <span class="success">Order Placed
+                                            <svg viewbox="0 0 12 10">
+                                                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                            </svg>
+                                        </span>
+                                        <div class="box"></div>
+                                        <div class="truck">
+                                            <div class="back"></div>
+                                            <div class="front">
+                                                <div class="window"></div>
+                                            </div>
+                                            <div class="light top"></div>
+                                            <div class="light bottom"></div>
+                                        </div>
+                                        <div class="lines"></div>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- footer  -->
+    <footer class="footer">
+        <div class="footer__parralax">
+            <div class="footer__parralax-trees"></div>
+            <div class="footer__parralax-moto"></div>
+            <div class="footer__parralax-secondplan"></div>
+            <div class="footer__parralax-premierplan"></div>
+            <div class="footer__parralax-voiture"></div>
+        </div>
+        <div class="container">
+            <div class="footer__columns">
+                <div class="footer__col">
+                    <h3 class="footer__col-title">
+                        <i data-feather="shopping-bag"></i> <span>About</span>
+                    </h3>
+                    <nav class="footer__nav">
+                        <ul class="footer__nav-list">
+                            <li class="footer__nav-item">
+                                <a href="/about" class="/about">
+                                    About Us
+                                </a>
+                            </li>
+                            <li class="footer__nav-item">
+                                <a href="/contact" class="/contact">
+                                    Contact Us
+                                </a>
+                            </li>
+                            <li class="footer__nav-item">
+                                <a href="/Terms-and-conditions" class="/Terms-and-conditions">
+                                    Terms & Conditions
+                                </a>
+                            </li>
+                            <li class="footer__nav-item">
+                                <a href="/privacy_policy" class="footer__nav-link">
+                                    Privacy Policy
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="footer__col">
+                    <h3 class="footer__col-title">
+                        <i data-feather="share-2"></i> <span>Social Media</span>
+                    </h3>
+                    <nav class="footer__nav">
+                        <ul class="footer__nav-list">
+                            <li class="footer__nav-item">
+                                <a href class="footer__nav-link">
+                                    <i data-feather="youtube"></i><span>Youtube</span>
+                                </a>
+                            </li>
+                            <li class="footer__nav-item">
+                                <a href class="footer__nav-link">
+                                    <i data-feather="facebook"></i><span>Facebook</span>
+                                </a>
+                            </li>
+                            <li class="footer__nav-item">
+                                <a href="https://www.instagram.com/as_usual.clothing/" class="footer__nav-link">
+                                    <i data-feather="https://www.instagram.com/as_usual.clothing/"></i><span>Instagram</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="footer__col_last">
+                    <h3 class="footer__col-title">
+                        <i data-feather="send"></i> <span>Contact us</span>
+                    </h3>
+                    <nav class="footer__nav">
+                        <ul class="footer__nav-list">
+                            <li class="footer__nav-item">
+                                <a href="mailto:contact.laboiserie@gmail.com" class="footer__nav-link">
+                                    asusualclothing@gmail.com
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/scripts/cart.js"></script>
+    <script>
+        // Toggle shipping form visibility
+        document.getElementById('proceed-to-order').addEventListener('click', function() {
+            document.getElementById('shipping-form-container').style.display = 'block';
+        });
+
+        document.getElementById('cancel-order').addEventListener('click', function() {
+            document.getElementById('shipping-form-container').style.display = 'none';
+        });
+
+        // Quantity adjustment functionality
+        document.querySelectorAll('.increase').forEach(button => {
+            button.addEventListener('click', function() {
+                const quantityElement = this.parentElement.querySelector('.cart-quantity');
+                let quantity = parseInt(quantityElement.textContent);
+                quantityElement.textContent = quantity + 1;
+                updateItemTotal(this.closest('.cart-item'));
+            });
+        });
+
+        document.querySelectorAll('.decrease').forEach(button => {
+            button.addEventListener('click', function() {
+                const quantityElement = this.parentElement.querySelector('.cart-quantity');
+                let quantity = parseInt(quantityElement.textContent);
+                if (quantity > 1) {
+                    quantityElement.textContent = quantity - 1;
+                    updateItemTotal(this.closest('.cart-item'));
+                }
+            });
+        });
+
+        function updateItemTotal(itemElement) {
+            const price = parseFloat(itemElement.dataset.price);
+            const quantity = parseInt(itemElement.querySelector('.cart-quantity').textContent);
+            const totalElement = itemElement.querySelector('.item-total');
+            totalElement.textContent = (price * quantity).toFixed(2);
+            updateCartTotal();
+        }
+
+        function updateCartTotal() {
+            let subtotal = 0;
+            document.querySelectorAll('.cart-item').forEach(item => {
+                subtotal += parseFloat(item.querySelector('.item-total').textContent);
+            });
+            
+            const shipping = 5.00;
+            const discount = <%= discountAmount || 0 %>;
+            const total = subtotal + shipping - discount;
+            
+            document.getElementById('total-price').textContent = subtotal.toFixed(2);
+            document.querySelector('.total-line span:last-child').textContent = 'Rs ' + total.toFixed(2);
+        }
+
+        // Remove item functionality
+        document.querySelectorAll('.cart-remove').forEach(button => {
+            button.addEventListener('click', function() {
+                const itemElement = this.closest('.cart-item');
+                const productId = itemElement.dataset.productId;
+                
+                fetch('/cart/remove-item', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ productId: productId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        itemElement.remove();
+                        updateCartTotal();
+                    } else {
+                        alert('Failed to remove item: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while removing the item');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

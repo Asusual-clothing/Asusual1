@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homepage</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link rel="stylesheet" href="styles/footer.css" />
+    <link rel="stylesheet" href="styles/navbar.css" />
+    <link rel="stylesheet" href="styles/horizontal.css" />
+    <link rel="stylesheet" href="styles/loader.css" />
+    <link rel="stylesheet" href="styles/posterSlider.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee+Tint&family=Dancing+Script:wght@400..700&family=Grey+Qo&family=Kalnia+Glaze:wght@100..700&family=Matemasie&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Smooch&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
+    <!-- Tailwind CSS CDN (Play CDN for quick testing) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- GSAP Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- ScrollTrigger Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Swiper CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  </head>
+
+  <body>
+    <!-- Loader Container -->
+    <div id="loader" class="loader">
+      <div class="loader-container" id="page5">
+        <img
+          class="sword-left"
+          src="https://cdn4.iconfinder.com/data/icons/video-game-items-concepts/128/weapon-katana-512.png"
+          alt="Sword Left"
+        />
+        <img
+          class="ninja"
+          id="ninja"
+          src="/assests/loaderNinja.png"
+          alt="Ninja"
+        />
+        <img
+          class="sword-right"
+          src="https://cdn4.iconfinder.com/data/icons/video-game-items-concepts/128/weapon-katana-512.png"
+          alt="Sword Right"
+        />
+        <img
+          class="moon"
+          src="https://www.seekpng.com/png/full/1-16744_red-moon-png-orange-moon-png.png"
+          alt="Moon"
+        />
+        <!-- <div class="brand-name"><img
+            src="assests/horizontalLogo-removebg-preview.png" alt="Logo"></div> -->
+      </div>
+      <audio
+        id="background-sound"
+        src="/assests/sword-ninja.mp3"
+        autoplay
+        muted
+        loop
+      ></audio>
+    </div>
+
+    <!-- Homepage Content -->
+    <div class="homepage-content" id="homepage-content" style="display: none">
+      <!-- marquee for notification -->
+      <div class="notification-bar">
+        <span class="notification-text"
+          >🚀 Get the Great offer and deatails of the Year. Stay connect ! Stay
+          updated 🔥</span
+        >
+      </div>
+      <div class="notification-bar">
+        <span class="notification-text"> </span>
+      </div>
+      <!-- this is the responsive navbar -->
+      <nav class="As-navbar">
+        <div class="As-container">
+          <ul class="As-nav-links">
+            <li>
+              <a href="#"><i class="fas fa-home"></i> <span>Home</span></a>
+            </li>
+            <li>
+              <a href="/about"
+                ><i class="fas fa-info-circle"></i> <span>About Us</span></a
+              >
+            </li>
+            <li>
+              <a href="/Products"
+                ><i class="fas fa-box"></i> <span>All Products</span></a
+              >
+            </li>
+            <li>
+              <a href="/contact"
+                ><i class="fas fa-phone"></i><span>Contact us</span></a
+              >
+            </li>
+          </ul>
+          <div class="As-logo">
+            <a href="/"
+              ><img
+                src="assests/horizontalLogo-removebg-preview.png"
+                alt="Logo"
+            /></a>
+          </div>
+          <div class="AS-nav-btn">
+            <% if (user) { %>
+            <li>
+              <a href="/cart"
+                ><i class="fas fa-shopping-cart"></i> <span>Cart</span></a
+              >
+            </li>
+            <li>
+              <a href="/all-orders"
+                ><i class="fa fa-shirt"></i><span>Your Orders</span></a
+              >
+            </li>
+            <!-- Dropdown for logged-in users -->
+            <!-- Profile Dropdown -->
+            <div class="profile-dropdown">
+              <div class="profile-trigger">
+                <li>
+                  <a href="#"
+                    ><i class="fas fa-user-circle"></i><span>Profile</span></a
+                  >
+                </li>
+              </div>
+              <div class="profile-details">
+                <p><i class="fas fa-user"></i> Name: <%= user.name %></p>
+                <p><i class="fas fa-envelope"></i> Email: <%= user.email %></p>
+                <p>
+                  <i class="fas fa-phone"></i> Phone: <%= user.phone || 'N/A' %>
+                </p>
+                <p>
+                  <i class="fas fa-calendar"></i> Member Since: <%=
+                  user.createdAt ? new Date(user.createdAt).toDateString() :
+                  'N/A' %>
+                </p>
+              </div>
+            </div>
+            <li>
+              <a href="/logout"
+                ><i class="fas fa-sign-out-alt"></i><span>Logout</span>
+              </a>
+            </li>
+
+            <% } else { %>
+            <!-- Sign-up link for guests -->
+            <li>
+              <a href="/signup"
+                ><i class="fas fa-user-plus"></i> <span>Sign-Up</span></a
+              >
+            </li>
+            <% } %>
+          </div>
+
+          <div class="As-hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </nav>
+      <!-- this is slider of poster  -->
+      <div
+        class="slider"
+        id="slider"
+        style="
+          --img-prev: url(https://s3.envato.com/files/104386263/img%20preview%20fashion%20style%20FB/02_preview2.jpg);
+        "
+      >
+        <div class="slider__content" id="slider-content">
+          <div class="slider__images">
+            <% if (posters.length> 0) { %> <% posters.forEach((poster, index)=>
+            { %>
+            <div
+              class="slider__images-item <%= index === 0 ? 'slider__images-item--active' : '' %>"
+              data-id="<%= index + 1 %>"
+            >
+              <img
+                src="<%= poster %>"
+                alt="Fashion Style <%= index + 1 %>"
+              />
+            </div>
+            <% }); %> <% } %>
+          </div>
+          <div class="slider__text">
+            <% posters.forEach((poster, index)=> { %>
+            <div
+              class="slider__text-item <%= index === 0 ? 'slider__text-item--active' : '' %>"
+              data-id="<%= index + 1 %>"
+            >
+              <div class="slider__text-item-head">
+                <h3><%= headings[index] || 'Default Heading' %></h3>
+              </div>
+              <div class="slider__text-item-info">
+                <p><%= titles[index] || 'Default Title' %></p>
+              </div>
+            </div>
+            <% }) %>
+          </div>
+        </div>
+        <div class="slider__nav">
+          <div class="slider__nav-arrows">
+            <div class="slider__nav-arrow slider__nav-arrow--left" id="left">
+              to left
+            </div>
+            <div class="slider__nav-arrow slider__nav-arrow--right" id="right">
+              to right
+            </div>
+          </div>
+          <div class="slider__nav-dots" id="slider-dots">
+            <div
+              class="slider__nav-dot slider__nav-dot--active"
+              data-id="1"
+            ></div>
+            <div class="slider__nav-dot" data-id="2"></div>
+            <div class="slider__nav-dot" data-id="3"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- this is the second section -->
+      <div class="page2" id="page2">
+        <% for(let i=0; i <=3 ; i++) { %>
+        <div class="card">
+          <div class="imgBox">
+            <div class="front">
+              <img
+                src="<%= Products[i].front_image %>"
+                alt="<%= Products[i].name %>"
+              />
+            </div>
+            <div class="back">
+              <img
+                src="<%= Products[i].back_image %>"
+                alt="<%= Products[i].name %>"
+              />
+            </div>
+          </div>
+          <div class="contentBox">
+            <h3><%= Products[i].name %></h3>
+            <h2 class="price"><small>₹<%= Products[i].price %></small></h2>
+            <a href="/product_details/<%= Products[i]._id %>" class="buy"
+              >Buy Now</a
+            >
+          </div>
+        </div>
+        <% } %>
+      </div>
+
+      <!-- this is the third section -->
+      <div class="pagenew">
+        <!-- Section Header with Improved Styling -->
+        <div class="relative py-12 bg-gradient-to-b from-[#360a0a] to-black">
+          <div class="container mx-auto px-4 text-center">
+            <!-- Main Title -->
+            <h2
+              class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-300 to-gray-100 mb-4 tracking-tight"
+            >
+              Featured Collection
+            </h2>
+
+            <!-- Subtitle with decorative elements -->
+            <div class="relative inline-block">
+              <p
+                class="text-lg md:text-xl font-medium text-gray-400 relative z-10 px-4"
+              >
+                Discover our premium selection of high-quality products
+              </p>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div
+                  class="h-px w-full bg-gradient-to-r from-transparent via-gray-600 to-transparent"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+          <ul class="slides">
+            <% Products.slice(0, 5).forEach((product, index)=> { %>
+            <li id="slide<%= index + 1 %>">
+              <img src="<%= product.front_image %>" alt="<%= product.name %>" />
+              <div class="slide-content">
+                <a href="/product_details/<%= product._id %>" class="buy"
+                  >Buy Now</a
+                >
+              </div>
+            </li>
+            <% }); %>
+          </ul>
+
+          <ul class="thumbnails">
+            <% Products.slice(0, 5).forEach((product, index)=> { %>
+            <li>
+              <a href="#slide<%= index + 1 %>">
+                <img
+                  src="<%= product.front_image %>"
+                  alt="<%= product.name %>"
+                />
+              </a>
+            </li>
+            <% }); %>
+          </ul>
+        </div>
+      </div>
+
+      <style>
+        .pagenew {
+          overflow: hidden;
+          background-color: black;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+          display: flex;
+          justify-content: center;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 20px;
+        }
+
+        .slides li:first-child {
+          opacity: 1;
+          z-index: 1;
+        }
+
+        .slides li:target ~ li:first-child {
+          opacity: 0;
+          z-index: 0;
+        }
+
+        .thumbnails {
+          display: flex;
+          flex-direction: column;
+          width: 150px;
+
+          li {
+            list-style: none;
+            transition: transform 0.3s ease;
+
+            &:hover {
+              transform: scale(1.05);
+            }
+          }
+
+          a {
+            display: block;
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+          }
+
+          img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 4px;
+            cursor: pointer;
+            filter: grayscale(100%);
+          }
+
+          a:hover img {
+            filter: grayscale(0%);
+          }
+        }
+
+        .slides {
+          position: relative;
+          width: 600px;
+          height: 500px;
+          overflow: hidden;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+          li {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              object-position: center;
+            }
+          }
+
+          li:target {
+            opacity: 1;
+            z-index: 2;
+          }
+
+          .slide-content {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            z-index: 3;
+          }
+
+          .buy {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #860505;
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+            &:hover {
+              background-color: #620404;
+              transform: translateY(-2px);
+              box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            }
+          }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+          .container {
+            flex-direction: column;
+            align-items: center;
+          }
+
+          .thumbnails {
+            flex-direction: row;
+            width: 100%;
+            order: 2;
+            margin-top: 15px;
+            filter: grayscale(100%);
+
+            img {
+              height: 80px;
+            }
+          }
+
+          .slides {
+            width: 100%;
+            height: 300px;
+            order: 1;
+
+            .buy {
+              padding: 8px 20px;
+              font-size: 14px;
+            }
+          }
+        }
+      </style>
+      <!-- this is forth section -->
+
+      <div class="page4" id="page4">
+        <div class="scroller">
+          <% for(let i=0; i < 6; i++) { %>
+          <div class="card">
+            <div class="imgBox">
+              <div class="front">
+                <img
+                  src="<%= Products[i].front_image %>"
+                  alt="<%= Products[i].name %>"
+                />
+              </div>
+              <div class="back">
+                <img
+                  src="<%= Products[i].back_image %>"
+                  alt="<%= Products[i].name %>"
+                />
+              </div>
+            </div>
+            <div class="contentBox">
+              <h3><%= Products[i].name %></h3>
+              <h2 class="price"><small>₹<%= Products[i].price %></small></h2>
+              <a href="/product_details/<%= Products[i]._id %>" class="buy"
+                >Buy Now</a
+              >
+            </div>
+          </div>
+          <% } %>
+        </div>
+      </div>
+      <!-- Testimonial Section -->
+      <div class="page5" id="page5">
+        <section class="bg-black text-white py-16 px-4 sm:px-6 lg:px-20">
+          <!-- Enhanced Header Section -->
+          <div class="container mx-auto px-4 text-center mb-12">
+            <h2
+              class="text-3xl sm:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-300 mb-4 tracking-tight"
+            >
+              What Our Shoppers Say
+            </h2>
+
+            <div class="relative inline-block max-w-2xl mx-auto">
+              <p
+                class="text-lg md:text-xl font-medium text-gray-400 relative z-10 px-4"
+              >
+                Hear from our community of happy customers
+              </p>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div
+                  class="h-px w-full bg-gradient-to-r from-transparent via-gray-600 to-transparent"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Swiper Container -->
+          <div class="swiper-container testimonial-swiper">
+            <div class="swiper-wrapper">
+              <!-- Slide 1 -->
+              <div class="swiper-slide">
+                <div class="bg-zinc-900 p-6 rounded-2xl shadow-lg h-full">
+                  <p class="text-lg italic mb-4">
+                    "AsUsual has completely upgraded my wardrobe. The fit,
+                    fabric, and flair—everything's just perfect!"
+                  </p>
+                  <div class="flex items-center gap-4 mt-6">
+                    <img
+                      src="https://i.pravatar.cc/50?img=12"
+                      alt="User"
+                      class="w-12 h-12 rounded-full border-2 border-white"
+                    />
+                    <div>
+                      <p class="font-semibold">Aanya Sharma</p>
+                      <p class="text-sm text-gray-400">Fashion Blogger</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 2 -->
+              <div class="swiper-slide">
+                <div class="bg-zinc-900 p-6 rounded-2xl shadow-lg h-full">
+                  <p class="text-lg italic mb-4">
+                    "Love the trendy styles and how comfortable everything
+                    feels. AsUsual is now my go-to clothing brand!"
+                  </p>
+                  <div class="flex items-center gap-4 mt-6">
+                    <img
+                      src="https://i.pravatar.cc/50?img=8"
+                      alt="User"
+                      class="w-12 h-12 rounded-full border-2 border-white"
+                    />
+                    <div>
+                      <p class="font-semibold">Rahul Verma</p>
+                      <p class="text-sm text-gray-400">Graphic Designer</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 3 -->
+              <div class="swiper-slide">
+                <div class="bg-zinc-900 p-6 rounded-2xl shadow-lg h-full">
+                  <p class="text-lg italic mb-4">
+                    "Customer service is excellent and delivery is super quick.
+                    I've been recommending AsUsual to all my friends!"
+                  </p>
+                  <div class="flex items-center gap-4 mt-6">
+                    <img
+                      src="https://i.pravatar.cc/50?img=5"
+                      alt="User"
+                      class="w-12 h-12 rounded-full border-2 border-white"
+                    />
+                    <div>
+                      <p class="font-semibold">Zoya Malik</p>
+                      <p class="text-sm text-gray-400">Lifestyle Influencer</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Additional Testimonials -->
+              <!-- Slide 4 -->
+              <div class="swiper-slide">
+                <div class="bg-zinc-900 p-6 rounded-2xl shadow-lg h-full">
+                  <p class="text-lg italic mb-4">
+                    "The quality exceeds the price point. I've bought multiple
+                    items and each one feels premium."
+                  </p>
+                  <div class="flex items-center gap-4 mt-6">
+                    <img
+                      src="https://i.pravatar.cc/50?img=32"
+                      alt="User"
+                      class="w-12 h-12 rounded-full border-2 border-white"
+                    />
+                    <div>
+                      <p class="font-semibold">Neha Patel</p>
+                      <p class="text-sm text-gray-400">Marketing Executive</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 5 -->
+              <div class="swiper-slide">
+                <div class="bg-zinc-900 p-6 rounded-2xl shadow-lg h-full">
+                  <p class="text-lg italic mb-4">
+                    "AsUsual understands modern fashion needs. Their collections
+                    are always on point with current trends."
+                  </p>
+                  <div class="flex items-center gap-4 mt-6">
+                    <img
+                      src="https://i.pravatar.cc/50?img=45"
+                      alt="User"
+                      class="w-12 h-12 rounded-full border-2 border-white"
+                    />
+                    <div>
+                      <p class="font-semibold">Arjun Khanna</p>
+                      <p class="text-sm text-gray-400">Fashion Stylist</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slide 6 -->
+              <div class="swiper-slide">
+                <div class="bg-zinc-900 p-6 rounded-2xl shadow-lg h-full">
+                  <p class="text-lg italic mb-4">
+                    "The perfect blend of comfort and style. I wear AsUsual
+                    outfits both to work and on weekends."
+                  </p>
+                  <div class="flex items-center gap-4 mt-6">
+                    <img
+                      src="https://i.pravatar.cc/50?img=28"
+                      alt="User"
+                      class="w-12 h-12 rounded-full border-2 border-white"
+                    />
+                    <div>
+                      <p class="font-semibold">Priya Joshi</p>
+                      <p class="text-sm text-gray-400">Software Engineer</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Initialize Swiper -->
+      <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+      <script>
+        var swiperT = new Swiper(".testimonial-swiper", {
+          slidesPerView: 1,
+          spaceBetween: 20,
+          loop: true,
+          autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+          },
+          pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+          },
+          navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+          },
+          breakpoints: {
+            640: {
+              slidesPerView: 2,
+            },
+            1024: {
+              slidesPerView: 3,
+            },
+          },
+        });
+      </script>
+
+      <style>
+        .testimonial-swiper {
+          padding: 20px 0;
+        }
+        .swiper-slide {
+          height: auto;
+          padding: 10px;
+        }
+        .swiper-button-next,
+        .swiper-button-prev {
+          color: white;
+          background: rgba(0, 0, 0, 0.5);
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        @media only screen and (max-width: 600px) {
+          .swiper-button-next,
+          .swiper-button-prev {
+            display: none;
+          }
+        }
+        .swiper-button-next::after,
+        .swiper-button-prev::after {
+          font-size: 20px;
+        }
+        .swiper-pagination-bullet {
+          background: white;
+          opacity: 0.5;
+        }
+        .swiper-pagination-bullet-active {
+          opacity: 1;
+        }
+      </style>
+
+      <!-- footer  -->
+     
+      <footer class="footer">
+        <div class="footer__parralax">
+          <div class="footer__parralax-trees"></div>
+          <div class="footer__parralax-moto"></div>
+          <div class="footer__parralax-secondplan"></div>
+          <div class="footer__parralax-premierplan"></div>
+          <div class="footer__parralax-voiture"></div>
+        </div>
+        <div class="container">
+          <div class="footer__columns">
+            <div class="footer__col">
+              <h3 class="footer__col-title">
+                <i data-feather="shopping-bag"></i> <span>About</span>
+              </h3>
+              <nav class="footer__nav">
+                <ul class="footer__nav-list">
+                  <li class="footer__nav-item">
+                    <a href="/about" class="/about">
+                      About Us
+                    </a>
+                  </li>
+                  <li class="footer__nav-item">
+                    <a href="/contact" class="/contact">
+                      Contact Us
+                    </a>
+                  </li>
+                  <li class="footer__nav-item">
+                    <a href="/Terms-and-conditions" class="/Terms-and-conditions">
+                      Terms & Conditions
+                    </a>
+                  </li>
+                  <li class="footer__nav-item">
+                    <a href="/privacy_policy" class="footer__nav-link">
+                      Privacy Policy
+                    </a>
+                  </li>
+
+                </ul>
+              </nav>
+            </div>
+            <div class="footer__col">
+              <h3 class="footer__col-title">
+                <i data-feather="share-2"></i> <span>Social Media</span>
+              </h3>
+              <nav class="footer__nav">
+                <ul class="footer__nav-list">
+                  <li class="footer__nav-item">
+                    <a href class="footer__nav-link">
+                      <i data-feather="youtube"></i><span>Youtube</span>
+                    </a>
+                  </li>
+                  <li class="footer__nav-item">
+                    <a href class="footer__nav-link">
+                      <i data-feather="facebook"></i><span>Facebook</span>
+
+                    </a>
+                  </li>
+                  <li class="footer__nav-item">
+                    <a href="https://www.instagram.com/as_usual.clothing/"
+                      class="footer__nav-link">
+                      <i
+                        data-feather="https://www.instagram.com/as_usual.clothing/"></i><span>Instagram</span>
+
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <div class="footer__col_last">
+              <h3 class="footer__col-title">
+                <i data-feather="send"></i> <span>Contact us</span>
+              </h3>
+              <nav class="footer__nav">
+                <ul class="footer__nav-list">
+                  <li class="footer__nav-item">
+                    <a href="mailto:contact.laboiserie@gmail.com"
+                      class="footer__nav-link">
+                      asusualclothing@gmail.com
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <!-- this the javascript and link for gsap  -->
+    <!-- Locomotive Scroll -->
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.js"></script>
+
+    <!-- GSAP Core and ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js    "></script>
+
+    <!-- Your Custom Script -->
+    <script src="scripts/script.js"></script>
+    <script src="scripts/slider.js"></script>
+  </body>
+</html>

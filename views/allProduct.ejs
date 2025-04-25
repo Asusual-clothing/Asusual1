@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ecommerce - T-Shirt Store</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+  <link rel="stylesheet" href="/styles/allProduct.css" />
+  <link rel="stylesheet" href="styles/styles.css" />
+  <link rel="stylesheet" href="styles/footer.css" />
+  <link rel="stylesheet" href="styles/navbar.css" />
+</head>
+
+<body>
+  <div class="notification-bar">
+    <span class="notification-text"> </span>
+  </div>
+  <!-- this is the responsive navbar -->
+  <nav class="As-navbar">
+    <div class="As-container">
+      <ul class="As-nav-links">
+        <li>
+          <a href="/"><i class="fas fa-home"></i> <span>Home</span></a>
+        </li>
+        <li>
+          <a href="/about"
+            ><i class="fas fa-info-circle"></i> <span>About Us</span></a
+          >
+        </li>
+        <li>
+          <a href="/Products"
+            ><i class="fas fa-box"></i> <span>All Products</span></a
+          >
+        </li>
+        <li>
+          <a href="/contact"
+            ><i class="fas fa-phone"></i><span>Contact us</span></a
+          >
+        </li>
+      </ul>
+      <div class="As-logo">
+        <a href="/"
+          ><img
+            src="assests/horizontalLogo-removebg-preview.png"
+            alt="Logo"
+        /></a>
+      </div>
+      <div class="AS-nav-btn">
+        <% if (user) { %>
+        <li>
+          <a href="/cart"
+            ><i class="fas fa-shopping-cart"></i> <span>Cart</span></a
+          >
+        </li>
+        <li>
+          <a href="/all-orders"
+            ><i class="fa fa-shirt"></i><span>Your Orders</span></a
+          >
+        </li>
+        <!-- Dropdown for logged-in users -->
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown">
+          <div class="profile-trigger">
+            <li>
+              <a href="#"
+                ><i class="fas fa-user-circle"></i><span>Profile</span></a
+              >
+            </li>
+          </div>
+          <div class="profile-details">
+            <p><i class="fas fa-user"></i> Name: <%= user.name %></p>
+            <p><i class="fas fa-envelope"></i> Email: <%= user.email %></p>
+            <p>
+              <i class="fas fa-phone"></i> Phone: <%= user.phone || 'N/A' %>
+            </p>
+            <p>
+              <i class="fas fa-calendar"></i> Member Since: <%=
+              user.createdAt ? new Date(user.createdAt).toDateString() :
+              'N/A' %>
+            </p>
+          </div>
+        </div>
+        <li>
+          <a href="/logout"
+            ><i class="fas fa-sign-out-alt"></i><span>Logout</span>
+          </a>
+        </li>
+
+        <% } else { %>
+        <!-- Sign-up link for guests -->
+        <li>
+          <a href="/signup"
+            ><i class="fas fa-user-plus"></i> <span>Sign-Up</span></a
+          >
+        </li>
+        <% } %>
+      </div>
+
+      <div class="As-hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+  <div class="All-product-container">
+    <!-- Filters Section -->
+    <div class="filters">
+      <h2>Filters</h2>
+      <!-- Price Range Slider -->
+      <div class="slider-container">
+        <label for="price-range">Price Range:</label>
+        <input type="range" id="price-range" min="0" max="5000" step="100" value="5000"
+          oninput="updatePrice(this.value)" />
+        <div class="slider-values">
+          <span>₹1</span>
+          <span id="price-value">5000</span>
+          <span>₹5000</span>
+        </div>
+      </div>
+
+      <!-- Other Filters -->
+      <details>
+        <summary>Other Filters</summary>
+        <div class="other-filter">
+          <!-- Sizes Filter -->
+          <div class="collapse">
+            <h3 onclick="toggleCollapse('sizes')">Sizes</h3>
+            <div class="collapse-content" id="sizes">
+              <div class="checkbox-group">
+                <input type="checkbox" id="size1" value="xsmall" />
+                <label for="size1">x-small</label>
+              </div>
+              <div class="checkbox-group">
+                <input type="checkbox" id="size2" value="small" />
+                <label for="size2">Small</label>
+              </div>
+              <div class="checkbox-group">
+                <input type="checkbox" id="size3" value="medium" />
+                <label for="size3">Medium</label>
+              </div>
+              <div class="checkbox-group">
+                <input type="checkbox" id="size4" value="large" />
+                <label for="size4">Large</label>
+              </div>
+              <div class="checkbox-group">
+                <input type="checkbox" id="size5" value="xlarge" />
+                <label for="size5">x-large</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category Filter -->
+          <div class="collapse">
+            <h3 onclick="toggleCollapse('category')">Category</h3>
+            <div class="collapse-content" id="category">
+              <div class="checkbox-group">
+                <input type="checkbox" id="regular" value="regular" />
+                <label for="regular">Regular</label>
+              </div>
+              <div class="checkbox-group">
+                <input type="checkbox" id="oversized" value="oversized" />
+                <label for="oversized">Oversized</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Colors Filter -->
+          <div class="collapse">
+            <h3 onclick="toggleCollapse('colors')">Colors</h3>
+            <div class="collapse-content" id="colors">
+              <div class="checkbox-group">
+                <input type="checkbox" id="color1" value="black" />
+                <label for="color1">Black</label>
+              </div>
+              <div class="checkbox-group">
+                <input type="checkbox" id="color2" value="white" />
+                <label for="color2">White</label>
+              </div>
+              <div class="checkbox-group">
+                <input type="checkbox" id="color3" value="red" />
+                <label for="color3">Red</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sort by Price -->
+          <div class="collapse">
+            <h3 onclick="toggleCollapse('sort-order')">Sort by Price</h3>
+            <div class="collapse-content" id="sort-order">
+              <div class="radio-group">
+                <input type="radio" id="sort-asc" name="sort-order" value="asc" checked />
+                <label for="sort-asc">Low to High</label>
+              </div>
+              <div class="radio-group">
+                <input type="radio" id="sort-desc" name="sort-order" value="desc" />
+                <label for="sort-desc">High to Low</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Apply Filters Button -->
+      <button class="apply-filters" onclick="applyFilters()">
+        Apply Filters
+      </button>
+    </div>
+
+    <!-- Products Section -->
+    <div class="products" id="product-list">
+      <% if (products && products.length> 0) { %> <% products.forEach(product=> { %>
+          <div class="card">
+            <div class="imgBox">
+              <div class="front">
+                <img src="<%= product.front_image %>" alt="<%= product.name %>" class="mouse" loading="lazy" />
+              </div>
+              <div class="back">
+                <img src="<%= product.back_image %>" alt="<%= product.name %>" class="mouse" loading="lazy" />
+              </div>
+            </div>
+            <div class="contentBox">
+              <h3>
+                <%= product.name %>
+              </h3>
+              <h2 class="price">
+                <small>Rs.</small>
+                <%= product.price %>
+              </h2>
+              <a href="/product_details/<%= product._id || product.id %>" class="buy">Buy Now</a>
+            </div>
+          </div>
+          <% }); %>
+            <% } else { %>
+              <p>No products available.</p>
+              <% } %>
+    </div>
+  </div>
+
+  <script>
+    // Hold all original products globally
+    let allProducts = [];
+    
+    // Try to parse the products data safely
+    try {
+      allProducts = <%- JSON.stringify(products || []) %>
+    } catch (e) {
+      console.error("Error parsing products:", e);
+      allProducts = [];
+    }
+  
+    function updatePrice(value) {
+      document.getElementById("price-value").innerText = `₹${value}`;
+    }
+  
+    function toggleCollapse(id) {
+      const element = document.getElementById(id);
+      if (element) {
+        element.style.display = element.style.display === 'none' ? 'block' : 'none';
+      }
+    }
+  
+    function applyFilters() {
+      if (!allProducts || allProducts.length === 0) return;
+  
+      const priceRange = parseInt(document.getElementById("price-range").value) || 5000;
+      const sizes = Array.from(document.querySelectorAll('#sizes input[type="checkbox"]:checked')).map(cb => cb.value);
+      const colors = Array.from(document.querySelectorAll('#colors input[type="checkbox"]:checked')).map(cb => cb.value.toLowerCase());
+      const categories = Array.from(document.querySelectorAll('#category input[type="checkbox"]:checked')).map(cb => cb.value.toLowerCase());
+      const sortOrder = document.querySelector('input[name="sort-order"]:checked')?.value || 'asc';
+  
+      let filtered = [...allProducts];
+  
+      // Apply filters
+      filtered = filtered.filter(product => {
+        if (!product) return false;
+        
+        // Price filter
+        const matchesPrice = product.price <= priceRange;
+  
+        // Size filter
+        const matchesSize = sizes.length === 0 ||
+          (product.sizes && sizes.some(size => product.sizes[size] > 0));
+  
+        // Color filter
+        const matchesColor = colors.length === 0 ||
+          (product.color && colors.includes(product.color.toLowerCase()));
+  
+        // Category filter
+        const matchesCategory = categories.length === 0 ||
+          (product.category && categories.includes(product.category.toLowerCase()));
+  
+        return matchesPrice && matchesSize && matchesColor && matchesCategory;
+      });
+  
+      // Sort products
+      filtered.sort((a, b) => {
+        return sortOrder === 'asc' ? a.price - b.price : b.price - a.price;
+      });
+  
+      renderProducts(filtered);
+    }
+  
+    function renderProducts(products) {
+      const productList = document.getElementById("product-list");
+      if (!productList) return;
+  
+      productList.innerHTML = "";
+  
+      if (products && products.length > 0) {
+        products.forEach(product => {
+          if (!product) return;
+          
+          const productCard = `
+            <div class="card">
+              <div class="imgBox">
+                <div class="front">
+                  <img src="${product.front_image || ''}" alt="${product.name || ''}" class="mouse" loading="lazy">
+                </div>
+                <div class="back">
+                  <img src="${product.back_image || ''}" alt="${product.name || ''}" class="mouse" loading="lazy">
+                </div>
+              </div>
+              <div class="contentBox">
+                <h3>${product.name || ''}</h3>
+                <h2 class="price"><small>Rs.</small>${product.price || ''}</h2>
+                <a href="/product_details/${product._id || product.id || ''}" class="buy">Buy Now</a>
+              </div>
+            </div>
+          `;
+          productList.innerHTML += productCard;
+        });
+      } else {
+        productList.innerHTML = "<p>No products available.</p>";
+      }
+    }
+  
+    // Initialize filters and render
+    document.addEventListener("DOMContentLoaded", () => {
+      const priceRange = document.getElementById("price-range");
+      if (priceRange) {
+        updatePrice(priceRange.value);
+        priceRange.addEventListener('input', (e) => updatePrice(e.target.value));
+      }
+  
+      // Add event listeners to all filter inputs
+      document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(input => {
+        input.addEventListener('change', applyFilters);
+      });
+  
+      // Initial render
+      renderProducts(allProducts);
+    });
+  </script>
+
+</body>
+
+</html>

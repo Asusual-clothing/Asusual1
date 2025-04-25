@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= product.name %> - Product Page
+    </title>
+    <link rel="stylesheet" href="/styles/product_detail.css">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  />
+    <link rel="stylesheet" href="/styles/styles.css">
+    <link rel="stylesheet" href="/styles/footer.css">
+    <link rel="stylesheet" href="/styles/navbar.css">
+</head>
+
+<body>
+  <div class="notification-bar">
+    <span class="notification-text"> </span>
+  </div>
+  <!-- this is the responsive navbar -->
+  <nav class="As-navbar">
+    <div class="As-container">
+      <ul class="As-nav-links">
+        <li>
+          <a href="/"><i class="fas fa-home"></i> <span>Home</span></a>
+        </li>
+        <li>
+          <a href="/about"
+            ><i class="fas fa-info-circle"></i> <span>About Us</span></a
+          >
+        </li>
+        <li>
+          <a href="/Products"
+            ><i class="fas fa-box"></i> <span>All Products</span></a
+          >
+        </li>
+        <li>
+          <a href="/contact"
+            ><i class="fas fa-phone"></i><span>Contact us</span></a
+          >
+        </li>
+      </ul>
+      <div class="As-logo">
+        <a href="/"
+          ><img
+            src="../public/assests/horizontalLogo-removebg-preview.png"
+            alt="Logo"
+        /></a>
+      </div>
+      <div class="AS-nav-btn">
+        <% if (user) { %>
+        <li>
+          <a href="/cart"
+            ><i class="fas fa-shopping-cart"></i> <span>Cart</span></a
+          >
+        </li>
+        <li>
+          <a href="/all-orders"
+            ><i class="fa fa-tshirt"></i><span>Your Orders</span></a
+          >
+        </li>
+        <!-- Dropdown for logged-in users -->
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown">
+          <div class="profile-trigger">
+            <li>
+              <a href="#"
+                ><i class="fas fa-user-circle"></i><span>Profile</span></a
+              >
+            </li>
+          </div>
+          <div class="profile-details">
+            <p><i class="fas fa-user"></i> Name: <%= user.name %></p>
+            <p><i class="fas fa-envelope"></i> Email: <%= user.email %></p>
+            <p>
+              <i class="fas fa-phone"></i> Phone: <%= user.phone || 'N/A' %>
+            </p>
+            <p>
+              <i class="fas fa-calendar"></i> Member Since: <%=
+              user.createdAt ? new Date(user.createdAt).toDateString() :
+              'N/A' %>
+            </p>
+          </div>
+        </div>
+        <li>
+          <a href="/logout"
+            ><i class="fas fa-sign-out-alt"></i><span>Logout</span>
+          </a>
+        </li>
+
+        <% } else { %>
+        <!-- Sign-up link for guests -->
+        <li>
+          <a href="/signup"
+            ><i class="fas fa-user-plus"></i> <span>Sign-Up</span></a
+          >
+        </li>
+        <% } %>
+      </div>
+
+      <div class="As-hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+    <div class="container">
+        <!-- Left Section: Scrollable Image Gallery -->
+        <div class="image-gallery">
+            <div class="image-scroll">
+                <% if (product && product.images && product.images.length> 0) { %>
+                    <div class="display_image">
+                        <img src="<%= product.images[0] %>" alt="<%= product.name %>"
+                            style="max-width: 100%; height: auto;">
+                    </div>
+                    <div class="change_image">
+                        <% for(let i=0; i < product.images.length; i++) { %>
+                            <img src="<%= product.images[i] %>" alt="<%= product.name %>"
+                                style="max-width: 100%; height: auto;">
+                            <% } %>
+                    </div>
+                    <% } else { %>
+                        <p>No images available</p>
+                        <% } %>
+            </div>
+        </div>
+
+        <!-- Right Section: Product Details -->
+        <div class="product-details">
+            <h2>
+                <%= product.name %>
+            </h2>
+            <p class="price">₹<%= product.price %>
+            </p>
+            <hr>
+
+            <details>
+                <summary>Size Chart</summary>
+                <table class="size-chart">
+                    <thead>
+                        <tr>
+                            <th>Size</th>
+                            <th>Chest</th>
+                            <th>Shoulder</th>
+                            <th>Length</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>S</td>
+                            <td>44"</td>
+                            <td>21"</td>
+                            <td>29"</td>
+                        </tr>
+                        <tr>
+                            <td>M</td>
+                            <td>46"</td>
+                            <td>22"</td>
+                            <td>29.5"</td>
+                        </tr>
+                        <tr>
+                            <td>L</td>
+                            <td>48"</td>
+                            <td>23"</td>
+                            <td>30"</td>
+                        </tr>
+                        <tr>
+                            <td>XL</td>
+                            <td>50"</td>
+                            <td>24"</td>
+                            <td>30.5"</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </details>
+            <hr>
+
+            <label>Available sizes:</label>
+            <div class="size-options">
+                <% if (product.sizes && product.sizes.extrasmall> 0) { %>
+                    <button class="size-button" data-size="XS">XS</button>
+                    <% } %>
+                        <% if (product.sizes && product.sizes.small> 0) { %>
+                            <button class="size-button" data-size="S">S</button>
+                            <% } %>
+                                <% if (product.sizes && product.sizes.medium> 0) { %>
+                                    <button class="size-button" data-size="M">M</button>
+                                    <% } %>
+                                        <% if (product.sizes && product.sizes.large> 0) { %>
+                                            <button class="size-button" data-size="L">L</button>
+                                            <% } %>
+                                                <% if (product.sizes && product.sizes.extralarge> 0) { %>
+                                                    <button class="size-button" data-size="XL">XL</button>
+                                                    <% } %>
+            </div>
+
+
+            <hr>
+
+            <!-- Quantity Counter and Add to Cart Button -->
+            <div class="cart-actions">
+                <div class="quantity-selector">
+                    <form action="/add-to-cart" method="POST">
+                        <input type="hidden" name="userId" value="<%= user._id %>">
+                        <input type="hidden" name="productId" value="<%= product.id %>">
+                        <input type="hidden" id="selected-size" name="size" value="">
+                        <!-- Hidden input for selected size -->
+
+                        <div class="quantity-controls">
+                            <button type="button" onclick="changeQuantity(-1)">-</button>
+                            <input type="text" id="quantity" name="quantity" value="1" readonly>
+                            <button type="button" onclick="changeQuantity(1)">+</button>
+                        </div>
+
+                        <button type="submit" class="btn add-to-cart">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
+
+            <button class="btn buy-now">Buy Now</button>
+
+            <h4>Description</h4>
+            <p class="price">
+                <%= product.description %>
+            </p>
+        </div>
+    </div>
+        <!-- footer  -->
+        <footer class="footer">
+          <div class="footer__parralax">
+            <div class="footer__parralax-trees"></div>
+            <div class="footer__parralax-moto"></div>
+            <div class="footer__parralax-secondplan"></div>
+            <div class="footer__parralax-premierplan"></div>
+            <div class="footer__parralax-voiture"></div>
+          </div>
+          <div class="container">
+            <div class="footer__columns">
+              <div class="footer__col">
+                <h3 class="footer__col-title">
+                  <i data-feather="shopping-bag"></i> <span>About</span>
+                </h3>
+                <nav class="footer__nav">
+                  <ul class="footer__nav-list">
+                    <li class="footer__nav-item">
+                      <a href="/about" class="/about">
+                        About Us
+                      </a>
+                    </li>
+                    <li class="footer__nav-item">
+                      <a href="/contact" class="/contact">
+                        Contact Us
+                      </a>
+                    </li>
+                    <li class="footer__nav-item">
+                      <a href="/Terms-and-conditions" class="/Terms-and-conditions">
+                        Terms & Conditions
+                      </a>
+                    </li>
+                    <li class="footer__nav-item">
+                      <a href="/privacy_policy" class="footer__nav-link">
+                        Privacy Policy
+                      </a>
+                    </li>
+  
+                  </ul>
+                </nav>
+              </div>
+              <div class="footer__col">
+                <h3 class="footer__col-title">
+                  <i data-feather="share-2"></i> <span>Social Media</span>
+                </h3>
+                <nav class="footer__nav">
+                  <ul class="footer__nav-list">
+                    <li class="footer__nav-item">
+                      <a href class="footer__nav-link">
+                        <i data-feather="youtube"></i><span>Youtube</span>
+                      </a>
+                    </li>
+                    <li class="footer__nav-item">
+                      <a href class="footer__nav-link">
+                        <i data-feather="facebook"></i><span>Facebook</span>
+  
+                      </a>
+                    </li>
+                    <li class="footer__nav-item">
+                      <a href="https://www.instagram.com/as_usual.clothing/"
+                        class="footer__nav-link">
+                        <i
+                          data-feather="https://www.instagram.com/as_usual.clothing/"></i><span>Instagram</span>
+  
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+              <div class="footer__col_last">
+                <h3 class="footer__col-title">
+                  <i data-feather="send"></i> <span>Contact us</span>
+                </h3>
+                <nav class="footer__nav">
+                  <ul class="footer__nav-list">
+                    <li class="footer__nav-item">
+                      <a href="mailto:contact.laboiserie@gmail.com"
+                        class="footer__nav-link">
+                        asusualclothing@gmail.com
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </footer>
+
+    <script>
+        // Function to handle size selection
+        function selectSize(size) {
+            const selectedSizeInput = document.getElementById("selected-size");
+            selectedSizeInput.value = size;
+
+            // Highlight the selected size button
+            document.querySelectorAll(".size-button").forEach(button => {
+                button.classList.remove("selected");
+            });
+            document.querySelector(`.size-button[data-size="${size}"]`).classList.add("selected");
+        }
+
+        // Add event listeners to size buttons
+        document.querySelectorAll(".size-button").forEach(button => {
+            button.addEventListener("click", () => {
+                const size = button.getAttribute("data-size");
+                selectSize(size);
+            });
+        });
+
+        // Function to change quantity
+        function changeQuantity(change) {
+            const quantityInput = document.getElementById("quantity");
+            let currentQuantity = parseInt(quantityInput.value);
+            currentQuantity = Math.max(1, currentQuantity + change);
+            quantityInput.value = currentQuantity;
+        }
+
+        // Function to validate form submission
+        document.querySelector("form").addEventListener("submit", function (event) {
+            const selectedSize = document.getElementById("selected-size").value;
+            const quantity = parseInt(document.getElementById("quantity").value);
+
+            if (!selectedSize) {
+                event.preventDefault();
+                alert("Please select a size before adding to cart.");
+                return;
+            }
+
+            if (isNaN(quantity) || quantity < 1) {
+                event.preventDefault();
+                alert("Please select a valid quantity.");
+            }
+        });
+
+        // Function to toggle product images
+        function toggleImage(index) {
+            const displayImage = document.querySelector(".display_image img");
+            displayImage.src = document.querySelectorAll(".change_image img")[index].src;
+        }
+
+        // Initially, show the first image
+        toggleImage(0);
+
+        // Add event listeners to change image when clicked
+        document.querySelectorAll(".change_image img").forEach((img, index) => {
+            img.addEventListener("click", () => {
+                toggleImage(index);
+            });
+        });
+    </script>
+</body>
+
+</html>

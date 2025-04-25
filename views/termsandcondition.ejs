@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Terms & Conditions | As Usual Clothing</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  <link rel="stylesheet" href="styles/styles.css">
+  <link rel="stylesheet" href="styles/footer.css">
+  <link rel="stylesheet" href="styles/navbar.css">
+  <style>
+    ul.custom-bullet {
+      list-style: none;
+      padding-left: 0;
+    }
+    ul.custom-bullet li::before {
+      content: "◆";
+      color: #fff;
+      display: inline-block;
+      width: 1em;
+      margin-right: 0.4em;
+    }
+  </style>
+</head>
+<body class="bg-black text-white fzont-sans m-0 p-0">
+  <div class="notification-bar">
+    <span class="notification-text"> </span>
+  </div>
+  <!-- this is the responsive navbar -->
+  <nav class="As-navbar">
+    <div class="As-container">
+      <ul class="As-nav-links">
+        <li>
+          <a href="/"><i class="fas fa-home"></i> <span>Home</span></a>
+        </li>
+        <li>
+          <a href="/about"
+            ><i class="fas fa-info-circle"></i> <span>About Us</span></a
+          >
+        </li>
+        <li>
+          <a href="/Products"
+            ><i class="fas fa-box"></i> <span>All Products</span></a
+          >
+        </li>
+        <li>
+          <a href="/contact"
+            ><i class="fas fa-phone"></i><span>Contact us</span></a
+          >
+        </li>
+      </ul>
+      <div class="As-logo">
+        <a href="/"
+          ><img
+            src="assests/horizontalLogo-removebg-preview.png"
+            alt="Logo"
+        /></a>
+      </div>
+      <div class="AS-nav-btn">
+        <% if (user) { %>
+        <li>
+          <a href="/cart"
+            ><i class="fas fa-shopping-cart"></i> <span>Cart</span></a
+          >
+        </li>
+        <li>
+          <a href="/all-orders"
+            ><i class="fa fa-tshirt"></i><span>Your Orders</span></a
+          >
+        </li>
+        <!-- Dropdown for logged-in users -->
+        <!-- Profile Dropdown -->
+        <div class="profile-dropdown">
+          <div class="profile-trigger">
+            <li>
+              <a href="#"
+                ><i class="fas fa-user-circle"></i><span>Profile</span></a
+              >
+            </li>
+          </div>
+          <div class="profile-details">
+            <p><i class="fas fa-user"></i> Name: <%= user.name %></p>
+            <p><i class="fas fa-envelope"></i> Email: <%= user.email %></p>
+            <p>
+              <i class="fas fa-phone"></i> Phone: <%= user.phone || 'N/A' %>
+            </p>
+            <p>
+              <i class="fas fa-calendar"></i> Member Since: <%=
+              user.createdAt ? new Date(user.createdAt).toDateString() :
+              'N/A' %>
+            </p>
+          </div>
+        </div>
+        <li>
+          <a href="/logout"
+            ><i class="fas fa-sign-out-alt"></i><span>Logout</span>
+          </a>
+        </li>
+
+        <% } else { %>
+        <!-- Sign-up link for guests -->
+        <li>
+          <a href="/signup"
+            ><i class="fas fa-user-plus"></i> <span>Sign-Up</span></a
+          >
+        </li>
+        <% } %>
+      </div>
+
+      <div class="As-hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+  <!-- Download Button -->
+  <div class="fixed bottom-4 right-4 z-50">
+    <button onclick="downloadPDF()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg shadow-lg">
+      Download PDF
+    </button>
+  </div>
+
+  <div class="w-full px-4 py-6 max-w-4xl mx-auto">
+    <h1 class="text-3xl md:text-4xl font-bold mb-8 text-center text-white">Terms & Conditions</h1>
+
+    <div class="space">
+      <section class="bg-gray-900 p-6 rounded-t-2xl shadow-lg">
+        <h2 class="text-xl font-semibold mb-2">1. General</h2>
+        <p>Welcome to As Usual Clothing Brand. By shopping with us, you agree to the following terms and conditions. We recommend reading them carefully.</p>
+      </section>
+
+      <section class="bg-gray-800 p-6 shadow-lg">
+        <h2 class="text-xl font-semibold mb-2">2. Pricing & Shipping</h2>
+        <p>Prices listed on the website or social media do not include shipping charges. Shipping charges will be calculated at checkout and vary based on location.</p>
+      </section>
+
+      <section class="bg-gray-900 p-6 shadow-lg">
+        <h2 class="text-xl font-semibold mb-2">2.1 Order Dispatch & Delivery</h2>
+        <p>Orders are dispatched within 48 hours after purchase. The delivery timeline depends entirely on our shipping partners. Any delays caused by them are beyond our control.</p>
+      </section>
+
+      <section class="bg-gray-800 p-6 shadow-lg">
+        <h2 class="text-xl font-semibold mb-2">2.2 Shipping & Exchange Policy</h2>
+        <ul class="custom-bullet space-y-1">
+          <li><strong>Defective/Wrong Item:</strong> Free exchange or replacement.</li>
+          <li><strong>Correct Size but Fit Issue:</strong> Exchange with a nominal fee.</li>
+          <li>Subject to stock availability.</li>
+          <li>No exchange for change of mind/different product request.</li>
+        </ul>
+      </section>
+
+      <section class="bg-gray-900 p-6 shadow-lg">
+        <h2 class="text-xl font-semibold mb-2">Eligibility Criteria for Exchange</h2>
+        <ul class="custom-bullet space-y-1">
+          <li>Original condition with all tags.</li>
+          <li>Invoice must be provided.</li>
+          <li>No exchange after 7 days of delivery.</li>
+          <li>No second-time exchange.</li>
+          <li>Sale items are non-exchangeable and non-returnable.</li>
+          <li>Only defective/size issues accepted (with applicable charges).</li>
+          <li>No exchange for a different product.</li>
+        </ul>
+      </section>
+
+      <section class="bg-gray-800 p-6 shadow-lg">
+        <h2 class="text-xl font-semibold mb-2">3. Exchange & Return Policy</h2>
+        <ul class="custom-bullet space-y-1">
+          <li>No refunds or store credit.</li>
+          <li>Exchange only for defective products.</li>
+          <li>No size exchange currently. Refer to size chart before ordering.</li>
+        </ul>
+      </section>
+
+      <section class="bg-gray-900 p-6 shadow-lg">
+        <h2 class="text-xl font-semibold mb-2">4. Payment Policy</h2>
+
+        <h3 class="font-semibold mt-3">4.1 Accepted Payment Methods</h3>
+        <ul class="custom-bullet space-y-1">
+          <li>UPI (Google Pay, PhonePe, Paytm, etc.)</li>
+          <li>Debit & Credit Cards (Visa, Mastercard, RuPay)</li>
+          <li>Net Banking</li>
+          <li>Wallet Payments</li>
+        </ul>
+
+        <h3 class="font-semibold mt-3">4.2 Secure Payment Gateway</h3>
+        <p>Payments processed via secure gateway with 256-bit SSL encryption. No card info is stored.</p>
+
+        <h3 class="font-semibold mt-3">4.3 No Cash on Delivery (COD)</h3>
+        <p>All payments must be made in advance via online options.</p>
+
+        <h3 class="font-semibold mt-3">4.4 Payment Confirmation</h3>
+        <p>Confirmation sent via email or WhatsApp. Contact us if not received in 24 hours.</p>
+
+        <h3 class="font-semibold mt-3">4.5 Failed Transactions & Refunds</h3>
+        <p>If payment fails but amount is deducted, contact your bank. If not refunded in 7 days, send proof.</p>
+
+        <h3 class="font-semibold mt-3">4.6 Fraud Prevention</h3>
+        <p>Orders suspected of fraud may be canceled without notice.</p>
+      </section>
+
+      <section class="bg-gray-800 p-6 shadow-lg">
+        <h2 class="text-xl font-semibold mb-2">5. Discount Code Policy</h2>
+        <ul class="custom-bullet space-y-1">
+          <li>Use discount codes at checkout.</li>
+          <li>Cannot apply after placing order.</li>
+          <li>Each code has specific terms and validity.</li>
+        </ul>
+      </section>
+
+      <section class="bg-gray-900 p-6 shadow-lg">
+        <h2 class="text-xl font-semibold mb-2">6. Intellectual Property</h2>
+        <p>All content, designs, logos, and images are the property of As Usual Clothing Brand.</p>
+        <p>Do not reproduce or use content without written permission. Legal action may be taken.</p>
+      </section>
+
+      <section class="bg-gray-800 p-6 shadow-lg">
+        <h2 class="text-xl font-semibold mb-2">7. Liability & Disclaimers</h2>
+        <ul class="custom-bullet space-y-1">
+          <li>Not liable for incorrect address given by customer.</li>
+          <li>Courier loss due to genuine courier fault will be resolved.</li>
+        </ul>
+      </section>
+
+      <section class="bg-gray-900 p-6 shadow-lg">
+        <h2 class="text-xl font-semibold mb-2">8. Changes to Terms & Conditions</h2>
+        <p>As Usual reserves the right to modify terms at any time. Changes will be posted on official channels.</p>
+      </section>
+
+      <section class="bg-gray-800 p-6 rounded-bl-xl rounded-br-xl shadow-lg mb-12">
+        <h2 class="text-xl font-semibold mb-2">9. Contact & Support</h2>
+        <ul class="custom-bullet space-y-1">
+          <li>Email: <a href="mailto:asusualclothing@gmail.com" class="text-blue-400 underline">asusualclothing@gmail.com</a></li>
+          <li>Instagram: <a href="https://instagram.com/as_usual.clothing" target="_blank" class="text-blue-400 underline">@as_usual.clothing</a></li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+      <!-- footer  -->
+      <footer class="footer">
+        <div class="footer__parralax">
+          <div class="footer__parralax-trees"></div>
+          <div class="footer__parralax-moto"></div>
+          <div class="footer__parralax-secondplan"></div>
+          <div class="footer__parralax-premierplan"></div>
+          <div class="footer__parralax-voiture"></div>
+        </div>
+        <div class="container">
+          <div class="footer__columns">
+            <div class="footer__col">
+              <h3 class="footer__col-title">
+                <i data-feather="shopping-bag"></i> <span>About</span>
+              </h3>
+              <nav class="footer__nav">
+                <ul class="footer__nav-list">
+                  <li class="footer__nav-item">
+                    <a href="/about" class="/about">
+                      About Us
+                    </a>
+                  </li>
+                  <li class="footer__nav-item">
+                    <a href="/contact" class="/contact">
+                      Contact Us
+                    </a>
+                  </li>
+                  <li class="footer__nav-item">
+                    <a href="/Terms-and-conditions" class="/Terms-and-conditions">
+                      Terms & Conditions
+                    </a>
+                  </li>
+                  <li class="footer__nav-item">
+                    <a href="/privacy_policy" class="footer__nav-link">
+                      Privacy Policy
+                    </a>
+                  </li>
+
+                </ul>
+              </nav>
+            </div>
+            <div class="footer__col">
+              <h3 class="footer__col-title">
+                <i data-feather="share-2"></i> <span>Social Media</span>
+              </h3>
+              <nav class="footer__nav">
+                <ul class="footer__nav-list">
+                  <li class="footer__nav-item">
+                    <a href class="footer__nav-link">
+                      <i data-feather="youtube"></i><span>Youtube</span>
+                    </a>
+                  </li>
+                  <li class="footer__nav-item">
+                    <a href class="footer__nav-link">
+                      <i data-feather="facebook"></i><span>Facebook</span>
+
+                    </a>
+                  </li>
+                  <li class="footer__nav-item">
+                    <a href="https://www.instagram.com/as_usual.clothing/"
+                      class="footer__nav-link">
+                      <i
+                        data-feather="https://www.instagram.com/as_usual.clothing/"></i><span>Instagram</span>
+
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+            <div class="footer__col_last">
+              <h3 class="footer__col-title">
+                <i data-feather="send"></i> <span>Contact us</span>
+              </h3>
+              <nav class="footer__nav">
+                <ul class="footer__nav-list">
+                  <li class="footer__nav-item">
+                    <a href="mailto:contact.laboiserie@gmail.com"
+                      class="footer__nav-link">
+                      asusualclothing@gmail.com
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </footer>
+  <!-- PDF Generation Script -->
+  <script>
+    function downloadPDF() {
+      const element = document.querySelector(".space");
+      const opt = {
+        margin:       0.5,
+        filename:     'Terms_And_Conditions_AsUsual.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(element).save();
+    }
+  </script>
+</body>
+</html>

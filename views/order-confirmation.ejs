@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#1a1a1a',
+                            700: '#2a2a2a',
+                        },
+                        red: {
+                            primary: '#ef4444',
+                            dark: '#dc2626'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-dark-900 text-gray-200 min-h-screen">
+    <div class="max-w-4xl mx-auto p-6">
+        <div class="confirmation-container bg-dark-800 rounded-lg shadow-xl overflow-hidden border border-dark-700">
+            <div class="bg-dark-700 p-6 border-b border-dark-600">
+                <h2 class="text-3xl font-bold text-red-primary">Order Confirmation</h2>
+            </div>
+            
+            <div class="confirmation-details p-6 md:p-8">
+                <div class="mb-8 text-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 mx-auto text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    <p class="text-xl mt-4">Thank you for your order, <strong class="text-red-primary">
+                        <%= user.name %>
+                    </strong>!</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-dark-700 p-5 rounded-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-red-primary">Order Summary</h3>
+                        <div class="space-y-3">
+                            <p><span class="text-gray-400">Order ID:</span> <strong class="block mt-1">
+                                <%= order._id %>
+                            </strong></p>
+                            <p><span class="text-gray-400">Total Amount:</span> <strong class="block mt-1 text-red-primary">Rs <%= order.totalAmount.toFixed(2) %></strong></p>
+                            <p><span class="text-gray-400">Status:</span> 
+                                <span class="status-<%= order.status.toLowerCase() %> block mt-1 font-medium 
+                                    <%=
+                                        order.status.toLowerCase() === 'completed' ? 'text-green-500' :
+                                        order.status.toLowerCase() === 'processing' ? 'text-yellow-500' :
+                                        order.status.toLowerCase() === 'cancelled' ? 'text-gray-500' :
+                                        'text-red-primary'
+                                    %>">
+                                    <%= order.status %>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-dark-700 p-5 rounded-lg">
+                        <h3 class="text-xl font-semibold mb-4 text-red-primary">Shipping Details</h3>
+                        <address class="not-italic space-y-2">
+                            <p class="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 mt-0.5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                                </svg>
+                                <span>
+                                    <%= order.shippingAddress.line1 %><br>
+                                    <% if (order.shippingAddress.line2) { %>
+                                        <%= order.shippingAddress.line2 %><br>
+                                    <% } %>
+                                    <%= order.shippingAddress.city %>, <%= order.shippingAddress.state %><br>
+                                    <%= order.shippingAddress.postalCode %>, <%= order.shippingAddress.country %>
+                                </span>
+                            </p>
+                            <p class="flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                                </svg>
+                                <%= order.shippingAddress.contactNumber %>
+                            </p>
+                        </address>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <a href="/" class="inline-block bg-red-primary hover:bg-red-dark text-white font-medium py-3 px-8 rounded-md transition transform hover:scale-105">
+                        Continue Shopping
+                    </a>
+                    <p class="mt-4 text-gray-400">We've sent a confirmation email to your registered address.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

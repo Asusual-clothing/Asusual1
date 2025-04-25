@@ -1,0 +1,248 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Root Variables for Dark Theme */
+:root {
+  --background-dark: #121212; /* Main background */
+  --background-light: #1a1a1a; /* Lighter background for cards/forms */
+  --text-light: #ffffff; /* Primary text color */
+  --text-muted: #a1a1aa; /* Muted text color */
+  --primary-color: #860505; /* Accent color (blue) */
+  --hover-color: #86050584; /* Hover state for primary color */
+  --shadow-color: rgba(255, 255, 255, 0.1); /* Subtle shadow for dark theme */
+}
+
+/* Body Styling */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--background-dark);
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+/* Section Styling */
+#contact {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--text-light);
+}
+
+.section-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+}
+
+/* Contact Content */
+.contact-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 40px;
+  flex-wrap: wrap; /* Ensures content wraps on smaller screens */
+}
+
+/* Contact Form */
+.contact-form {
+  flex: 1;
+  background-color: var(--background-light);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px var(--shadow-color);
+  transition: box-shadow 0.3s ease;
+}
+
+.contact-form:hover {
+  box-shadow: 0 6px 12px var(--shadow-color); /* Adds hover effect for interactivity */
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--text-muted);
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: var(--background-dark);
+  color: var(--text-light);
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+
+.submit-btn {
+  display: inline-block;
+  width: 100%;
+  padding: 12px;
+  background-color: var(--primary-color);
+  color: var(--text-light);
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: var(--hover-color);
+}
+
+/* Contact Info */
+.contact-info {
+  flex: 1;
+  background-color: var(--background-light);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px var(--shadow-color);
+  transition: box-shadow 0.3s ease;
+}
+
+.contact-info:hover {
+  box-shadow: 0 6px 12px var(--shadow-color); /* Adds hover effect for interactivity */
+}
+
+.contact-info h2,
+.social-media h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--text-light);
+}
+
+.info-list {
+  list-style: none;
+  padding: 0;
+}
+
+.info-list li {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.info-list li i {
+  margin-right: 10px;
+  font-size: 1.2rem;
+  color: var(--primary-color);
+}
+
+.info-list li a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.info-list li a:hover {
+  color: var(--hover-color);
+}
+
+/* Social Media */
+.social-list {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  list-style: none;
+}
+
+.social-list li a {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary-color);
+  color: var(--text-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.social-list li a:hover {
+  background-color: var(--hover-color);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 992px) {
+  .contact-content {
+    flex-direction: column;
+  }
+
+  .contact-form,
+  .contact-info {
+    width: 100%; /* Full width for stacked layout */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .section-title {
+    font-size: 2.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .contact-form,
+  .contact-info {
+    padding: 25px;
+  }
+
+  .submit-btn {
+    font-size: 0.95rem;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .section-subtitle {
+    font-size: 1rem;
+  }
+
+  .contact-form,
+  .contact-info {
+    padding: 20px;
+  }
+
+  .submit-btn {
+    font-size: 0.9rem;
+  }
+
+  .info-list li {
+    font-size: 0.9rem;
+  }
+
+  .social-list li a {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+}
