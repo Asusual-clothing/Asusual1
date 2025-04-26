@@ -50,8 +50,6 @@ const attachUser = async (req, res, next) => {
 };
 
 // Middleware
-
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -61,12 +59,13 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'Preaveen@8233',
     resave: false,
     saveUninitialized: false,
-    mongoUrl: process.env.MONGO_URI,
-    cookie: { secure: false, maxAge: 3600000 } // 1 hour
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
+    cookie: { secure: false, maxAge: 3600000 }
 }));
 app.use(express.json()); // For JSON bodies
 app.use(express.urlencoded({ extended: true })); // For form data
 app.use(flash());
+
 
 // Make flash messages available to all views
 app.use((req, res, next) => {
