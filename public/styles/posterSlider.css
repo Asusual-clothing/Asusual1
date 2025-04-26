@@ -332,7 +332,7 @@ body {
   /* Slider container */
   .slider {
     width: 100vw;
-    height: 50vh;
+    height: 34vh;
   }
 
   /* Hide pseudo-elements for background images on mobile */

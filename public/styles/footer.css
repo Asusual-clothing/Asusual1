@@ -167,6 +167,7 @@ body {
   left: 50%;
   transform: scaleX(-1);
   margin-left: 250px;
+  margin-bottom: -13px;
   height: 114px;
   width: 206px;
   background: url(../assests/ninja.gif);
@@ -318,7 +319,8 @@ body {
     width: 100px;
     margin-left: 50px;
     bottom: 3px;
-    transform: scaleX(-1);
+    margin-bottom: -7px;
+    transform: scaleX(1);
   }
 
   .footer__parralax-trees,
