@@ -16,6 +16,15 @@
     <link rel="stylesheet" href="/styles/footer.css">
     <link rel="stylesheet" href="/styles/navbar.css">
 </head>
+<style>
+  .As-navbar {
+    margin-bottom: 81px;
+  }
+  .footer__columns {
+    margin-top: 18px;
+ 
+}
+</style>
 
 <body>
   <div class="notification-bar">
@@ -47,7 +56,7 @@
       <div class="As-logo">
         <a href="/"
           ><img
-            src="../public/assests/horizontalLogo-removebg-preview.png"
+            src="/assests/horizontalLogo-removebg-preview.png"
             alt="Logo"
         /></a>
       </div>
@@ -60,7 +69,7 @@
         </li>
         <li>
           <a href="/all-orders"
-            ><i class="fa fa-tshirt"></i><span>Your Orders</span></a
+            ><i class="fa fa-shirt"></i><span>Your Orders</span></a
           >
         </li>
         <!-- Dropdown for logged-in users -->
@@ -319,6 +328,12 @@
         </footer>
 
     <script>
+      const AsHamburger = document.querySelector('.As-hamburger');
+const AsNavLinks = document.querySelector('.As-nav-links');
+
+AsHamburger.addEventListener('click', () => {
+  AsNavLinks.classList.toggle('active');
+});
         // Function to handle size selection
         function selectSize(size) {
             const selectedSizeInput = document.getElementById("selected-size");
