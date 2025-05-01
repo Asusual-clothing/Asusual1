@@ -20,64 +20,92 @@
     <!-- Navbar -->
     <nav class="As-navbar">
         <div class="As-container">
-            <ul class="As-nav-links">
+          <ul class="As-nav-links">
+            <li>
+              <a href="#"><i class="fas fa-home"></i> <span>Home</span></a>
+            </li>
+            <li>
+              <a href="/about"
+                ><i class="fas fa-info-circle"></i> <span>About Us</span></a
+              >
+            </li>
+            <li>
+              <a href="/Products"
+                ><i class="fas fa-box"></i> <span>All Products</span></a
+              >
+            </li>
+            <li>
+              <a href="/all-orders"
+                ><i class="fa fa-shirt"></i><span>Your Orders</span></a
+              >
+            </li>
+            <li>
+              <a href="/contact"
+                ><i class="fas fa-phone"></i><span>Contact Us</span></a
+              >
+            </li>
+          </ul>
+          <div class="As-logo">
+            <a href="/"
+              ><img
+                src="assests/horizontalLogo-removebg-preview.png"
+                alt="Logo"
+            /></a>
+          </div>
+          <div class="AS-nav-btn">
+            <% if (user) { %>
+            <li>
+              <a href="/cart"
+                ><i class="fas fa-shopping-cart"></i> <span>Cart</span></a
+              >
+            </li>
+           
+            <!-- Dropdown for logged-in users -->
+            <!-- Profile Dropdown -->
+            <div class="profile-dropdown">
+              <div class="profile-trigger">
                 <li>
-                    <a href="/"><i class="fas fa-home"></i> <span>Home</span></a>
+                  <a href="#"
+                    ><i class="fas fa-user-circle"></i><span>Profile</span></a
+                  >
                 </li>
-                <li>
-                    <a href="/about"><i class="fas fa-info-circle"></i> <span>About Us</span></a>
-                </li>
-                <li>
-                    <a href="/Products"><i class="fas fa-box"></i> <span>All Products</span></a>
-                </li>
-                <li>
-                    <a href="/contact"><i class="fas fa-phone"></i><span>Contact Us</span></a>
-                </li>
-            </ul>
-            <div class="As-logo">
-                <a href="/"><img src="assests/horizontalLogo-removebg-preview.png" alt="Logo"/></a>
+              </div>
+              <div class="profile-details">
+                <p><i class="fas fa-user"></i> Name: <%= user.name %></p>
+                <p><i class="fas fa-envelope"></i> Email: <%= user.email %></p>
+                <p>
+                  <i class="fas fa-phone"></i> Phone: <%= user.phone || 'N/A' %>
+                </p>
+                <p>
+                  <i class="fas fa-calendar"></i> Member Since: <%=
+                  user.createdAt ? new Date(user.createdAt).toDateString() :
+                  'N/A' %>
+                </p>
+              </div>
             </div>
-            <div class="AS-nav-btn">
-                <% if (user) { %>
-                    <li>
-                        <a href="/cart"><i class="fas fa-shopping-cart"></i> <span>Cart</span></a>
-                    </li>
-                    <li>
-                        <a href="/all-orders"><i class="fa fa-tshirt"></i><span>Your Orders</span></a>
-                    </li>
-                    <!-- Dropdown for logged-in users -->
-                    <!-- Profile Dropdown -->
-                    <div class="profile-dropdown">
-                        <div class="profile-trigger">
-                            <li>
-                                <a href="#"><i class="fas fa-user-circle"></i><span>Profile</span></a>
-                            </li>
-                        </div>
-                        <div class="profile-details">
-                            <p><i class="fas fa-user"></i> Name: <%= user.name %></p>
-                            <p><i class="fas fa-envelope"></i> Email: <%= user.email %></p>
-                            <p><i class="fas fa-phone"></i> Phone: <%= user.phone || 'N/A' %></p>
-                            <p><i class="fas fa-calendar"></i> Member Since: <%= user.createdAt ? new Date(user.createdAt).toDateString() : 'N/A' %></p>
-                        </div>
-                    </div>
-                    <li>
-                        <a href="/logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
-                    </li>
-                <% } else { %>
-                    <!-- Sign-up link for guests -->
-                    <li>
-                        <a href="/signup"><i class="fas fa-user-plus"></i> <span>Sign-Up</span></a>
-                    </li>
-                <% } %>
-            </div>
+            <li>
+              <a href="/logout"
+                ><i class="fas fa-sign-out-alt"></i><span>Logout</span>
+              </a>
+            </li>
 
-            <div class="As-hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+            <% } else { %>
+            <!-- Sign-up link for guests -->
+            <li>
+              <a href="/signup"
+                ><i class="fas fa-user-plus"></i> <span>Sign-Up</span></a
+              >
+            </li>
+            <% } %>
+          </div>
+
+          <div class="As-hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </div>
-    </nav>
+      </nav>
 
     <main class="orders-section">
         <% if (orders.length === 0) { %>
