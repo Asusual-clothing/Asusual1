@@ -191,22 +191,25 @@
 
             <label>Available sizes:</label>
             <div class="size-options">
-                <% if (product.sizes && product.sizes.extrasmall> 0) { %>
-                    <button class="size-button" data-size="XS">XS</button>
-                    <% } %>
-                        <% if (product.sizes && product.sizes.small> 0) { %>
-                            <button class="size-button" data-size="S">S</button>
-                            <% } %>
-                                <% if (product.sizes && product.sizes.medium> 0) { %>
-                                    <button class="size-button" data-size="M">M</button>
-                                    <% } %>
-                                        <% if (product.sizes && product.sizes.large> 0) { %>
-                                            <button class="size-button" data-size="L">L</button>
-                                            <% } %>
-                                                <% if (product.sizes && product.sizes.extralarge> 0) { %>
-                                                    <button class="size-button" data-size="XL">XL</button>
-                                                    <% } %>
-            </div>
+              <% if (product.sizes && product.sizes.xsmall > 0) { %>
+                  <button class="size-button" data-size="XS">XS</button>
+              <% } %>
+              <% if (product.sizes && product.sizes.small > 0) { %>
+                  <button class="size-button" data-size="S">S</button>
+              <% } %>
+              <% if (product.sizes && product.sizes.medium > 0) { %>
+                  <button class="size-button" data-size="M">M</button>
+              <% } %>
+              <% if (product.sizes && product.sizes.large > 0) { %>
+                  <button class="size-button" data-size="L">L</button>
+              <% } %>
+              <% if (product.sizes && product.sizes.xlarge > 0) { %>
+                  <button class="size-button" data-size="XL">XL</button>
+              <% } %>
+              <% if (product.sizes && product.sizes.xxlarge > 0) { %>
+                  <button class="size-button" data-size="XXL">XXL</button>
+              <% } %>
+          </div>
 
 
             <hr>
@@ -395,10 +398,7 @@ AsHamburger.addEventListener('click', () => {
             });
         });
     </script>
-    <script src="https://unpkg.com/feather-icons"></script>
-    <script>
-      feather.replace();
-    </script>
+    
   <script src="scripts/script.js"></script>
 </body>
 

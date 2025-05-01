@@ -12,7 +12,8 @@
             small: { type: Number, default: 0 },
             medium: { type: Number, default: 0 },
             large: { type: Number, default: 0 },
-            xlarge:{type: Number, default: 0 }
+            xlarge:{type: Number, default: 0 },
+            xxlarge:{type:Number, default: 0}
         },  
         back_image:{ type: String, required:true},
         front_image:{ type: String, required: true}, 

@@ -675,8 +675,10 @@ app.post('/add-product',
             small: parseInt(req.body.sizes?.small) || 0,
             medium: parseInt(req.body.sizes?.medium) || 0,
             large: parseInt(req.body.sizes?.large) || 0,
-            xlarge: parseInt(req.body.sizes?.xlarge) || 0
+            xlarge: parseInt(req.body.sizes?.xlarge) || 0,
+            xxlarge: parseInt(req.body.sizes?.xxlarge) || 0
         };
+
         
         // Get uploaded file URLs from Cloudinary
         const frontImage = req.files['front_images'][0];
