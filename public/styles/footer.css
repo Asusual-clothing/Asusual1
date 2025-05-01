@@ -11,16 +11,16 @@ body {
   padding-top: 300px;
 } */
 
-.container .footer-container{
+.container .footer-container {
   width: 100%;
   max-width: 1600px;
   margin: 0 auto;
 }
 
-.footer__col{
+.footer__col {
   margin-right: 200px;
 }
-.footer__col_last{
+.footer__col_last {
   margin-right: 50px;
 }
 
@@ -73,6 +73,9 @@ body {
 }
 .footer__copyrights p a {
   margin-left: 0.5rem;
+}
+.footer-nav-email {
+  display: none;
 }
 @keyframes parralax {
   0% {
@@ -136,31 +139,33 @@ body {
 .footer__parralax-premierplan {
   background-position: 260px;
 }
-.footer__parralax-trees, .footer__parralax-premierplan, .footer__parralax-secondplan {
+.footer__parralax-trees,
+.footer__parralax-premierplan,
+.footer__parralax-secondplan {
   position: absolute;
   inset: 0;
   background-repeat: repeat-x;
   background-position-y: 100% !important;
   animation: parralax 600s linear infinite;
 }
-  .footer__parralax-moto {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    margin-left: -250px;
-    height: 180px;
-    width: 150px;
-    /* background: url(https://i.ibb.co/JCGfFJd/moto-net.gif); */
-    background: url(https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/c383c563741941.5cf42b23dc6b2.gif);
-    background-repeat: no-repeat;
-    transform-origin: 50% 80%;
-    animation: moto 5s linear infinite;
-    background-size: cover;
-    background-position: center;
-    mix-blend-mode: multiply;
-    z-index: 2;
-    /* border:2px solid black; */
-  }
+.footer__parralax-moto {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  margin-left: -250px;
+  height: 180px;
+  width: 150px;
+  /* background: url(https://i.ibb.co/JCGfFJd/moto-net.gif); */
+  background: url(https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/c383c563741941.5cf42b23dc6b2.gif);
+  background-repeat: no-repeat;
+  transform-origin: 50% 80%;
+  animation: moto 5s linear infinite;
+  background-size: cover;
+  background-position: center;
+  mix-blend-mode: multiply;
+  z-index: 2;
+  /* border:2px solid black; */
+}
 .footer__parralax-voiture {
   position: absolute;
   bottom: 10px;
@@ -173,12 +178,11 @@ body {
   background: url(../assests/ninja.gif);
   background-repeat: no-repeat;
   background-size: cover;
-    background-position: center;
-    mix-blend-mode: multiply;
+  background-position: center;
+  mix-blend-mode: multiply;
   animation: voiture 1s linear infinite;
   /* transform: rotate(180deg); */
   transform: scaleX(-1);
-
 }
 .footer__parralax-trees {
   background-image: url(../assests/Tree.png);
@@ -194,7 +198,6 @@ body {
   background-image: url(../assests/second-plan.png);
   animation-duration: 600s;
 }
-
 
 /* this is reponsive css for the footer */
 /* Responsive CSS for Mobile and Tablet */
@@ -285,11 +288,24 @@ body {
 }
 
 @media (max-width: 480px) {
-  /* Further adjustments for smaller mobile devices */
-  .footer__col-title {
-    font-size: 1.2rem;
+  .footer-nav-email {
+    display: block;
+  }
+  .footer__col_last {
+    display: none;
   }
 
+  /* Further adjustments for smaller mobile devices */
+  .footer__col-title * ~ span {
+    margin-left: 1rem;
+    font-size: 0.7rem;
+  }
+  .footer__col-title {
+    margin-bottom: 0;
+  }
+  .footer__nav-link i {
+    display: none;
+  }
   .footer__nav-list {
     gap: 0.8rem;
   }
@@ -304,15 +320,11 @@ body {
     width: 70px;
     margin-left: -126px;
     bottom: 3px;
-}
-.footer__col {
-  margin-right: 3px;
-  margin-top: 19px;
-}
-.footer__col_last{
-  margin-right: -24px;
-  margin-top: 19px;
-}
+  }
+  .footer__col {
+    margin-right: 3px;
+    margin-top: 19px;
+  }
 
   .footer__parralax-voiture {
     height: 60px;
@@ -327,5 +339,8 @@ body {
   .footer__parralax-premierplan,
   .footer__parralax-secondplan {
     background-size: auto 60px;
+  }
+  .footer__nav-link svg {
+    display: none;
   }
 }
