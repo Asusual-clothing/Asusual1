@@ -69,7 +69,8 @@
       <div class="form-container sign-up-container">
         <form action="/user/signup" method="POST" id="signupForm">
           <h1>Create Account</h1>
-          <span>or use your email for registration</span>
+          <span>or use your email for registration or if already have an account</span>
+          <span id="signInOverlay"><a href="#">Sign In</a></span>
           <input type="text" name="name" placeholder="Name" required />
           <input type="email" name="email" placeholder="Email" required />
           <input type="tel" name="phone" id="phone" placeholder="Phone" required />
@@ -91,13 +92,14 @@
       <!-- Sign In Form -->
       <div class="form-container sign-in-container">
         <form action="/user/login" method="POST" id="loginForm">
-          <h1>Sign in</h1>
-          <span>or use your account</span>
+          <h1>Ninjaste</h1>
+          <span>You know the drill. Log in & <br> shop to look great, As Usual</span>
+          <span id="signUpOverlay"><a href="#">Sign Up</a></span>
           <input type="email" name="email" placeholder="Email" required />
           <input type="password" name="password" id="passwordSignin" placeholder="Password" required />
 
 
-          <a href="/forget-password">Forgot your password?</a>
+          <a href="/forget-password">Forgot password?</a>
           <button type="submit" id="signIn">Sign In</button>
         </form>
       </div>
@@ -110,9 +112,6 @@
             <button class="ghost" id="signInOverlay">Sign In</button>
           </div>
           <div class="overlay-panel overlay-right">
-            <h1>Hello, Ninja's!</h1>
-            <p>Sign Up and start your journey with us</p>
-            <button class="ghost" id="signUpOverlay">Sign Up</button>
           </div>
         </div>
       </div>

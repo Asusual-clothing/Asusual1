@@ -250,7 +250,7 @@ body {
 
   .card {
     width: 250px;
-    height: 350px;
+    height: 100%;
   }
 
   .card .imgBox {
@@ -259,6 +259,7 @@ body {
 
   .card img {
     width: 100%;
+            margin-bottom: 48px;
   }
 
   .card .contentBox .buy {
@@ -281,7 +282,7 @@ body {
 
   .card .contentBox {
     margin-top: -36px;
-    padding: 0;
+    padding: 0  ;
   }
 
   .card::after {

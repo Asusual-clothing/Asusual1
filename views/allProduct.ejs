@@ -11,6 +11,11 @@
   <link rel="stylesheet" href="styles/styles.css" />
   <link rel="stylesheet" href="styles/footer.css" />
   <link rel="stylesheet" href="styles/navbar.css" />
+  <style>
+    .card.flipped .imgBox {
+      transform: rotateY(180deg);
+    }
+  </style>
 </head>
 
 <body>
@@ -25,48 +30,32 @@
           <a href="/"><i class="fas fa-home"></i> <span>Home</span></a>
         </li>
         <li>
-          <a href="/about"
-            ><i class="fas fa-info-circle"></i> <span>About Us</span></a
-          >
+          <a href="/about"><i class="fas fa-info-circle"></i> <span>About Us</span></a>
         </li>
         <li>
-          <a href="/Products"
-            ><i class="fas fa-box"></i> <span>All Products</span></a
-          >
+          <a href="/Products"><i class="fas fa-box"></i> <span>All Products</span></a>
         </li>
         <li>
-          <a href="/contact"
-            ><i class="fas fa-phone"></i><span>Contact Us</span></a
-          >
+          <a href="/contact"><i class="fas fa-phone"></i><span>Contact Us</span></a>
         </li>
       </ul>
       <div class="As-logo">
-        <a href="/"
-          ><img
-            src="assests/horizontalLogo-removebg-preview.png"
-            alt="Logo"
-        /></a>
+        <a href="/"><img src="assests/horizontalLogo-removebg-preview.png" alt="Logo" /></a>
       </div>
       <div class="AS-nav-btn">
         <% if (user) { %>
         <li>
-          <a href="/cart"
-            ><i class="fas fa-shopping-cart"></i> <span>Cart</span></a
-          >
+          <a href="/cart"><i class="fas fa-shopping-cart"></i> <span>Cart</span></a>
         </li>
         <li>
-          <a href="/all-orders"
-            ><i class="fa fa-shirt"></i><span>Your Orders</span></a
-          >
+          <a href="/all-orders"><i class="fa fa-shirt"></i><span>Your Orders</span></a>
         </li>
         <!-- Dropdown for logged-in users -->
         <!-- Profile Dropdown -->
         <div class="profile-dropdown">
           <div class="profile-trigger">
             <li>
-              <a href="#"
-                ><i class="fas fa-user-circle"></i><span>Profile</span></a
-              >
+              <a href="#"><i class="fas fa-user-circle"></i><span>Profile</span></a>
             </li>
           </div>
           <div class="profile-details">
@@ -83,17 +72,13 @@
           </div>
         </div>
         <li>
-          <a href="/logout"
-            ><i class="fas fa-sign-out-alt"></i><span>Logout</span>
-          </a>
+          <a href="/logout"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
         </li>
 
         <% } else { %>
         <!-- Sign-up link for guests -->
         <li>
-          <a href="/signup"
-            ><i class="fas fa-user-plus"></i> <span>Sign-Up</span></a
-          >
+          <a href="/signup"><i class="fas fa-user-plus"></i> <span>Sign-Up</span></a>
         </li>
         <% } %>
       </div>
@@ -112,8 +97,7 @@
       <!-- Price Range Slider -->
       <div class="slider-container">
         <label for="price-range">Price Range:</label>
-        <input type="range" id="price-range" min="0" max="5000" step="100" value="5000"
-          oninput="updatePrice(this.value)" />
+        <input type="range" id="price-range" min="0" max="5000" step="100" value="5000" oninput="updatePrice(this.value)" />
         <div class="slider-values">
           <span>₹1</span>
           <span id="price-value">5000</span>
@@ -224,7 +208,7 @@
     <!-- Products Section -->
     <div class="products" id="product-list">
       <% if (products && products.length> 0) { %> <% products.forEach(product=> { %>
-          <div class="card">
+          <div class="card" data-url="/product_details/<%= product._id || product.id %>">
             <div class="imgBox">
               <div class="front">
                 <img src="<%= product.front_image %>" alt="<%= product.name %>" class="mouse" loading="lazy" />
@@ -257,7 +241,8 @@
     
     // Try to parse the products data safely
     try {
-      allProducts = <%- JSON.stringify(products || []) %>
+      // Changed this line to properly stringify the products data
+      allProducts = <%- typeof products !== 'undefined' ? JSON.stringify(products) : '[]' %>;
     } catch (e) {
       console.error("Error parsing products:", e);
       allProducts = [];
@@ -271,6 +256,44 @@
       const element = document.getElementById(id);
       if (element) {
         element.style.display = element.style.display === 'none' ? 'block' : 'none';
+      }
+    }
+  
+    function setupMobileNavigation() {
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  
+      if (isMobile) {
+        document.querySelectorAll("#product-list .card").forEach((card) => {
+          let flipped = false;
+          let tapTimer = null;
+  
+          card.addEventListener("click", (e) => {
+            // Prevent "Buy Now" from being blocked
+            if (e.target.classList.contains("buy") || e.target.closest('.buy')) return;
+  
+            // Clear any pending single tap action
+            if (tapTimer) {
+              clearTimeout(tapTimer);
+              tapTimer = null;
+            }
+  
+            if (!flipped) {
+              // First tap - flip the card
+              card.classList.add("flipped");
+              flipped = true;
+  
+              // Set a timer to unflip if no second tap comes
+              tapTimer = setTimeout(() => {
+                card.classList.remove("flipped");
+                flipped = false;
+              }, 1000);
+            } else {
+              // Second tap - navigate
+              const url = card.getAttribute("data-url");
+              window.location.href = url;
+            }
+          });
+        }); 
       }
     }
   
@@ -326,7 +349,7 @@
           if (!product) return;
           
           const productCard = `
-            <div class="card">
+            <div class="card" data-url="/product_details/${product._id || product.id || ''}">
               <div class="imgBox">
                 <div class="front">
                   <img src="${product.front_image || ''}" alt="${product.name || ''}" class="mouse" loading="lazy">
@@ -344,6 +367,9 @@
           `;
           productList.innerHTML += productCard;
         });
+        
+        // Setup mobile navigation after rendering
+        setupMobileNavigation();
       } else {
         productList.innerHTML = "<p>No products available.</p>";
       }
@@ -366,7 +392,6 @@
       renderProducts(allProducts);
     });
   </script>
-
 </body>
 
 </html>
