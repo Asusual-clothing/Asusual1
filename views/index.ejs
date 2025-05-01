@@ -244,31 +244,24 @@
 
       <!-- this is the second section -->
       <div class="page2" id="page2">
-        <% for(let i=0; i <=3 ; i++) { %>
-        <div class="card">
-          <div class="imgBox">
-            <div class="front">
-              <img
-                src="<%= Products[i].front_image %>"
-                alt="<%= Products[i].name %>"
-              />
+        <% for(let i = 0; i < 6; i++) { %>
+          <div class="card" data-url="/product_details/<%= Products[i]._id %>">
+            <div class="imgBox">
+              <div class="front">
+                <img src="<%= Products[i].front_image %>" alt="<%= Products[i].name %>" />
+              </div>
+              <div class="back">
+                <img src="<%= Products[i].back_image %>" alt="<%= Products[i].name %>" />
+              </div>
             </div>
-            <div class="back">
-              <img
-                src="<%= Products[i].back_image %>"
-                alt="<%= Products[i].name %>"
-              />
+            <div class="contentBox">
+              <h3><%= Products[i].name %></h3>
+              <h2 class="price"><small>₹<%= Products[i].price %></small></h2>
+              <a href="/product_details/<%= Products[i]._id %>" class="buy">Buy Now</a>
             </div>
           </div>
-          <div class="contentBox">
-            <h3><%= Products[i].name %></h3>
-            <h2 class="price"><small>₹<%= Products[i].price %></small></h2>
-            <a href="/product_details/<%= Products[i]._id %>" class="buy"
-              >Buy Now</a
-            >
-          </div>
-        </div>
         <% } %>
+        
       </div>
 
       <!-- this is the third section -->
@@ -480,33 +473,61 @@
 
       <div class="page4" id="page4">
         <div class="scroller">
-          <% for(let i=0; i < 6; i++) { %>
-          <div class="card">
-            <div class="imgBox">
-              <div class="front">
-                <img
-                  src="<%= Products[i].front_image %>"
-                  alt="<%= Products[i].name %>"
-                />
+          <% for(let i = 0; i < 6; i++) { %>
+            <div class="card" data-url="/product_details/<%= Products[i]._id %>">
+              <div class="imgBox">
+                <div class="front">
+                  <img src="<%= Products[i].front_image %>" alt="<%= Products[i].name %>" />
+                </div>
+                <div class="back">
+                  <img src="<%= Products[i].back_image %>" alt="<%= Products[i].name %>" />
+                </div>
               </div>
-              <div class="back">
-                <img
-                  src="<%= Products[i].back_image %>"
-                  alt="<%= Products[i].name %>"
-                />
+              <div class="contentBox">
+                <h3><%= Products[i].name %></h3>
+                <h2 class="price"><small>₹<%= Products[i].price %></small></h2>
+                <a href="/product_details/<%= Products[i]._id %>" class="buy">Buy Now</a>
               </div>
             </div>
-            <div class="contentBox">
-              <h3><%= Products[i].name %></h3>
-              <h2 class="price"><small>₹<%= Products[i].price %></small></h2>
-              <a href="/product_details/<%= Products[i]._id %>" class="buy"
-                >Buy Now</a
-              >
-            </div>
-          </div>
           <% } %>
+          
         </div>
       </div>
+      <style>
+        .card.flipped .imgBox {
+          transform: rotateY(180deg);
+        }
+      </style>
+      <script>
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+        if (isMobile) {
+          document.querySelectorAll(".card").forEach((card) => {
+            let flipped = false;
+
+            card.addEventListener("click", (e) => {
+              // Prevent "Buy Now" from being blocked
+              if (e.target.classList.contains("buy")) return;
+
+              if (!flipped) {
+                card.classList.add("flipped");
+                flipped = true;
+
+                // Optional: Flip back after 1.5s
+                setTimeout(() => {
+                  card.classList.remove("flipped");
+                  flipped = false;
+                }, 1000);
+              } else {
+                // Second tap navigates
+                const url = card.getAttribute("data-url");
+                console.log(url);
+                window.location.href = url;
+              }
+            });
+          }); 
+        }
+      </script>
       <!-- Testimonial Section -->
       <div class="page5" id="page5">
         <section class="bg-black text-white py-16 px-4 sm:px-6 lg:px-20">
