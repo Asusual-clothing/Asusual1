@@ -381,22 +381,36 @@ app.get('/edit-product', async (req, res) => {
 //##################################### Handle homepage ####################################################
 app.get('/', async (req, res) => {
     try {
-        // Fetch products sorted by creation date
-        const Products = await Product.find().sort({ createdAt: 'desc' });
+        const Products = await Product.find();
 
-        // Fetch the single document containing the poster images, headings, and titles
+        // Shuffle function
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        const shuffledProducts = shuffle([...Products]); // Create a copy and shuffle
+
         const poster = await Poster.findOne({});
-        const posters = poster ? poster.image : []; // Use an empty array if no posters are found
-        const headings = poster ? poster.Heading : []; // Use an empty array if no headings are found
-        const titles = poster ? poster.Title : []; // Use an empty array if no titles are found
+        const posters = poster ? poster.image : [];
+        const headings = poster ? poster.Heading : [];
+        const titles = poster ? poster.Title : [];
 
-        // Render the index.ejs template with Products, user, posters, headings, and titles
-        res.render('index', { Products, posters, headings, titles });
+        res.render('index', {
+            Products: shuffledProducts,
+            posters,
+            headings,
+            titles
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');
     }
 });
+
 
 
 app.get('/add-product', (req, res) => {
