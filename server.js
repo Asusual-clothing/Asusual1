@@ -1272,7 +1272,7 @@ app.get('/all-orders', async (req, res) => {
             .sort({ createdAt: -1 })
             .lean(); // Add lean() for better performance
 
-        res.render('allOrders', {
+        res.render('allorders', {
             orders,
             // No need to explicitly pass user - middleware handles it via res.locals
         });
