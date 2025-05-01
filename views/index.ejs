@@ -114,7 +114,7 @@
             </li>
             <li>
               <a href="/contact"
-                ><i class="fas fa-phone"></i><span>Contact us</span></a
+                ><i class="fas fa-phone"></i><span>Contact Us</span></a
               >
             </li>
           </ul>
@@ -191,37 +191,36 @@
           --img-prev: url(https://s3.envato.com/files/104386263/img%20preview%20fashion%20style%20FB/02_preview2.jpg);
         "
       >
-        <div class="slider__content" id="slider-content">
-          <div class="slider__images">
-            <% if (posters.length> 0) { %> <% posters.forEach((poster, index)=>
-            { %>
-            <div
-              class="slider__images-item <%= index === 0 ? 'slider__images-item--active' : '' %>"
-              data-id="<%= index + 1 %>"
-            >
-              <img
-                src="<%= poster %>"
-                alt="Fashion Style <%= index + 1 %>"
-              />
-            </div>
-            <% }); %> <% } %>
+      <div class="slider__content" id="slider-content">
+        <div class="slider__images">
+          <% if (posters.length> 0) { %> <% posters.forEach((poster, index)=> { %>
+          <div
+            class="slider__images-item <%= index === 0 ? 'slider__images-item--active' : '' %>"
+            data-id="<%= index + 1 %>"
+          >
+            <img
+              src="<%= poster %>"
+              alt="Fashion Style <%= index + 1 %>"
+            />
           </div>
-          <div class="slider__text">
-            <% posters.forEach((poster, index)=> { %>
-            <div
-              class="slider__text-item <%= index === 0 ? 'slider__text-item--active' : '' %>"
-              data-id="<%= index + 1 %>"
-            >
-              <div class="slider__text-item-head">
-                <h3><%= headings[index] || 'Default Heading' %></h3>
-              </div>
-              <div class="slider__text-item-info">
-                <p><%= titles[index] || 'Default Title' %></p>
-              </div>
-            </div>
-            <% }) %>
-          </div>
+          <% }); %> <% } %>
         </div>
+        <div class="slider__text">
+          <% posters.forEach((poster, index)=> { %>
+          <div
+            class="slider__text-item <%= index === 0 ? 'slider__text-item--active' : '' %>"
+            data-id="<%= index + 1 %>"
+          >
+            <div class="slider__text-item-head">
+              <h3><%= headings[index] || 'Default Heading' %></h3>
+            </div>
+            <div class="slider__text-item-info">
+              <p><%= titles[index] || 'Default Title' %></p>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
         <div class="slider__nav">
           <div class="slider__nav-arrows">
             <div class="slider__nav-arrow slider__nav-arrow--left" id="left">
@@ -685,8 +684,7 @@
             </div>
 
             <!-- Navigation Buttons -->
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
+
             <div class="swiper-pagination"></div>
           </div>
         </section>

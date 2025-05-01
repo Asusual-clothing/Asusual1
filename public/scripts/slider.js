@@ -289,6 +289,45 @@ function lerp({ x, y }, { x: targetX, y: targetY }) {
   const sliderEl = document.getElementById('slider');
   const slider = new Slider(sliderEl);
   
+  // Mobile swipe functionality (left/right)
+let touchStartX = 0;
+let touchEndX = 0;
+
+function handleGesture() {
+  const swipeThreshold = 50; // Minimum distance for swipe
+  const swipeDistance = touchEndX - touchStartX;
+
+  if (Math.abs(swipeDistance) > swipeThreshold) {
+    if (swipeDistance < 0) {
+      slider.next(); // Swipe left
+    } else {
+      slider.prev(); // Swipe right
+    }
+  }
+}
+
+sliderEl.addEventListener('touchstart', function (e) {
+  if (slider.isMobile) {
+    touchStartX = e.changedTouches[0].screenX;
+  }
+});
+
+sliderEl.addEventListener('touchend', function (e) {
+  if (slider.isMobile) {
+    touchEndX = e.changedTouches[0].screenX;
+    handleGesture();
+  }
+});
+
+sliderEl.addEventListener('click', function (e) {
+  if (!slider.isMobile) {
+    // Prevent triggering when clicking on navigation buttons or dots
+    const isInteractiveElement = e.target.closest('#left, #right, .slider__nav-dot');
+    if (!isInteractiveElement) {
+      slider.next(); // Click anywhere on the poster = go to next
+    }
+  }
+});
   // ------------------ Demo stuff ------------------------ //
   
   let timer = 0;

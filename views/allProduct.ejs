@@ -236,162 +236,162 @@
   </div>
 
   <script>
-    // Hold all original products globally
-    let allProducts = [];
-    
-    // Try to parse the products data safely
-    try {
-      // Changed this line to properly stringify the products data
-      allProducts = <%- typeof products !== 'undefined' ? JSON.stringify(products) : '[]' %>;
-    } catch (e) {
-      console.error("Error parsing products:", e);
-      allProducts = [];
+  // Hold all original products globally
+  let allProducts = [];
+  
+  // Try to parse the products data safely
+  try {
+    // Changed this line to properly stringify the products data
+    allProducts = <%- typeof products !== 'undefined' ? JSON.stringify(products) : '[]' %>;
+  } catch (e) {
+    console.error("Error parsing products:", e);
+    allProducts = [];
+  }
+
+  function updatePrice(value) {
+    document.getElementById("price-value").innerText = `₹${value}`;
+  }
+
+  function toggleCollapse(id) {
+    const element = document.getElementById(id);
+    if (element) {
+      element.style.display = element.style.display === 'none' ? 'block' : 'none';
     }
-  
-    function updatePrice(value) {
-      document.getElementById("price-value").innerText = `₹${value}`;
+  }
+
+  function setupMobileNavigation() {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      document.querySelectorAll("#product-list .card").forEach((card) => {
+        let flipped = false;
+        let tapTimer = null;
+
+        card.addEventListener("click", (e) => {
+          // Prevent "Buy Now" from being blocked
+          if (e.target.classList.contains("buy") || e.target.closest('.buy')) return;
+
+          // Clear any pending single tap action
+          if (tapTimer) {
+            clearTimeout(tapTimer);
+            tapTimer = null;
+          }
+
+          if (!flipped) {
+            // First tap - flip the card
+            card.classList.add("flipped");
+            flipped = true;
+
+            // Set a timer to unflip if no second tap comes
+            tapTimer = setTimeout(() => {
+              card.classList.remove("flipped");
+              flipped = false;
+            }, 1000);
+          } else {
+            // Second tap - navigate
+            const url = card.getAttribute("data-url");
+            window.location.href = url;
+          }
+        });
+      }); 
     }
-  
-    function toggleCollapse(id) {
-      const element = document.getElementById(id);
-      if (element) {
-        element.style.display = element.style.display === 'none' ? 'block' : 'none';
-      }
-    }
-  
-    function setupMobileNavigation() {
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  
-      if (isMobile) {
-        document.querySelectorAll("#product-list .card").forEach((card) => {
-          let flipped = false;
-          let tapTimer = null;
-  
-          card.addEventListener("click", (e) => {
-            // Prevent "Buy Now" from being blocked
-            if (e.target.classList.contains("buy") || e.target.closest('.buy')) return;
-  
-            // Clear any pending single tap action
-            if (tapTimer) {
-              clearTimeout(tapTimer);
-              tapTimer = null;
-            }
-  
-            if (!flipped) {
-              // First tap - flip the card
-              card.classList.add("flipped");
-              flipped = true;
-  
-              // Set a timer to unflip if no second tap comes
-              tapTimer = setTimeout(() => {
-                card.classList.remove("flipped");
-                flipped = false;
-              }, 1000);
-            } else {
-              // Second tap - navigate
-              const url = card.getAttribute("data-url");
-              window.location.href = url;
-            }
-          });
-        }); 
-      }
-    }
-  
-    function applyFilters() {
-      if (!allProducts || allProducts.length === 0) return;
-  
-      const priceRange = parseInt(document.getElementById("price-range").value) || 5000;
-      const sizes = Array.from(document.querySelectorAll('#sizes input[type="checkbox"]:checked')).map(cb => cb.value);
-      const colors = Array.from(document.querySelectorAll('#colors input[type="checkbox"]:checked')).map(cb => cb.value.toLowerCase());
-      const categories = Array.from(document.querySelectorAll('#category input[type="checkbox"]:checked')).map(cb => cb.value.toLowerCase());
-      const sortOrder = document.querySelector('input[name="sort-order"]:checked')?.value || 'asc';
-  
-      let filtered = [...allProducts];
-  
-      // Apply filters
-      filtered = filtered.filter(product => {
-        if (!product) return false;
+  }
+
+  function applyFilters() {
+    if (!allProducts || allProducts.length === 0) return;
+
+    const priceRange = parseInt(document.getElementById("price-range").value) || 5000;
+    const sizes = Array.from(document.querySelectorAll('#sizes input[type="checkbox"]:checked')).map(cb => cb.value);
+    const colors = Array.from(document.querySelectorAll('#colors input[type="checkbox"]:checked')).map(cb => cb.value.toLowerCase());
+    const categories = Array.from(document.querySelectorAll('#category input[type="checkbox"]:checked')).map(cb => cb.value.toLowerCase());
+    const sortOrder = document.querySelector('input[name="sort-order"]:checked')?.value || 'asc';
+
+    let filtered = [...allProducts];
+
+    // Apply filters
+    filtered = filtered.filter(product => {
+      if (!product) return false;
+      
+      // Price filter
+      const matchesPrice = product.price <= priceRange;
+
+      // Size filter
+      const matchesSize = sizes.length === 0 ||
+        (product.sizes && sizes.some(size => product.sizes[size] > 0));
+
+      // Color filter
+      const matchesColor = colors.length === 0 ||
+        (product.color && colors.includes(product.color.toLowerCase()));
+
+      // Category filter
+      const matchesCategory = categories.length === 0 ||
+        (product.category && categories.includes(product.category.toLowerCase()));
+
+      return matchesPrice && matchesSize && matchesColor && matchesCategory;
+    });
+
+    // Sort products
+    filtered.sort((a, b) => {
+      return sortOrder === 'asc' ? a.price - b.price : b.price - a.price;
+    });
+
+    renderProducts(filtered);
+  }
+
+  function renderProducts(products) {
+    const productList = document.getElementById("product-list");
+    if (!productList) return;
+
+    productList.innerHTML = "";
+
+    if (products && products.length > 0) {
+      products.forEach(product => {
+        if (!product) return;
         
-        // Price filter
-        const matchesPrice = product.price <= priceRange;
-  
-        // Size filter
-        const matchesSize = sizes.length === 0 ||
-          (product.sizes && sizes.some(size => product.sizes[size] > 0));
-  
-        // Color filter
-        const matchesColor = colors.length === 0 ||
-          (product.color && colors.includes(product.color.toLowerCase()));
-  
-        // Category filter
-        const matchesCategory = categories.length === 0 ||
-          (product.category && categories.includes(product.category.toLowerCase()));
-  
-        return matchesPrice && matchesSize && matchesColor && matchesCategory;
-      });
-  
-      // Sort products
-      filtered.sort((a, b) => {
-        return sortOrder === 'asc' ? a.price - b.price : b.price - a.price;
-      });
-  
-      renderProducts(filtered);
-    }
-  
-    function renderProducts(products) {
-      const productList = document.getElementById("product-list");
-      if (!productList) return;
-  
-      productList.innerHTML = "";
-  
-      if (products && products.length > 0) {
-        products.forEach(product => {
-          if (!product) return;
-          
-          const productCard = `
-            <div class="card" data-url="/product_details/${product._id || product.id || ''}">
-              <div class="imgBox">
-                <div class="front">
-                  <img src="${product.front_image || ''}" alt="${product.name || ''}" class="mouse" loading="lazy">
-                </div>
-                <div class="back">
-                  <img src="${product.back_image || ''}" alt="${product.name || ''}" class="mouse" loading="lazy">
-                </div>
+        const productCard = `
+          <div class="card" data-url="/product_details/${product._id || product.id || ''}">
+            <div class="imgBox">
+              <div class="front">
+                <img src="${product.front_image || ''}" alt="${product.name || ''}" class="mouse" loading="lazy">
               </div>
-              <div class="contentBox">
-                <h3>${product.name || ''}</h3>
-                <h2 class="price"><small>Rs.</small>${product.price || ''}</h2>
-                <a href="/product_details/${product._id || product.id || ''}" class="buy">Buy Now</a>
+              <div class="back">
+                <img src="${product.back_image || ''}" alt="${product.name || ''}" class="mouse" loading="lazy">
               </div>
             </div>
-          `;
-          productList.innerHTML += productCard;
-        });
-        
-        // Setup mobile navigation after rendering
-        setupMobileNavigation();
-      } else {
-        productList.innerHTML = "<p>No products available.</p>";
-      }
-    }
-  
-    // Initialize filters and render
-    document.addEventListener("DOMContentLoaded", () => {
-      const priceRange = document.getElementById("price-range");
-      if (priceRange) {
-        updatePrice(priceRange.value);
-        priceRange.addEventListener('input', (e) => updatePrice(e.target.value));
-      }
-  
-      // Add event listeners to all filter inputs
-      document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(input => {
-        input.addEventListener('change', applyFilters);
+            <div class="contentBox">
+              <h3>${product.name || ''}</h3>
+              <h2 class="price"><small>Rs.</small>${product.price || ''}</h2>
+              <a href="/product_details/${product._id || product.id || ''}" class="buy">Buy Now</a>
+            </div>
+          </div>
+        `;
+        productList.innerHTML += productCard;
       });
-  
-      // Initial render
-      renderProducts(allProducts);
+      
+      // Setup mobile navigation after rendering
+      setupMobileNavigation();
+    } else {
+      productList.innerHTML = "<p>No products available.</p>";
+    }
+  }
+
+  // Initialize filters and render
+  document.addEventListener("DOMContentLoaded", () => {
+    const priceRange = document.getElementById("price-range");
+    if (priceRange) {
+      updatePrice(priceRange.value);
+      priceRange.addEventListener('input', (e) => updatePrice(e.target.value));
+    }
+
+    // Add event listeners to all filter inputs
+    document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(input => {
+      input.addEventListener('change', applyFilters);
     });
-  </script>
+
+    // Initial render
+    renderProducts(allProducts);
+  });
+</script> 
 </body>
 
 </html>
