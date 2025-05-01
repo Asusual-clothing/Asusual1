@@ -504,11 +504,20 @@ app.get('/product_details/:id', async (req, res) => {
 app.get('/Products', async (req, res) => {
     try {
         const products = await Product.find().sort({ createdAt: 'desc' }).lean();
+        
+        // Get unique available colors from products
+        const availableColors = [...new Set(
+            products
+                .map(p => p.color?.toLowerCase()) // Get all colors in lowercase
+                .filter(color => color) // Remove undefined/null values
+        )];
+        
         res.render('allProduct', {
             products: products.map(p => ({
                 ...p,
-                id: p._id.toString() // Ensure id field exists
-            }))
+                id: p._id.toString()
+            })),
+            availableColors // Pass the available colors to template
         });
 
     } catch (error) {

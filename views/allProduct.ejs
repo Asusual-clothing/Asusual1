@@ -156,31 +156,24 @@
           </div>
 
           <!-- Colors Filter -->
-          <div class="collapse">
-            <h3 onclick="toggleCollapse('colors')">Colors</h3>
-            <div class="collapse-content" id="colors">
+          <!-- Colors Filter -->
+<div class="collapse">
+  <h3 onclick="toggleCollapse('colors')">Colors</h3>
+  <div class="collapse-content" id="colors">
+      <% if (availableColors && availableColors.length > 0) { %>
+          <% availableColors.forEach((color, index) => { %>
               <div class="checkbox-group">
-                <input type="checkbox" id="color1" value="black" />
-                <label for="color1">Black</label>
+                  <input type="checkbox" id="color<%= index %>" value="<%= color %>" />
+                  <label for="color<%= index %>">
+                      <%= color.charAt(0).toUpperCase() + color.slice(1) %>
+                  </label>
               </div>
-              <div class="checkbox-group">
-                <input type="checkbox" id="color2" value="white" />
-                <label for="color2">White</label>
-              </div>
-              <div class="checkbox-group">
-                <input type="checkbox" id="color2" value="white" />
-                <label for="color2">Grey</label>
-              </div>
-              <div class="checkbox-group">
-                <input type="checkbox" id="color2" value="white" />
-                <label for="color2">Lavender</label>
-              </div>
-              <div class="checkbox-group">
-                <input type="checkbox" id="color3" value="red" />
-                <label for="color3">Red</label>
-              </div>
-            </div>
-          </div>
+          <% }); %>
+      <% } else { %>
+          <p>No color options available</p>
+      <% } %>
+  </div>
+</div>
 
           <!-- Sort by Price -->
           <div class="collapse">
