@@ -44,6 +44,7 @@
 
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    
   </head>
 
   <body>
@@ -185,15 +186,14 @@
       </nav>
       <!-- this is slider of poster  -->
       <div
-        class="slider"
-        id="slider"
-        style="
-          --img-prev: url(https://s3.envato.com/files/104386263/img%20preview%20fashion%20style%20FB/02_preview2.jpg);
-        "
-      >
-      <div class="slider__content" id="slider-content">
-        <div class="slider__images">
-          <% if (posters.length> 0) { %> <% posters.forEach((poster, index)=> { %>
+  class="slider"
+  id="slider"
+  style="--img-prev: url(<%= posters[posters.length - 1] || '' %>);"
+>
+  <div class="slider__content" id="slider-content">
+    <div class="slider__images">
+      <% if (posters && posters.length > 0) { %>
+        <% posters.forEach((poster, index) => { %>
           <div
             class="slider__images-item <%= index === 0 ? 'slider__images-item--active' : '' %>"
             data-id="<%= index + 1 %>"
@@ -203,43 +203,48 @@
               alt="Fashion Style <%= index + 1 %>"
             />
           </div>
-          <% }); %> <% } %>
-        </div>
-        <div class="slider__text">
-          <% posters.forEach((poster, index)=> { %>
-          <div
-            class="slider__text-item <%= index === 0 ? 'slider__text-item--active' : '' %>"
-            data-id="<%= index + 1 %>"
-          >
-            <div class="slider__text-item-head">
-              <h3><%= headings[index] || 'Default Heading' %></h3>
-            </div>
-            <div class="slider__text-item-info">
-              <p><%= titles[index] || 'Default Title' %></p>
-            </div>
+        <% }); %>
+      <% } %>
+    </div>
+
+    <div class="slider__text">
+      <% posters.forEach((poster, index) => { %>
+        <div
+          class="slider__text-item <%= index === 0 ? 'slider__text-item--active' : '' %>"
+          data-id="<%= index + 1 %>"
+        >
+          <div class="slider__text-item-head">
+            <h3><%= headings?.[index] || 'Default Heading' %></h3>
           </div>
-          <% }) %>
+          <div class="slider__text-item-info">
+            <p><%= titles?.[index] || 'Default Title' %></p>
+          </div>
         </div>
+      <% }); %>
+    </div>
+  </div>
+
+  <div class="slider__nav">
+    <div class="slider__nav-arrows">
+      <div class="slider__nav-arrow slider__nav-arrow--left" id="left">
+        to left
       </div>
-        <div class="slider__nav">
-          <div class="slider__nav-arrows">
-            <div class="slider__nav-arrow slider__nav-arrow--left" id="left">
-              to left
-            </div>
-            <div class="slider__nav-arrow slider__nav-arrow--right" id="right">
-              to right
-            </div>
-          </div>
-          <div class="slider__nav-dots" id="slider-dots">
-            <div
-              class="slider__nav-dot slider__nav-dot--active"
-              data-id="1"
-            ></div>
-            <div class="slider__nav-dot" data-id="2"></div>
-            <div class="slider__nav-dot" data-id="3"></div>
-          </div>
-        </div>
+      <div class="slider__nav-arrow slider__nav-arrow--right" id="right">
+        to right
       </div>
+    </div>
+
+    <div class="slider__nav-dots" id="slider-dots">
+      <% posters.forEach((poster, index) => { %>
+        <div
+          class="slider__nav-dot <%= index === 0 ? 'slider__nav-dot--active' : '' %>"
+          data-id="<%= index + 1 %>"
+        ></div>
+      <% }); %>
+    </div>
+  </div>
+</div>
+
 
       <!-- this is the second section -->
       <div class="page2" id="page2">
@@ -472,7 +477,7 @@
 
       <div class="page4" id="page4">
         <div class="scroller">
-          <% for(let i = 1; i < 7; i++) { %>
+          <% for(let i = 0; i < 6; i++) { %>
             <div class="card" data-url="/product_details/<%= Products[i]._id %>">
               <div class="imgBox">
                 <div class="front">
@@ -684,7 +689,6 @@
             </div>
 
             <!-- Navigation Buttons -->
-
             <div class="swiper-pagination"></div>
           </div>
         </section>
@@ -821,7 +825,7 @@
                     <a href="https://www.instagram.com/as_usual.clothing/"
                       class="footer__nav-link">
                       <i
-                        data-feather="instagram"></i><span>Instagram</span>
+                        data-feather="https://www.instagram.com/as_usual.clothing/"></i><span>Instagram</span>
 
                     </a>
                   </li>
@@ -835,7 +839,7 @@
               <nav class="footer__nav">
                 <ul class="footer__nav-list">
                   <li class="footer__nav-item">
-                    <a href="asusualclothing@gmail.com"
+                    <a href="mailto:contact.laboiserie@gmail.com"
                       class="footer__nav-link">
                       asusualclothing@gmail.com
                     </a>
@@ -858,9 +862,5 @@
     <!-- Your Custom Script -->
     <script src="/scripts/script.js"></script>
     <script src="/scripts/slider.js"></script>
-    <script src="https://unpkg.com/feather-icons"></script>
-      <script>
-        feather.replace();
-      </script>
   </body>
 </html>
