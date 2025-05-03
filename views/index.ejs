@@ -499,44 +499,55 @@
               </div>
             </div>
           <% } %>
-          
         </div>
       </div>
+      
       <style>
         .card.flipped .imgBox {
           transform: rotateY(180deg);
         }
       </style>
-      <script>
+    <script>
+      function setupCardClickBehavior() {
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-        if (isMobile) {
-          document.querySelectorAll(".card").forEach((card) => {
-            let flipped = false;
-
+        const screenWidth = window.innerWidth;
+    
+        console.log("Screen width:", screenWidth);
+        console.log("isMobile (based on user agent):", isMobile);
+    
+        document.querySelectorAll(".card").forEach((card) => {
+          if (isMobile || screenWidth <= 768) {
+            // Mobile behavior (or small screen in inspect)
             card.addEventListener("click", (e) => {
-              // Prevent "Buy Now" from being blocked
               if (e.target.classList.contains("buy")) return;
-
-              if (!flipped) {
+    
+              if (!card.classList.contains("flipped")) {
+                console.log("Flipping card...");
                 card.classList.add("flipped");
-                flipped = true;
-
-                // Optional: Flip back after 1.5s
-                setTimeout(() => {
-                  card.classList.remove("flipped");
-                  flipped = false;
-                }, 1000);
               } else {
-                // Second tap navigates
+                console.log("Navigating to product detail...");
                 const url = card.getAttribute("data-url");
-                console.log(url);
                 window.location.href = url;
               }
             });
-          });
-        }
-      </script>
+          } else {
+            // Desktop behavior
+            card.addEventListener("click", (e) => {
+              if (e.target.classList.contains("buy")) return;
+    
+              const url = card.getAttribute("data-url");
+              console.log("Desktop click: navigating to", url);
+              window.location.href = url;
+            });
+          }
+        });
+      }
+    
+      document.addEventListener("DOMContentLoaded", setupCardClickBehavior);
+    </script>
+    
+      
+    
       <!-- Testimonial Section -->
       <div class="page5" id="page5">
         <section class="bg-black text-white py-16 px-4 sm:px-6 lg:px-20">

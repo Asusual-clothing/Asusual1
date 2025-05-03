@@ -1,379 +1,437 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ecommerce - T-Shirt Store</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ecommerce - T-Shirt Store</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link rel="stylesheet" href="/styles/allProduct.css" />
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link rel="stylesheet" href="styles/footer.css" />
+    <link rel="stylesheet" href="styles/navbar.css" />
+    <style>
+      .card.flipped .imgBox {
+        transform: rotateY(180deg);
+      }
+    </style>
+  </head>
 
-  <link rel="stylesheet" href="/styles/allProduct.css" />
-  <link rel="stylesheet" href="styles/styles.css" />
-  <link rel="stylesheet" href="styles/footer.css" />
-  <link rel="stylesheet" href="styles/navbar.css" />
-  <style>
-    .card.flipped .imgBox {
-      transform: rotateY(180deg);
-    }
-  </style>
-</head>
+  <body>
+    <div class="notification-bar">
+      <span class="notification-text"> </span>
+    </div>
+    <!-- this is the responsive navbar -->
 
-<body>
-  <div class="notification-bar">
-    <span class="notification-text"> </span>
-  </div>
-  <!-- this is the responsive navbar -->
-  
-  <nav class="As-navbar">
-    <div class="As-container">
-      <ul class="As-nav-links">
-        <li>
-          <a href="/"><i class="fas fa-home"></i> <span>Home</span></a>
-        </li>
-        <li>
-          <a href="/about"
-            ><i class="fas fa-info-circle"></i> <span>About Us</span></a
-          >
-        </li>
-        <li>
-          <a href="/Products"
-            ><i class="fas fa-box"></i> <span>All Products</span></a
-          >
-        </li>
-        <li>
-          <a href="/all-orders"
-            ><i class="fa fa-shirt"></i><span>Your Orders</span></a
-          >
-        </li>
-        <li>
-          <a href="/contact"
-            ><i class="fas fa-phone"></i><span>Contact Us</span></a
-          >
-        </li>
-      </ul>
-      <div class="As-logo">
-        <a href="/"
-          ><img
-            src="assests/horizontalLogo-removebg-preview.png"
-            alt="Logo"
-        /></a>
-      </div>
-      <div class="AS-nav-btn">
-        <% if (user) { %>
+    <nav class="As-navbar">
+      <div class="As-container">
+        <ul class="As-nav-links">
+          <li>
+            <a href="/"><i class="fas fa-home"></i> <span>Home</span></a>
+          </li>
+          <li>
+            <a href="/about"
+              ><i class="fas fa-info-circle"></i> <span>About Us</span></a
+            >
+          </li>
+          <li>
+            <a href="/Products"
+              ><i class="fas fa-box"></i> <span>All Products</span></a
+            >
+          </li>
+          <li>
+            <a href="/all-orders"
+              ><i class="fa fa-shirt"></i><span>Your Orders</span></a
+            >
+          </li>
+          <li>
+            <a href="/contact"
+              ><i class="fas fa-phone"></i><span>Contact Us</span></a
+            >
+          </li>
+        </ul>
+        <div class="As-logo">
+          <a href="/"
+            ><img src="assests/horizontalLogo-removebg-preview.png" alt="Logo"
+          /></a>
+        </div>
+        <div class="AS-nav-btn">
+          <% if (user) { %>
           <li>
             <a href="/cart" class="cart-icon">
               <i class="fas fa-shopping-cart"></i>
               <span>Cart</span>
               <% if (cartCount > 0) { %>
-                <span class="cart-count"><%= cartCount %></span>
+              <span class="cart-count"><%= cartCount %></span>
               <% } %>
             </a>
           </li>
-       
-        <!-- Dropdown for logged-in users -->
-        <!-- Profile Dropdown -->
-        <div class="profile-dropdown">
-          <div class="profile-trigger">
-            <li>
-              <a href="#"
-                ><i class="fas fa-user-circle"></i><span>Profile</span></a
-              >
-            </li>
+
+          <!-- Dropdown for logged-in users -->
+          <!-- Profile Dropdown -->
+          <div class="profile-dropdown">
+            <div class="profile-trigger">
+              <li>
+                <a href="#"
+                  ><i class="fas fa-user-circle"></i><span>Profile</span></a
+                >
+              </li>
+            </div>
+            <div class="profile-details">
+              <p><i class="fas fa-user"></i> Name: <%= user.name %></p>
+              <p><i class="fas fa-envelope"></i> Email: <%= user.email %></p>
+              <p>
+                <i class="fas fa-phone"></i> Phone: <%= user.phone || 'N/A' %>
+              </p>
+              <p>
+                <i class="fas fa-calendar"></i> Member Since: <%= user.createdAt
+                ? new Date(user.createdAt).toDateString() : 'N/A' %>
+              </p>
+            </div>
           </div>
-          <div class="profile-details">
-            <p><i class="fas fa-user"></i> Name: <%= user.name %></p>
-            <p><i class="fas fa-envelope"></i> Email: <%= user.email %></p>
-            <p>
-              <i class="fas fa-phone"></i> Phone: <%= user.phone || 'N/A' %>
-            </p>
-            <p>
-              <i class="fas fa-calendar"></i> Member Since: <%=
-              user.createdAt ? new Date(user.createdAt).toDateString() :
-              'N/A' %>
-            </p>
+          <li>
+            <a href="/logout"
+              ><i class="fas fa-sign-out-alt"></i><span>Logout</span>
+            </a>
+          </li>
+
+          <% } else { %>
+          <!-- Sign-up link for guests -->
+          <li>
+            <a href="/signup"
+              ><i class="fas fa-user-plus"></i> <span>Sign-Up</span></a
+            >
+          </li>
+          <% } %>
+        </div>
+
+        <div class="As-hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+    <div class="All-product-container">
+      <!-- Filters Section -->
+      <div class="filters">
+        <h2>Filters</h2>
+        <!-- Price Range Slider -->
+        <div class="slider-container">
+          <label for="price-range">Price Range:</label>
+          <input
+            type="range"
+            id="price-range"
+            min="0"
+            max="5000"
+            step="100"
+            value="5000"
+            oninput="updatePrice(this.value)"
+          />
+          <div class="slider-values">
+            <span>₹1</span>
+            <span id="price-value">5000</span>
+            <span>₹5000</span>
           </div>
         </div>
-        <li>
-          <a href="/logout"
-            ><i class="fas fa-sign-out-alt"></i><span>Logout</span>
-          </a>
-        </li>
 
-        <% } else { %>
-        <!-- Sign-up link for guests -->
-        <li>
-          <a href="/signup"
-            ><i class="fas fa-user-plus"></i> <span>Sign-Up</span></a
-          >
-        </li>
+        <!-- Other Filters -->
+        <details>
+          <summary>Other Filters</summary>
+          <div class="other-filter">
+            <!-- Sizes Filter -->
+            <div class="collapse">
+              <h3 onclick="toggleCollapse('sizes')">Sizes</h3>
+              <div class="collapse-content" id="sizes">
+                <div class="checkbox-group">
+                  <input type="checkbox" id="size1" value="xsmall" />
+                  <label for="size1">XS</label>
+                </div>
+                <div class="checkbox-group">
+                  <input type="checkbox" id="size2" value="small" />
+                  <label for="size2">S</label>
+                </div>
+                <div class="checkbox-group">
+                  <input type="checkbox" id="size3" value="medium" />
+                  <label for="size3">M</label>
+                </div>
+                <div class="checkbox-group">
+                  <input type="checkbox" id="size4" value="large" />
+                  <label for="size4">L</label>
+                </div>
+                <div class="checkbox-group">
+                  <input type="checkbox" id="size5" value="xlarge" />
+                  <label for="size5">XL</label>
+                </div>
+                <div class="checkbox-group">
+                  <input type="checkbox" id="size6" value="xxlarge" />
+                  <label for="size6">XXL</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="collapse">
+              <h3 onclick="toggleCollapse('category')">Category</h3>
+              <div class="collapse-content" id="category">
+                <div class="checkbox-group">
+                  <input type="checkbox" id="regular" value="regular" />
+                  <label for="regular">Regular</label>
+                </div>
+                <div class="checkbox-group">
+                  <input type="checkbox" id="oversized" value="oversized" />
+                  <label for="oversized">Oversized</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Colors Filter -->
+            <!-- Colors Filter -->
+            <div class="collapse">
+              <h3 onclick="toggleCollapse('colors')">Colors</h3>
+              <div class="collapse-content" id="colors">
+                <% if (availableColors && availableColors.length > 0) { %> <%
+                availableColors.forEach((color, index) => { %>
+                <div class="checkbox-group">
+                  <input
+                    type="checkbox"
+                    id="color<%= index %>"
+                    value="<%= color %>"
+                  />
+                  <label for="color<%= index %>">
+                    <%= color.charAt(0).toUpperCase() + color.slice(1) %>
+                  </label>
+                </div>
+                <% }); %> <% } else { %>
+                <p>No color options available</p>
+                <% } %>
+              </div>
+            </div>
+
+            <!-- Inside the "Sort by Price" collapse section -->
+            <div class="collapse">
+              <h3 onclick="toggleCollapse('sort-order')">Sort by</h3>
+              <div class="collapse-content" id="sort-order">
+                <!-- Price Sorting -->
+                <h4>Price</h4>
+                <div class="radio-group">
+                  <input
+                    type="radio"
+                    id="sort-asc"
+                    name="sort-price"
+                    value="asc"
+                    checked
+                  />
+                  <label for="sort-asc">Low to High</label>
+                </div>
+                <div class="radio-group">
+                  <input
+                    type="radio"
+                    id="sort-desc"
+                    name="sort-price"
+                    value="desc"
+                  />
+                  <label for="sort-desc">High to Low</label>
+                </div>
+
+                <!-- Name Sorting -->
+                <h4>Name</h4>
+                <div class="radio-group">
+                  <input
+                    type="radio"
+                    id="sort-name-asc"
+                    name="sort-name"
+                    value="asc"
+                  />
+                  <label for="sort-name-asc">A to Z</label>
+                </div>
+                <div class="radio-group">
+                  <input
+                    type="radio"
+                    id="sort-name-desc"
+                    name="sort-name"
+                    value="desc"
+                  />
+                  <label for="sort-name-desc">Z to A</label>
+                </div>
+              </div>
+            </div>
+            <!-- end -->
+          </div>
+        </details>
+
+        <!-- Apply Filters Button -->
+        <button class="apply-filters" onclick="applyFilters()">
+          Apply Filters
+        </button>
+      </div>
+
+      <!-- Products Section -->
+      <div class="products" id="product-list">
+        <% if (products && products.length> 0) { %> <%
+        products.forEach(product=> { %>
+        <div
+          class="card"
+          data-url="/product_details/<%= product._id || product.id %>"
+        >
+          <div class="imgBox">
+            <div class="front">
+              <img
+                src="<%= product.front_image %>"
+                alt="<%= product.name %>"
+                class="mouse"
+                loading="lazy"
+              />
+            </div>
+            <div class="back">
+              <img
+                src="<%= product.back_image %>"
+                alt="<%= product.name %>"
+                class="mouse"
+                loading="lazy"
+              />
+            </div>
+          </div>
+          <div class="contentBox">
+            <h3><%= product.name %></h3>
+            <h2 class="price">
+              <small>Rs.</small>
+              <%= product.price %>
+            </h2>
+            <a
+              href="/product_details/<%= product._id || product.id %>"
+              class="buy"
+              >Buy Now</a
+            >
+          </div>
+        </div>
+        <% }); %> <% } else { %>
+        <p>No products available.</p>
         <% } %>
       </div>
+    </div>
 
-      <div class="As-hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
+    <footer class="footer">
+      <div class="footer__parralax">
+        <div class="footer__parralax-trees"></div>
+        <div class="footer__parralax-moto"></div>
+        <div class="footer__parralax-secondplan"></div>
+        <div class="footer__parralax-premierplan"></div>
+        <div class="footer__parralax-voiture"></div>
       </div>
-    </div>
-  </nav>
-  <div class="All-product-container">
-    <!-- Filters Section -->
-    <div class="filters">
-      <h2>Filters</h2>
-      <!-- Price Range Slider -->
-      <div class="slider-container">
-        <label for="price-range">Price Range:</label>
-        <input type="range" id="price-range" min="0" max="5000" step="100" value="5000" oninput="updatePrice(this.value)" />
-        <div class="slider-values">
-          <span>₹1</span>
-          <span id="price-value">5000</span>
-          <span>₹5000</span>
-        </div>
-      </div>
-
-      <!-- Other Filters -->
-      <details>
-        <summary>Other Filters</summary>
-        <div class="other-filter">
-          <!-- Sizes Filter -->
-          <div class="collapse">
-            <h3 onclick="toggleCollapse('sizes')">Sizes</h3>
-            <div class="collapse-content" id="sizes">
-              <div class="checkbox-group">
-                <input type="checkbox" id="size1" value="xsmall" />
-                <label for="size1">XS</label>
-              </div>
-              <div class="checkbox-group">
-                <input type="checkbox" id="size2" value="small" />
-                <label for="size2">S</label>
-              </div>
-              <div class="checkbox-group">
-                <input type="checkbox" id="size3" value="medium" />
-                <label for="size3">M</label>
-              </div>
-              <div class="checkbox-group">
-                <input type="checkbox" id="size4" value="large" />
-                <label for="size4">L</label>
-              </div>
-              <div class="checkbox-group">
-                <input type="checkbox" id="size5" value="xlarge" />
-                <label for="size5">XL</label>
-              </div>
-              <div class="checkbox-group">
-                <input type="checkbox" id="size6" value="xxlarge" />
-                <label for="size6">XXL</label>
-              </div>
-            </div>
+      <div class="container">
+        <div class="footer__columns">
+          <div class="footer__col">
+            <h3 class="footer__col-title">
+              <i data-feather="shopping-bag"></i> <span>About</span>
+            </h3>
+            <nav class="footer__nav">
+              <ul class="footer__nav-list">
+                <li class="footer__nav-item">
+                  <a href="/about" class="/about"> About Us </a>
+                </li>
+                <li class="footer__nav-item">
+                  <a href="/contact" class="/contact"> Contact Us </a>
+                </li>
+                <li class="footer__nav-item">
+                  <a href="/Terms-and-conditions" class="/Terms-and-conditions">
+                    Terms & Conditions
+                  </a>
+                </li>
+                <li class="footer__nav-item">
+                  <a href="/privacy_policy" class="footer__nav-link">
+                    Privacy Policy
+                  </a>
+                </li>
+              </ul>
+            </nav>
           </div>
-
-          <!-- Category Filter -->
-          <div class="collapse">
-            <h3 onclick="toggleCollapse('category')">Category</h3>
-            <div class="collapse-content" id="category">
-              <div class="checkbox-group">
-                <input type="checkbox" id="regular" value="regular" />
-                <label for="regular">Regular</label>
-              </div>
-              <div class="checkbox-group">
-                <input type="checkbox" id="oversized" value="oversized" />
-                <label for="oversized">Oversized</label>
-              </div>
-            </div>
+          <div class="footer__col">
+            <h3 class="footer__col-title">
+              <i data-feather="share-2"></i> <span>Contact Us</span>
+            </h3>
+            <nav class="footer__nav">
+              <ul class="footer__nav-list">
+                <li class="footer__nav-item">
+                  <a href class="footer__nav-link">
+                    <i data-feather="youtube"></i><span>Youtube</span>
+                  </a>
+                </li>
+                <li class="footer__nav-item">
+                  <a href class="footer__nav-link">
+                    <i data-feather="facebook"></i><span>Facebook</span>
+                  </a>
+                </li>
+                <li class="footer__nav-item">
+                  <a
+                    href="https://www.instagram.com/as_usual.clothing/"
+                    class="footer__nav-link"
+                  >
+                    <i data-feather="instagram"></i><span>Instagram</span>
+                  </a>
+                </li>
+                <li class="footer__nav-item footer-nav-email">
+                  <a
+                    href="mailto:asusualclothing@gmail.com"
+                    class="footer__nav-link"
+                  >
+                    <!-- <i data-feather="mail"></i> -->
+                    <i data-feather="at-sign"></i>
+                    <span>asusualclothing@gmail.com</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
           </div>
-
-          <!-- Colors Filter -->
-          <!-- Colors Filter -->
-<div class="collapse">
-  <h3 onclick="toggleCollapse('colors')">Colors</h3>
-  <div class="collapse-content" id="colors">
-      <% if (availableColors && availableColors.length > 0) { %>
-          <% availableColors.forEach((color, index) => { %>
-              <div class="checkbox-group">
-                  <input type="checkbox" id="color<%= index %>" value="<%= color %>" />
-                  <label for="color<%= index %>">
-                      <%= color.charAt(0).toUpperCase() + color.slice(1) %>
-                  </label>
-              </div>
-          <% }); %>
-      <% } else { %>
-          <p>No color options available</p>
-      <% } %>
-  </div>
-</div>
-
-          <!-- Sort by Price -->
-          <div class="collapse">
-            <h3 onclick="toggleCollapse('sort-order')">Sort by Price</h3>
-            <div class="collapse-content" id="sort-order">
-              <div class="radio-group">
-                <input type="radio" id="sort-asc" name="sort-order" value="asc" checked />
-                <label for="sort-asc">Low to High</label>
-              </div>
-              <div class="radio-group">
-                <input type="radio" id="sort-desc" name="sort-order" value="desc" />
-                <label for="sort-desc">High to Low</label>
-              </div>
-            </div>
+          <div class="footer__col_last">
+            <h3 class="footer__col-title">
+              <i data-feather="send"></i> <span>Contact Us</span>
+            </h3>
+            <nav class="footer__nav">
+              <ul class="footer__nav-list">
+                <li class="footer__nav-item">
+                  <a
+                    href="mailto:asusualclothing@gmail.com"
+                    class="footer__nav-link"
+                  >
+                    <!-- <i data-feather="mail"></i> -->
+                    <i data-feather="at-sign"></i>
+                    <span>asusualclothing@gmail.com</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
           </div>
-        </div>
-      </details>
-
-      <!-- Apply Filters Button -->
-      <button class="apply-filters" onclick="applyFilters()">
-        Apply Filters
-      </button>
-    </div>
-
-    <!-- Products Section -->
-    <div class="products" id="product-list">
-      <% if (products && products.length> 0) { %> <% products.forEach(product=> { %>
-          <div class="card" data-url="/product_details/<%= product._id || product.id %>">
-            <div class="imgBox">
-              <div class="front">
-                <img src="<%= product.front_image %>" alt="<%= product.name %>" class="mouse" loading="lazy" />
-              </div>
-              <div class="back">
-                <img src="<%= product.back_image %>" alt="<%= product.name %>" class="mouse" loading="lazy" />
-              </div>
-            </div>
-            <div class="contentBox">
-              <h3>
-                <%= product.name %>
-              </h3>
-              <h2 class="price">
-                <small>Rs.</small>
-                <%= product.price %>
-              </h2>
-              <a href="/product_details/<%= product._id || product.id %>" class="buy">Buy Now</a>
-            </div>
-          </div>
-          <% }); %>
-            <% } else { %>
-              <p>No products available.</p>
-              <% } %>
-    </div>
-  </div>
-
-  <footer class="footer">
-    <div class="footer__parralax">
-      <div class="footer__parralax-trees"></div>
-      <div class="footer__parralax-moto"></div>
-      <div class="footer__parralax-secondplan"></div>
-      <div class="footer__parralax-premierplan"></div>
-      <div class="footer__parralax-voiture"></div>
-    </div>
-    <div class="container">
-      <div class="footer__columns">
-        <div class="footer__col">
-          <h3 class="footer__col-title">
-            <i data-feather="shopping-bag"></i> <span>About</span>
-          </h3>
-          <nav class="footer__nav">
-            <ul class="footer__nav-list">
-              <li class="footer__nav-item">
-                <a href="/about" class="/about">
-                  About Us
-                </a>
-              </li>
-              <li class="footer__nav-item">
-                <a href="/contact" class="/contact">
-                  Contact Us
-                </a>
-              </li>
-              <li class="footer__nav-item">
-                <a href="/Terms-and-conditions" class="/Terms-and-conditions">
-                  Terms & Conditions
-                </a>
-              </li>
-              <li class="footer__nav-item">
-                <a href="/privacy_policy" class="footer__nav-link">
-                  Privacy Policy
-                </a>
-              </li>
-
-            </ul>
-          </nav>
-        </div>
-        <div class="footer__col">
-          <h3 class="footer__col-title">
-            <i data-feather="share-2"></i> <span>Contact Us</span>
-          </h3>
-          <nav class="footer__nav">
-            <ul class="footer__nav-list">
-              <li class="footer__nav-item">
-                <a href class="footer__nav-link">
-                  <i data-feather="youtube"></i><span>Youtube</span>
-                </a>
-              </li>
-              <li class="footer__nav-item">
-                <a href class="footer__nav-link">
-                  <i data-feather="facebook"></i><span>Facebook</span>
-
-                </a>
-              </li>
-              <li class="footer__nav-item">
-                <a href="https://www.instagram.com/as_usual.clothing/"
-                  class="footer__nav-link">
-                  <i
-                    data-feather="instagram"></i><span>Instagram</span>
-
-                </a>
-              </li>
-              <li class="footer__nav-item footer-nav-email">
-                <a href="mailto:asusualclothing@gmail.com" class="footer__nav-link">
-                  <!-- <i data-feather="mail"></i> -->
-                  <i data-feather="at-sign"></i>
-                  <span>asusualclothing@gmail.com</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-        <div class="footer__col_last">
-          <h3 class="footer__col-title">
-            <i data-feather="send"></i> <span>Contact Us</span>
-          </h3>
-          <nav class="footer__nav">
-            <ul class="footer__nav-list">
-              <li class="footer__nav-item">
-                <a href="mailto:asusualclothing@gmail.com" class="footer__nav-link">
-                  <!-- <i data-feather="mail"></i> -->
-                  <i data-feather="at-sign"></i>
-                  <span>asusualclothing@gmail.com</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
         </div>
       </div>
-      
-    </div>
-  </footer>
+    </footer>
   <script>
-  // Hold all original products globally
-  let allProducts = [];
-  
-  // Try to parse the products data safely
-  try {
-    // Changed this line to properly stringify the products data
-    allProducts = <%- typeof products !== 'undefined' ? JSON.stringify(products) : '[]' %>;
-  } catch (e) {
-    console.error("Error parsing products:", e);
-    allProducts = [];
-  }
+    // Hold all original products globally
+let allProducts = [];
 
-  function updatePrice(value) {
-    document.getElementById("price-value").innerText = `₹${value}`;
-  }
+// Try to parse the products data safely
+try {
+  allProducts = <%- typeof products !== 'undefined' ? JSON.stringify(products) : '[]' %>;
+} catch (e) {
+  console.error("Error parsing products:", e);
+  allProducts = [];
+}
 
-  function toggleCollapse(id) {
-    const element = document.getElementById(id);
-    if (element) {
-      element.style.display = element.style.display === 'none' ? 'block' : 'none';
-    }
-  }
+function updatePrice(value) {
+  document.getElementById("price-value").innerText = `₹${value}`;
+}
 
-  function setupMobileNavigation() {
+function toggleCollapse(id) {
+  const element = document.getElementById(id);
+  if (element) {
+    element.style.display = element.style.display === 'none' ? 'block' : 'none';
+  }
+}
+
+function setupMobileNavigation() {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     if (isMobile) {
@@ -410,107 +468,131 @@
       }); 
     }
   }
+function applyFilters() {
+  if (!allProducts || allProducts.length === 0) return;
 
-  function applyFilters() {
-    if (!allProducts || allProducts.length === 0) return;
+  const priceRange = parseInt(document.getElementById("price-range").value) || 5000;
+  const sizes = Array.from(document.querySelectorAll('#sizes input[type="checkbox"]:checked')).map(cb => cb.value);
+  const colors = Array.from(document.querySelectorAll('#colors input[type="checkbox"]:checked')).map(cb => cb.value.toLowerCase());
+  const categories = Array.from(document.querySelectorAll('#category input[type="checkbox"]:checked')).map(cb => cb.value.toLowerCase());
+  
+  // Get sorting preferences
+  const sortPrice = document.querySelector('input[name="sort-price"]:checked')?.value;
+  const sortName = document.querySelector('input[name="sort-name"]:checked')?.value;
 
-    const priceRange = parseInt(document.getElementById("price-range").value) || 5000;
-    const sizes = Array.from(document.querySelectorAll('#sizes input[type="checkbox"]:checked')).map(cb => cb.value);
-    const colors = Array.from(document.querySelectorAll('#colors input[type="checkbox"]:checked')).map(cb => cb.value.toLowerCase());
-    const categories = Array.from(document.querySelectorAll('#category input[type="checkbox"]:checked')).map(cb => cb.value.toLowerCase());
-    const sortOrder = document.querySelector('input[name="sort-order"]:checked')?.value || 'asc';
+  let filtered = [...allProducts];
 
-    let filtered = [...allProducts];
+  // Apply filters
+  filtered = filtered.filter(product => {
+    if (!product) return false;
+    
+    const matchesPrice = product.price <= priceRange;
+    const matchesSize = sizes.length === 0 || (product.sizes && sizes.some(size => product.sizes[size] > 0));
+    const matchesColor = colors.length === 0 || (product.color && colors.includes(product.color.toLowerCase()));
+    const matchesCategory = categories.length === 0 || (product.category && categories.includes(product.category.toLowerCase()));
 
-    // Apply filters
-    filtered = filtered.filter(product => {
-      if (!product) return false;
-      
-      // Price filter
-      const matchesPrice = product.price <= priceRange;
+    return matchesPrice && matchesSize && matchesColor && matchesCategory;
+  });
 
-      // Size filter
-      const matchesSize = sizes.length === 0 ||
-        (product.sizes && sizes.some(size => product.sizes[size] > 0));
-
-      // Color filter
-      const matchesColor = colors.length === 0 ||
-        (product.color && colors.includes(product.color.toLowerCase()));
-
-      // Category filter
-      const matchesCategory = categories.length === 0 ||
-        (product.category && categories.includes(product.category.toLowerCase()));
-
-      return matchesPrice && matchesSize && matchesColor && matchesCategory;
-    });
-
-    // Sort products
+  // Apply sorting with priority to last selected
+  if (sortPrice && sortName) {
+    const priceSelectedTime = document.querySelector('input[name="sort-price"]:checked')?.dataset.selectedTime || 0;
+    const nameSelectedTime = document.querySelector('input[name="sort-name"]:checked')?.dataset.selectedTime || 0;
+    
+    if (nameSelectedTime > priceSelectedTime) {
+      // Name sort was selected last - prioritize name
+      filtered.sort((a, b) => {
+        const nameCompare = sortName === 'asc' 
+          ? (a.name || '').toString().toLowerCase().localeCompare((b.name || '').toString().toLowerCase())
+          : (b.name || '').toString().toLowerCase().localeCompare((a.name || '').toString().toLowerCase());
+        return nameCompare !== 0 ? nameCompare : (sortPrice === 'asc' ? a.price - b.price : b.price - a.price);
+      });
+    } else {
+      // Price sort was selected last - prioritize price
+      filtered.sort((a, b) => {
+        const priceCompare = sortPrice === 'asc' ? a.price - b.price : b.price - a.price;
+        return priceCompare !== 0 ? priceCompare : (sortName === 'asc' 
+          ? (a.name || '').toString().toLowerCase().localeCompare((b.name || '').toString().toLowerCase())
+          : (b.name || '').toString().toLowerCase().localeCompare((a.name || '').toString().toLowerCase()));
+      });
+    }
+  } else if (sortPrice) {
+    // Only price sort selected
+    filtered.sort((a, b) => sortPrice === 'asc' ? a.price - b.price : b.price - a.price);
+  } else if (sortName) {
+    // Only name sort selected
     filtered.sort((a, b) => {
-      return sortOrder === 'asc' ? a.price - b.price : b.price - a.price;
+      const nameA = (a.name || '').toString().toLowerCase();
+      const nameB = (b.name || '').toString().toLowerCase();
+      return sortName === 'asc' ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
     });
-
-    renderProducts(filtered);
   }
 
-  function renderProducts(products) {
-    const productList = document.getElementById("product-list");
-    if (!productList) return;
+  renderProducts(filtered);
+}
 
-    productList.innerHTML = "";
+function renderProducts(products) {
+  const productList = document.getElementById("product-list");
+  if (!productList) return;
 
-    if (products && products.length > 0) {
-      products.forEach(product => {
-        if (!product) return;
-        
-        const productCard = `
-          <div class="card" data-url="/product_details/${product._id || product.id || ''}">
-            <div class="imgBox">
-              <div class="front">
-                <img src="${product.front_image || ''}" alt="${product.name || ''}" class="mouse" loading="lazy">
-              </div>
-              <div class="back">
-                <img src="${product.back_image || ''}" alt="${product.name || ''}" class="mouse" loading="lazy">
-              </div>
+  productList.innerHTML = "";
+
+  if (products && products.length > 0) {
+    products.forEach(product => {
+      if (!product) return;
+      
+      const productCard = `
+        <div class="card" data-url="/product_details/${product._id || product.id || ''}">
+          <div class="imgBox">
+            <div class="front">
+              <img src="${product.front_image || ''}" alt="${product.name || ''}" class="mouse" loading="lazy">
             </div>
-            <div class="contentBox">
-              <h3>${product.name || ''}</h3>
-              <h2 class="price"><small>Rs.</small>${product.price || ''}</h2>
-              <a href="/product_details/${product._id || product.id || ''}" class="buy">Buy Now</a>
+            <div class="back">
+              <img src="${product.back_image || ''}" alt="${product.name || ''}" class="mouse" loading="lazy">
             </div>
           </div>
-        `;
-        productList.innerHTML += productCard;
-      });
-      
-      // Setup mobile navigation after rendering
-      setupMobileNavigation();
-    } else {
-      productList.innerHTML = "<p>No products available.</p>";
-    }
+          <div class="contentBox">
+            <h3>${product.name || ''}</h3>
+            <h2 class="price"><small>Rs.</small>${product.price || ''}</h2>
+            <a href="/product_details/${product._id || product.id || ''}" class="buy">Buy Now</a>
+          </div>
+        </div>
+      `;
+      productList.innerHTML += productCard;
+    });
+    
+    setupMobileNavigation();
+  } else {
+    productList.innerHTML = "<p>No products available.</p>";
+  }
+}
+
+// Initialize filters and render
+document.addEventListener("DOMContentLoaded", () => {
+  const priceRange = document.getElementById("price-range");
+  if (priceRange) {
+    updatePrice(priceRange.value);
+    priceRange.addEventListener('input', (e) => updatePrice(e.target.value));
   }
 
-  // Initialize filters and render
-  document.addEventListener("DOMContentLoaded", () => {
-    const priceRange = document.getElementById("price-range");
-    if (priceRange) {
-      updatePrice(priceRange.value);
-      priceRange.addEventListener('input', (e) => updatePrice(e.target.value));
-    }
-
-    // Add event listeners to all filter inputs
-    document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(input => {
-      input.addEventListener('change', applyFilters);
+  // Add event listeners to all filter inputs
+  document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(input => {
+    input.addEventListener('change', function() {
+      if (this.type === 'radio') {
+        this.dataset.selectedTime = Date.now();
+      }
+      applyFilters();
     });
-
-    // Initial render
-    renderProducts(allProducts);
   });
-</script> 
-<script src="scripts/script.js"></script>
-<script src="https://unpkg.com/feather-icons"></script>
-      <script>
-        feather.replace();
-      </script>
-</body>
 
+  // Initial render
+  renderProducts(allProducts);
+});
+  </script>
+    <script src="scripts/script.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+      feather.replace();
+    </script>
+  </body>
 </html>
