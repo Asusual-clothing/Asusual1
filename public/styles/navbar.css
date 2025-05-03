@@ -124,6 +124,22 @@
   transform: translateY(-3px);
   box-shadow: 0 4px 15px var(--btn-shadow);
 }
+.cart-icon {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
+
 
 /* Profile Icon Effect */
 .AS-nav-btn li a i {

@@ -130,7 +130,28 @@ const Coupon = require('./models/CouponSchema '); // Adjust path if needed
 
 // Configure Multer for handling file uploads in memory
 
-
+app.use(async (req, res, next) => {
+    try {
+      if (req.user) {
+        const cart = await Cart.findOne({ user: req.user._id });
+        let totalCount = 0;
+  
+        if (cart && cart.items && cart.items.length > 0) {
+          totalCount = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+        }
+  
+        res.locals.cartCount = totalCount;
+      } else {
+        res.locals.cartCount = 0;
+      }
+    } catch (err) {
+      console.error('Error fetching cart count:', err);
+      res.locals.cartCount = 0;
+    }
+  
+    next();
+  });
+  
 // Configure multer to use memory storage
 const storage = multer.memoryStorage(); // Store files in memory as Buffer objects
 const upload = multer({ storage: storage });
@@ -454,20 +475,636 @@ app.post('/add-to-cart', async (req, res) => {
                 cart.items.push({ product: productId, quantity: parseInt(quantity, 10), size });
             }
             await cart.save();
-            res.redirect('/cart')
         } else {
             // Create a new cart if it doesn't exist
             const newCart = new Cart({
                 user: userId,
                 items: [{ product: productId, quantity: parseInt(quantity, 10), size }]
             });
-
             await newCart.save();
-            res.redirect('/cart')
         }
+
+        // Send success response with the alert HTML
+        res.send(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Item Added to Cart</title>
+                <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+                <style>
+                    body {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 100vh;
+                    margin: 0;
+                    overflow: hidden;
+                    font-family: 'Lato', sans-serif;
+                    text-transform: uppercase;
+                    text-align: center;
+                    background-color: hsla(0, 0%, 13%, 1);
+                }
+
+                    #container {
+                        position: relative;
+                        width: 700px;
+                        height: 250px;
+                    }
+
+                    h1 {
+                        font-size: 0.9em;
+                        font-weight: 100;
+                        letter-spacing: 3px;
+                        padding-top: 5px;
+                        color: #FCFCFC;
+                        padding-bottom: 5px;
+                        text-transform: uppercase;
+                    }
+
+                    .green {
+                        color: #5a9e6e;
+                    }
+
+                    .red {
+                        color: #d45d6d;
+                    }
+
+                    .alert {
+                        font-weight: 700;
+                        letter-spacing: 5px;
+                    }
+
+                    p {
+                        margin-top: -5px;
+                            font-size: 2em;
+                        font-weight: 100;
+                        color: #5c5c5c;
+                        letter-spacing: 1px;
+                    }
+
+                    button, .dot {
+                        cursor: pointer;
+                    }
+
+                    #success-box {
+                        width: 100%;
+    height: 207%;
+    margin-top: -184px;
+                    min-height: 250px;
+                    padding: 20px;
+                    box-sizing: border-box;
+                    background: linear-gradient(to bottom right, #B0DB7D 40%, #99DBB4 100%);
+                    border-radius: 20px;
+                    box-shadow: 5px 5px 20px rgba(203, 205, 211, 0.1);
+                    position: relative;
+                }
+
+                    .dot {
+                        width: 8px;
+                        height: 8px;
+                        background: #FCFCFC;
+                        border-radius: 50%;
+                        position: absolute;
+                        top: 4%;
+                        right: 6%;
+                    }
+
+                    .dot:hover {
+                        background: #d8d8d8;
+                    }
+
+                    .dot.two {
+                        right: 12%;
+                        opacity: 0.5;
+                    }
+
+                    .face {
+                        position: absolute;
+                        width: 22%;
+                        height: 22%;
+                        background: #FCFCFC;
+                        border-radius: 50%;
+                        border: 1px solid #777777;
+                        top: 21%;
+                        left: 37.5%;
+                        z-index: 2;
+                        animation: bounce 1s ease-in infinite;
+                    }
+
+                    .eye {
+                        position: absolute;
+                        width: 5px;
+                        height: 5px;
+                        background: #777777;
+                        border-radius: 50%;
+                        top: 40%;
+                        left: 20%;
+                    }
+
+                    .eye.right {
+                        left: 68%;
+                    }
+
+                    .mouth {
+                        position: absolute;
+                        top: 43%;
+                        left: 41%;
+                        width: 7px;
+                        height: 7px;
+                        border-radius: 50%;
+                    }
+
+                    .mouth.happy {
+                        border: 2px solid;
+                        border-color: transparent #777777 #777777 transparent;
+                        transform: rotate(45deg);
+                    }
+
+                    .shadow {
+                        position: absolute;
+                        width: 21%;
+                        height: 3%;
+                        opacity: 0.5;
+                        background: #777777;
+                        left: 40%;
+                        top: 43%;
+                        border-radius: 50%;
+                        z-index: 1;
+                    }
+
+                    .shadow.scale {
+                        animation: scale 1s ease-in infinite;
+                    }
+
+                    .message {
+                        position: absolute;
+                        width: 100%;
+                        text-align: center;
+                        height: 40%;
+                        top: 47%;
+                    }
+
+                    .button-box {
+                        position: absolute;
+                        background: #FCFCFC;
+                            width: 48%;
+    margin-left: -60px;
+    height: 16%;
+                        border-radius: 20px;
+                        top: 73%;
+                        left: 25%;
+                        outline: 0;
+                        border: none;
+                        box-shadow: 2px 2px 10px rgba(119, 119, 119, 0.5);
+                        transition: all 0.5s ease-in-out;
+                    }
+
+                    .button-box:hover {
+                        background: #f0f0f0;
+                        transform: scale(1.05);
+                        transition: all 0.3s ease-in-out;
+                    }
+
+                    @keyframes bounce {
+                        50% {
+                            transform: translateY(-10px);
+                        }
+                    }
+
+                    @keyframes scale {
+                        50% {
+                            transform: scale(0.9);
+                        }
+                    }
+
+                    footer {
+                        position: absolute;
+                        bottom: 0;
+                        right: 0;
+                        text-align: center;
+                        font-size: 1em;
+                        text-transform: uppercase;
+                        padding: 10px;
+                        font-family: 'Lato', sans-serif;
+                    }
+
+                    footer p {
+                        color: #EF8D9C;
+                        letter-spacing: 2px;
+                    }
+
+                    footer a {
+                        color: #B0DB7D;
+                        text-decoration: none;
+                    }
+
+                    footer a:hover {
+                        color: #FFC39E;
+                    }
+                         @media (max-width: 768px) {
+                    #container {
+                        padding: 10px;
+                    }
+                    
+                    #success-box {
+                        min-height: 200px;
+                    }
+                    
+                    .face {
+                        width: 25%;
+                        height: 25%;
+                        top: 15%;
+                    }
+                    
+                    .message {
+                        top: 45%;
+                    }
+                    
+                    .button-box {
+                        width: 40%;
+                        height: 15%;
+                        top: 70%;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        margin-left: 0;
+                    }
+                    
+                    .button-box + .button-box {
+                        left: auto;
+                        right: 50%;
+                        transform: translateX(50%);
+                        margin-top: 60px;
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    h1.alert {
+                        font-size: 0.7em;
+                    }
+                    
+                    p {
+                        font-size: 0.4em;
+                    }
+                    
+                    .face {
+                        width: 30%;
+                        height: 30%;
+                        top: 10%;
+                    }
+                    
+                    .button-box {
+                        width: 60%;
+                        height: 12%;
+                        top: 75%;
+                    }
+                    
+                    .button-box + .button-box {
+                        margin-top: 70px;
+                    }
+                }
+                </style>
+            </head>
+            <body>
+                <div id="container">
+                    <div id="success-box">
+                        <div class="dot"></div>
+                        <div class="dot two"></div>
+                        <div class="face">
+                            <div class="eye"></div>
+                            <div class="eye right"></div>
+                            <div class="mouth happy"></div>
+                        </div>
+                        <div class="shadow scale"></div>
+                        <div class="message">
+                            <h1 class="alert">Success!</h1>
+                            <p>Item added to your cart successfully!</p>
+                        </div>
+                        <button class="button-box" onclick="window.location.href='/products'">
+                            <h1 class="green">Continue Shopping</h1>
+                        </button>
+                        <button class="button-box" style="left: 75%; width: 20%;" onclick="window.location.href='/cart'">
+                            <h1 class="green">View Cart</h1>
+                        </button>
+                    </div>
+                </div>
+                
+            </body>
+            </html>
+        `);
     } catch (error) {
         console.error('Error adding to cart:', error);
-        res.status(500).json({ message: 'Internal server error', error });
+        res.send(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Error Adding to Cart</title>
+                <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+                <style>
+                     body {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 100vh;
+                    margin: 0;
+                    overflow: hidden;
+                    font-family: 'Lato', sans-serif;
+                    text-transform: uppercase;
+                    text-align: center;
+                    background-color: hsla(0, 0%, 13%, 1);
+                }
+
+                    #container {
+                        position: relative;
+                        width: 700px;
+                        height: 250px;
+                    }
+
+                    h1 {
+                        font-size: 0.9em;
+                        font-weight: 100;
+                        letter-spacing: 3px;
+                        padding-top: 5px;
+                        color: #FCFCFC;
+                        padding-bottom: 5px;
+                        text-transform: uppercase;
+                    }
+
+                    .red {
+                        color: #d45d6d;
+                    }
+
+                    .alert {
+                        font-weight: 700;
+                        letter-spacing: 5px;
+                    }
+
+                    p {
+                        margin-top: -5px;
+                            font-size: 2em;
+                        font-weight: 100;
+                        color: #5c5c5c;
+                        letter-spacing: 1px;
+                    }
+
+                    button, .dot {
+                        cursor: pointer;
+                    }
+
+                    #error-box {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        background: linear-gradient(to bottom left, #EF8D9C 40%, #FFC39E 100%);
+                        border-radius: 20px;
+                        box-shadow: 5px 5px 20px rgba(203, 205, 211, 0.1);
+                    }
+
+                    .dot {
+                        width: 8px;
+                        height: 8px;
+                        background: #FCFCFC;
+                        border-radius: 50%;
+                        position: absolute;
+                        top: 4%;
+                        right: 6%;
+                    }
+
+                    .dot:hover {
+                        background: #d8d8d8;
+                    }
+
+                    .dot.two {
+                        right: 12%;
+                        opacity: 0.5;
+                    }
+
+                    .face2 {
+                        position: absolute;
+                        width: 22%;
+                        height: 22%;
+                        background: #FCFCFC;
+                        border-radius: 50%;
+                        border: 1px solid #777777;
+                        top: 21%;
+                        left: 37.5%;
+                        z-index: 2;
+                        animation: roll 3s ease-in-out infinite;
+                    }
+
+                    .eye {
+                        position: absolute;
+                        width: 5px;
+                        height: 5px;
+                        background: #777777;
+                        border-radius: 50%;
+                        top: 40%;
+                        left: 20%;
+                    }
+
+                    .eye.right {
+                        left: 68%;
+                    }
+
+                    .mouth {
+                        position: absolute;
+                        top: 49%;
+                        left: 41%;
+                        width: 7px;
+                        height: 7px;
+                        border-radius: 50%;
+                    }
+
+                    .mouth.sad {
+                        border: 2px solid;
+                        border-color: #777777 transparent transparent #777777;
+                        transform: rotate(45deg);
+                    }
+
+                    .shadow {
+                        position: absolute;
+                        width: 21%;
+                        height: 3%;
+                        opacity: 0.5;
+                        background: #777777;
+                        left: 40%;
+                        top: 43%;
+                        border-radius: 50%;
+                        z-index: 1;
+                    }
+
+                    .shadow.move {
+                        animation: move 3s ease-in-out infinite;
+                    }
+
+                    .message {
+                        position: absolute;
+                        width: 100%;
+                        text-align: center;
+                        height: 40%;
+                        top: 47%;
+                    }
+
+                    .button-box {
+                        position: absolute;
+                        background: #FCFCFC;
+                        width: 50%;
+                        height: 15%;
+                        border-radius: 20px;
+                        top: 73%;
+                        left: 25%;
+                        outline: 0;
+                        border: none;
+                        box-shadow: 2px 2px 10px rgba(119, 119, 119, 0.5);
+                        transition: all 0.5s ease-in-out;
+                    }
+
+                    .button-box:hover {
+                        background: #f0f0f0;
+                        transform: scale(1.05);
+                        transition: all 0.3s ease-in-out;
+                    }
+
+                    @keyframes roll {
+                        0% {
+                            transform: rotate(0deg);
+                            left: 25%;
+                        }
+                        50% {
+                            left: 60%;
+                            transform: rotate(168deg);
+                        }
+                        100% {
+                            transform: rotate(0deg);
+                            left: 25%;
+                        }
+                    }
+
+                    @keyframes move {
+                        0% {
+                            left: 25%;
+                        }
+                        50% {
+                            left: 60%;
+                        }
+                        100% {
+                            left: 25%;
+                        }
+                    }
+
+                    footer {
+                        position: absolute;
+                        bottom: 0;
+                        right: 0;
+                        text-align: center;
+                        font-size: 1em;
+                        text-transform: uppercase;
+                        padding: 10px;
+                        font-family: 'Lato', sans-serif;
+                    }
+
+                    footer p {
+                        color: #EF8D9C;
+                        letter-spacing: 2px;
+                    }
+
+                    footer a {
+                        color: #B0DB7D;
+                        text-decoration: none;
+                    }
+
+                    footer a:hover {
+                        color: #FFC39E;
+                    }
+                         @media (max-width: 768px) {
+                    #container {
+                        padding: 10px;
+                    }
+                    
+                    #success-box {
+                        min-height: 200px;
+                    }
+                    
+                    .face {
+                        width: 25%;
+                        height: 25%;
+                        top: 15%;
+                    }
+                    
+                    .message {
+                        top: 45%;
+                    }
+                    
+                    .button-box {
+                        width: 40%;
+                        height: 15%;
+                        top: 70%;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        margin-left: 0;
+                    }
+                    
+                    .button-box + .button-box {
+                        left: auto;
+                        right: 50%;
+                        transform: translateX(50%);
+                        margin-top: 60px;
+                    }
+                }
+
+                @media (max-width: 480px) {
+                    h1.alert {
+                        font-size: 0.7em;
+                    }
+                    
+                    p {
+                        font-size: 0.4em;
+                    }
+                    
+                    .face {
+                        width: 30%;
+                        height: 30%;
+                        top: 10%;
+                    }
+                    
+                    .button-box {
+                        width: 60%;
+                        height: 12%;
+                        top: 75%;
+                    }
+                    
+                    .button-box + .button-box {
+                        margin-top: 70px;
+                    }
+                }
+                </style>
+            </head>
+            <body>
+                <div id="container">
+                    <div id="error-box">
+                        <div class="dot"></div>
+                        <div class="dot two"></div>
+                        <div class="face2">
+                            <div class="eye"></div>
+                            <div class="eye right"></div>
+                            <div class="mouth sad"></div>
+                        </div>
+                        <div class="shadow move"></div>
+                        <div class="message">
+                            <h1 class="alert">Error!</h1>
+                            <p>Failed to add item to cart. Please try again.</p>
+                        </div>
+                        <button class="button-box" onclick="window.location.href='/products'">
+                            <h1 class="red">Continue Shopping</h1>
+                        </button>
+                        <button class="button-box" style="left: 75%; width: 20%;" onclick="window.location.reload()">
+                            <h1 class="red">Try Again</h1>
+                        </button>
+                    </div>
+                </div>
+            
+            </body>
+            </html>
+        `);
     }
 });
 

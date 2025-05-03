@@ -133,11 +133,15 @@
           </div>
           <div class="AS-nav-btn">
             <% if (user) { %>
-            <li>
-              <a href="/cart"
-                ><i class="fas fa-shopping-cart"></i> <span>Cart</span></a
-              >
-            </li>
+              <li>
+                <a href="/cart" class="cart-icon">
+                  <i class="fas fa-shopping-cart"></i>
+                  <span>Cart</span>
+                  <% if (cartCount > 0) { %>
+                    <span class="cart-count"><%= cartCount %></span>
+                  <% } %>
+                </a>
+              </li>
            
             <!-- Dropdown for logged-in users -->
             <!-- Profile Dropdown -->
