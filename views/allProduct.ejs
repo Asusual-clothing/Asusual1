@@ -432,42 +432,56 @@ function toggleCollapse(id) {
 }
 
 function setupMobileNavigation() {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-    if (isMobile) {
-      document.querySelectorAll("#product-list .card").forEach((card) => {
-        let flipped = false;
-        let tapTimer = null;
+  if (isMobile) {
+    document.querySelectorAll("#product-list .card").forEach((card) => {
+      let flipped = false;
+      let tapTimer = null;
 
-        card.addEventListener("click", (e) => {
-          // Prevent "Buy Now" from being blocked
-          if (e.target.classList.contains("buy") || e.target.closest('.buy')) return;
+      card.addEventListener("click", (e) => {
+        if (e.target.classList.contains("buy") || e.target.closest('.buy')) return;
 
-          // Clear any pending single tap action
-          if (tapTimer) {
-            clearTimeout(tapTimer);
-            tapTimer = null;
-          }
+        if (tapTimer) {
+          clearTimeout(tapTimer);
+          tapTimer = null;
+        }
 
-          if (!flipped) {
-            // First tap - flip the card
-            card.classList.add("flipped");
-            flipped = true;
+        if (!flipped) {
+          card.classList.add("flipped");
+          flipped = true;
 
-            // Set a timer to unflip if no second tap comes
-            tapTimer = setTimeout(() => {
-              card.classList.remove("flipped");
-              flipped = false;
-            }, 1000);
-          } else {
-            // Second tap - navigate
-            const url = card.getAttribute("data-url");
-            window.location.href = url;
-          }
-        });
-      }); 
-    }
+          tapTimer = setTimeout(() => {
+            card.classList.remove("flipped");
+            flipped = false;
+          }, 1000);
+        } else {
+          const url = card.getAttribute("data-url");
+          window.location.href = url;
+        }
+      });
+    });
+  } else {
+    // Laptop/Desktop view logic
+    document.querySelectorAll("#product-list .card").forEach((card) => {
+      // Flip on hover
+      card.addEventListener("mouseenter", () => {
+        card.classList.add("flipped");
+      });
+
+      card.addEventListener("mouseleave", () => {
+        card.classList.remove("flipped");
+      });
+
+      // Navigate on click
+      card.addEventListener("click", (e) => {
+        if (e.target.classList.contains("buy") || e.target.closest('.buy')) return;
+        const url = card.getAttribute("data-url");
+        window.location.href = url;
+      });
+    });
   }
+}
 function applyFilters() {
   if (!allProducts || allProducts.length === 0) return;
 
@@ -589,6 +603,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderProducts(allProducts);
 });
   </script>
+  
     <script src="scripts/script.js"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script>

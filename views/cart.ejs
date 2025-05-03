@@ -319,12 +319,12 @@
                     </div>
 
                     <form id="coupon-form" action="/cart/apply-coupon" method="POST">
-                        <p>SHIPPING</p>
+                        <p style="margin-top: 18px;">SHIPPING</p>
                         <select>
                             <option>Standard Delivery - Rs<%= shipping.toFixed(2) %></option>
                         </select>
 
-                        <p>DISCOUNT CODE</p>
+                        <p style="    margin-top: 15px;">DISCOUNT CODE</p>
                         <div class="coupon-input-group">
                             <input id="cart-code" name="couponCode" placeholder="Enter your code" 
                                    value="<%= cart.appliedCoupon ? cart.appliedCoupon.code : '' %>">
@@ -369,7 +369,7 @@
 
                         <div id="shipping-form-container" class="shipping-form-container">
                             <h5><b>Shipping Details</b></h5>
-                            <hr>
+                            <hr style="    margin-bottom: 25px;">
                             <form id="shipping-form">
                                 <div class="form-row">
                                     <div class="form-group">
