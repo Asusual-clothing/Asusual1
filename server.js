@@ -1439,7 +1439,7 @@ app.post('/add-product',
   
 // Handle signup 
 app.get('/signup', (req, res) => {
-    res.render('signup');
+    res.render('signup2');
 });
 
 // Handle user signup and account creation
