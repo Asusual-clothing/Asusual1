@@ -182,6 +182,7 @@ body {
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
+  margin-top: 40px;
 }
 
 .summary-details p {

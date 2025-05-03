@@ -343,46 +343,119 @@ app.get('/admindashboard', async (req, res) => {
 // Then your routes
 app.post('/edit-product/:id',
     uploads.fields([
-      { name: 'front_image', maxCount: 1 },
-      { name: 'back_image', maxCount: 1 },
-      { name: 'images', maxCount: 5 }
+        { name: 'front_image', maxCount: 1 },
+        { name: 'back_image', maxCount: 1 },
+        { name: 'images', maxCount: 5 }
     ]),
     async (req, res) => {
-      const { id } = req.params;
+        const { id } = req.params;
   
-      try {
-        const updateData = req.body;
-  
-        if (req.files['front_image']) {
-          updateData.front_image = req.files['front_image'][0].path;
+        try {
+            // Get the existing product data to compare with new ones
+            const product = await Product.findById(id);
+            if (!product) return res.status(404).send("Product not found");
+
+            const updateData = req.body;
+
+            // If front image is updated, delete the old one from Cloudinary
+            if (req.files['front_image']) {
+                const oldFrontImage = extractPublicIdFromUrl(product.front_image);
+                if (oldFrontImage) {
+                    const result = await cloudinary.uploader.destroy(oldFrontImage);
+                    
+                }
+                updateData.front_image = req.files['front_image'][0].path;
+            }
+
+            // If back image is updated, delete the old one from Cloudinary
+            if (req.files['back_image']) {
+                const oldBackImage = extractPublicIdFromUrl(product.back_image);
+                if (oldBackImage) {
+                    const result = await cloudinary.uploader.destroy(oldBackImage);
+                   
+                }
+                updateData.back_image = req.files['back_image'][0].path;
+            }
+
+            // If additional images are updated, delete old ones from Cloudinary
+            if (req.files['images']) {
+                // Delete old images
+                for (const oldImage of product.images) {
+                    const oldImageId = extractPublicIdFromUrl(oldImage);
+                    if (oldImageId) {
+                        const result = await cloudinary.uploader.destroy(oldImageId);
+                        
+                    }
+                }
+                updateData.images = req.files['images'].map(img => img.path);
+            }
+
+            // Update the product with new data
+            await Product.findByIdAndUpdate(id, updateData, { new: true });
+
+            res.redirect('/Products');
+        } catch (error) {
+            console.error('Error updating product:', error);
+     
         }
-        if (req.files['back_image']) {
-          updateData.back_image = req.files['back_image'][0].path;
-        }
-        if (req.files['images']) {
-          updateData.images = req.files['images'].map(img => img.path);
-        }
-  
-        await Product.findByIdAndUpdate(id, updateData, { new: true });
-  
-        res.redirect('/Products');
-      } catch (error) {
-        console.error('Error updating product:', error);
-        res.status(500).json({ success: false, error: error.message });
-      }
     }
-  );  
+);
 
+  function extractPublicIdFromUrl(url) {
+    try {
+        const splitUrl = url.split('/upload/');
+        if (splitUrl.length < 2) return null;
 
+        const pathParts = splitUrl[1].split('/');
+
+        if (pathParts[0].startsWith('v')) {
+            pathParts.shift(); // remove version
+        }
+
+        const fileNameWithExt = pathParts.pop(); // filename.png
+        const fileName = fileNameWithExt.split('.')[0]; // filename
+        const folder = pathParts.join('/'); // asusual-products
+
+        return `${folder}/${fileName}`;
+    } catch (err) {
+        console.error("Failed to extract public_id from Cloudinary URL:", url);
+        return null;
+    }
+}
 
 app.post('/delete_product/:id', async (req, res) => {
     try {
+        const product = await Product.findById(req.params.id);
+        if (!product) return res.status(404).send("Product not found");
+
+        // Use the correct function for extracting public_id from Cloudinary URL
+        const idsToDelete = [
+            extractPublicIdFromUrl(product.front_image),    // Corrected to use extractPublicIdFromUrl
+            extractPublicIdFromUrl(product.back_image),     // Corrected to use extractPublicIdFromUrl
+            ...product.images.map(img => extractPublicIdFromUrl(img))  // Corrected to use extractPublicIdFromUrl
+        ];
+
+        console.log("Attempting to delete the following Cloudinary public_ids:", idsToDelete);
+
+        // Delete images from Cloudinary
+        for (const id of idsToDelete) {
+            if (id) {
+                const result = await cloudinary.uploader.destroy(id);
+                console.log(`Deleted ${id}:`, result);
+            }
+        }
+
+        // Delete product from MongoDB
         await Product.findByIdAndDelete(req.params.id);
         res.redirect('/edit-product');
     } catch (err) {
-        res.status(500).send("Error deleting product");
+        console.error("Deletion error:", err);
+        res.status(500).send("Error deleting product and images");
     }
 });
+
+  
+  
 
 
 
