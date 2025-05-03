@@ -302,12 +302,14 @@ body {
   }
   .footer__col-title {
     margin-bottom: 0;
+    margin-left: 9px;
   }
   .footer__nav-link i {
     display: none;
   }
   .footer__nav-list {
     gap: 0.8rem;
+    margin-left: 5px;
   }
 
   .footer__parralax {

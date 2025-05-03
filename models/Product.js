@@ -17,6 +17,7 @@
         },  
         back_image:{ type: String, required:true},
         front_image:{ type: String, required: true}, 
+        bestseller: { type: Boolean, default: false },
         images: [String], 
         createdAt: { type: Date, default: Date.now } // Stores the product's creation date
     });

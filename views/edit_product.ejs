@@ -138,6 +138,16 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div>
+                                    <label>Best Seller:</label><br>
+                                    <label>
+                                        <input type="radio" name="bestseller" value="true" <%= product.bestseller ? 'checked' : '' %> /> Yes
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="bestseller" value="false" <%= !product.bestseller ? 'checked' : '' %> /> No
+                                    </label>
+                                </div>
+                                
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Front Image</label>

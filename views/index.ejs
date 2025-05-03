@@ -75,13 +75,7 @@
         <!-- <div class="brand-name"><img
             src="assests/horizontalLogo-removebg-preview.png" alt="Logo"></div> -->
       </div>
-      <audio
-        id="background-sound"
-        src="/assests/sword-ninja.mp3"
-        autoplay
-        muted
-        loop
-      ></audio>
+      
     </div>
 
     <!-- Homepage Content -->
@@ -252,26 +246,37 @@
 
 
       <!-- this is the second section -->
-      <div class="page2" id="page2">
-        <% for(let i = 0; i < 4; i++) { %>
-          <div class="card" data-url="/product_details/<%= Products[i]._id %>">
-            <div class="imgBox">
-              <div class="front">
-                <img src="<%= Products[i].front_image %>" alt="<%= Products[i].name %>" />
-              </div>
-              <div class="back">
-                <img src="<%= Products[i].back_image %>" alt="<%= Products[i].name %>" />
-              </div>
-            </div>
-            <div class="contentBox">
-              <h3><%= Products[i].name %></h3>
-              <h2 class="price"><small>₹<%= Products[i].price %></small></h2>
-              <a href="/product_details/<%= Products[i]._id %>" class="buy">Buy Now</a>
-            </div>
-          </div>
-        <% } %>
-        
+      <%
+  const bestsellers = Products.filter(p => p.bestseller);
+  const nonBestsellers = Products.filter(p => !p.bestseller);
+
+  const finalProducts = bestsellers.slice(0, 4);
+  if (finalProducts.length < 4) {
+    finalProducts.push(...nonBestsellers.slice(0, 4 - finalProducts.length));
+  }
+%>
+
+<div class="page2" id="page2">
+  <% finalProducts.forEach(product => { %>
+    <div class="card" data-url="/product_details/<%= product._id %>">
+      <div class="imgBox">
+        <div class="front">
+          <img src="<%= product.front_image %>" alt="<%= product.name %>" />
+        </div>
+        <div class="back">
+          <img src="<%= product.back_image %>" alt="<%= product.name %>" />
+        </div>
       </div>
+      <div class="contentBox">
+        <h3><%= product.name %></h3>
+        <h2 class="price"><small>₹<%= product.price %></small></h2>
+        <a href="/product_details/<%= product._id %>" class="buy">Buy Now</a>
+      </div>
+    </div>
+  <% }) %>
+</div>
+
+      
 
       <!-- this is the third section -->
       <div class="pagenew">

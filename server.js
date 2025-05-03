@@ -461,7 +461,7 @@ app.post('/delete_product/:id', async (req, res) => {
 
 
 app.get('/edit-product', async (req, res) => {
-    const products = await Product.find({}, 'name price front_image category brand sizes description');
+    const products = await Product.find({}, 'name price front_image category brand bestseller sizes description');
     const updatedProducts = products.map(product => ({
         ...product._doc,
         image: product.front_image.length > 0 ? product.front_image[0] : null
@@ -1386,7 +1386,7 @@ app.post('/add-product',
     ]),
     async (req, res) => {
       try {
-        const { name, description, price, brand, color, category } = req.body;
+        const { name, description, price, brand, bestseller, color, category } = req.body;
         // console.log("the data is:",req.body,req.files)
 
         const sizes = {
@@ -1413,6 +1413,7 @@ app.post('/add-product',
           brand,
           color,
           category,
+          bestseller,
           front_image: frontImage.path,  // Cloudinary URL
           back_image: backImage.path,    // Cloudinary URL
           images: additionalImages.map(img => img.path) // Array of Cloudinary URLs
