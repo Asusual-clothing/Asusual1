@@ -15,9 +15,11 @@ body {
 }
 
 .cart-row {
-  display: flex;
+  display: flex
+;
   flex-wrap: wrap;
   gap: 20px;
+  margin-top: 89px;
 }
 
 .cart-items-section, .cart-summary {
