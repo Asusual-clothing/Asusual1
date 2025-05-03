@@ -423,7 +423,7 @@ body {
 
   /* Navigation dots */
   .slider__nav-dots {
-    margin-top: 50vh; /* Position dots closer to the bottom */
+    margin-top: 31.55vh; /* Position dots closer to the bottom */
     background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
     padding: 0.5em;
     border-radius: 1em; /* Rounded corners */
