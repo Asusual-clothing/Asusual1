@@ -2,362 +2,287 @@
 <html>
   <head>
     <title>Sign Up / Sign In</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- <link rel="stylesheet" href="styles/signup.css"> -->
     <link rel="stylesheet" href="styles/styles.css" />
     <link rel="stylesheet" href="styles/navbar.css" />
-    <link rel="stylesheet" href="styles/footer.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="styles/signup2.css" />
+    <link rel="stylesheet" href="styles/footer.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap"
       rel="stylesheet"
     />
+    <!-- Add these in your head section -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.js"></script>
   </head>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-        flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      background: linear-gradient(to bottom, #000, #5a0202, #860505);
-    }
-    .main {
-      width: 100%;
-      max-width: 500px;
-      height: 700px;
-      background: red;
-      overflow: hidden;
-      background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38")
-        no-repeat center/ cover;
-      border-radius: 10px;
-      font-family: "Jost", sans-serif;
 
-      box-shadow: 5px 20px 50px #000;
-    }
-    #chk {
-      display: none;
-    }
-    .signup {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      overflow-y: auto;
-    }
-    label {
-      color: #fff;
-      font-size: 2.3em;
-      justify-content: center;
-      display: flex;
-      /* margin: 50px; */
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.5s ease-in-out;
-    }
-    input {
-      width: 60%;
-      height: 10px;
-      background: #e0dede;
-      justify-content: center;
-      display: flex;
-      margin: 20px auto;
-      padding: 18px;
-      border: none;
-      outline: none;
-      border-radius: 5px;
-    }
-    button {
-      width: 60%;
-      height: 40px;
-      margin: 10px auto;
-      justify-content: center;
-      display: block;
-      color: #fff;
-      background: #860505;
-      font-size: 1em;
-      font-weight: bold;
-      margin-top: 30px;
-      outline: none;
-      border: none;
-      border-radius: 5px;
-      transition: 0.2s ease-in;
-      cursor: pointer;
-      box-shadow: 5px 20px 50px #000;
-    }
-    button:hover {
-      background: #860505db;
-    }
-    .login {
-      height: 460px;
-      background: #eee;
-      border-radius: 60% / 10%;
-      transform: translateY(-180px);
-      transition: 0.8s ease-in-out;
-    }
-    .login_label {
-      color: #860505;
-      transform: scale(0.6);
-      margin: 60px;
-    }
-    .login label a {
-      color: #860505;
-      transform: scale(.4);
-      margin: 0;
-      text-decoration: none;
-    }
-    .remember-me{
-        margin: 0;
-    }
-    .otpverification{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        #otpSignup, #verifyOtpSignup{
-            margin:0;
-            flex: 1;
-        }
-
-    }
-
-    #chk:checked ~ .login {
-      transform: translateY(-500px);
-    }
-    #chk:checked ~ .login label {
-      transform: scale(1);
-    }
-    #chk:checked ~ .signup label {
-      transform: scale(0.6);
-    }
-    /* Media Queries for Responsiveness */
-
-  </style>
   <body>
     <div class="notification-bar">
-        <span class="notification-text"> </span>
-      </div>
-      <!-- this is the responsive navbar -->
-      <nav class="As-navbar">
-        <div class="As-container">
-          <ul class="As-nav-links">
-            <li>
-              <a href="/" fas fa-home"></i> <span>Home</span></a>
-            </li>
-            <li>
-              <a href="/about"><i class="fas fa-info-circle"></i> <span>About Us</span></a>
-            </li>
-            <li>
-              <a href="/Products"><i class="fas fa-box"></i> <span>All Products</span></a>
-            </li>
-            <li>
-              <a href="/contact"><i class="fas fa-phone"></i><span>Contact Us</span></a>
-            </li>
-          </ul>
-          <div class="As-logo">
-            <a href="/"><img src="assests/horizontalLogo-removebg-preview.png" alt="Logo" /></a>
-          </div>
-          <div class="AS-nav-btn">
-            <!-- Sign-up link for all users -->
-          </div>
-    
-          <div class="As-hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
+      <span class="notification-text"> </span>
+    </div>
+    <!-- this is the responsive navbar -->
+    <nav class="As-navbar">
+      <div class="As-container">
+        <ul class="As-nav-links">
+          <li>
+            <a href="/"><i class="fas fa-home"></i> <span>Home</span></a>
+          </li>
+          <li>
+            <a href="/about"
+              ><i class="fas fa-info-circle"></i> <span>About Us</span></a
+            >
+          </li>
+          <li>
+            <a href="/Products"
+              ><i class="fas fa-box"></i> <span>All Products</span></a
+            >
+          </li>
+          <li>
+            <a href="/contact"
+              ><i class="fas fa-phone"></i><span>Contact Us</span></a
+            >
+          </li>
+        </ul>
+        <div class="As-logo">
+          <a href="/"
+            ><img src="assests/horizontalLogo-removebg-preview.png" alt="Logo"
+          /></a>
         </div>
-      </nav>
-    <div class="main">
-      <input type="checkbox" id="chk" aria-hidden="true" />
+        <div class="AS-nav-btn">
+          <!-- Sign-up link for all users -->
+        </div>
 
-      <div class="signup">
-        <form action="/user/signup" method="POST" id="signupForm">
-          <label for="chk" aria-hidden="true">Sign up</label>
-          <input type="text" name="name" placeholder="Name" required />
-          <input type="email" name="email" placeholder="Email" required />
-          <input
-            type="tel"
-            name="phone"
-            id="phone"
-            placeholder="Phone"
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            id="passwordSignup"
-            placeholder="Password"
-            required
-          />
-          <input
-            type="password"
-            name="confirmPassword"
-            id="confirmPasswordSignup"
-            placeholder="Confirm Password"
-            required
-          />
-
-          <input
-            type="text"
-            name="address"
-            id="address"
-            placeholder="Address"
-            required
-          />
-          <button type="button" id="generateOtpSignup">Generate OTP</button>
-          <div class="otpverification">
-            <input
-            type="text"
-            name="otp"
-            id="otpSignup"
-            placeholder="Enter OTP"
-            style="display: none"
-            required
-          />
-          <button type="button" id="verifyOtpSignup" style="display: none">
-            Verify OTP
-          </button>
-          </div>
-          <input
-            type="text"
-            name="otp"
-            id="otpSignup"
-            placeholder="Enter OTP"
-            style="display: none"
-            required
-          />
-          <button type="button" id="verifyOtpSignup" style="display: none">
-            Verify OTP
-          </button>
-          <input
-            type="hidden"
-            id="otpVerifiedSignup"
-            name="otpVerified"
-            value="false"
-          />
-
-          <button type="submit" id="signUp" disabled>Sign Up</button>
-        </form>
+        <div class="As-hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
+    </nav>
 
-      <div class="login">
-        <form action="/user/login" method="POST" id="loginForm">
-          <label for="chk" aria-hidden="true" class="login_label">Login</label>
-          <input type="email" name="email" placeholder="Email" required />
-          <input
-            type="password"
-            name="password"
-            id="passwordSignin"
-            placeholder="Password"
-            required
-          />
+    <div class="singup-main-container">
+      <div class="main">
+        <input type="checkbox" id="chk" aria-hidden="true" />
 
-          <label for="" class="remember-me">
-            <a href="/forget-password">Forgot password?</a>
+        <div class="signup">
+          <form action="/user/signup" method="POST" id="signupForm">
+            <label for="chk" aria-hidden="true">Sign up</label>
+            <input type="text" name="name" placeholder="Name" required />
+            <input type="email" name="email" placeholder="Email" required />
+            <input
+              type="tel"
+              name="phone"
+              id="phone"
+              placeholder="Phone"
+              required
+            />
+            <input
+              type="password"
+              name="password"
+              id="passwordSignup"
+              placeholder="Password"
+              required
+            />
+            <input
+              type="password"
+              name="confirmPassword"
+              id="confirmPasswordSignup"
+              placeholder="Confirm Password"
+              required
+            />
 
-        </label>  <button type="submit" id="signIn">Sign In</button>
-        </form>
+            <input
+              type="text"
+              name="address"
+              id="address"
+              placeholder="Address"
+              required
+            />
+            <button type="button" id="generateOtpSignup">Generate OTP</button>
+            <div class="otpverification">
+              <input
+                type="text"
+                name="otp"
+                id="otpSignup"
+                placeholder="Enter OTP"
+                style="display: none"
+                required
+              />
+              <button type="button" id="verifyOtpSignup" style="display: none">
+                Verify OTP
+              </button>
+            </div>
+
+            <input
+              type="hidden"
+              id="otpVerifiedSignup"
+              name="otpVerified"
+              value="false"
+            />
+
+            <button type="submit" id="signUp" disabled>Sign Up</button>
+          </form>
+        </div>
+
+        <div class="login">
+          <form action="/user/login" method="POST" id="loginForm">
+            <label for="chk" aria-hidden="true" class="login_label"
+              >Login</label
+            >
+            <input type="email" name="email" placeholder="Email" required />
+            <input
+              type="password"
+              name="password"
+              id="passwordSignin"
+              placeholder="Password"
+              required
+            />
+
+            <label for="" class="remember-me">
+              <a href="/forget-password">Forgot password?</a>
+            </label>
+            <button type="submit" id="signIn">Sign In</button>
+          </form>
+        </div>
       </div>
     </div>
 
     <footer class="footer">
-        <div class="footer__parralax">
-          <div class="footer__parralax-trees"></div>
-          <div class="footer__parralax-moto"></div>
-          <div class="footer__parralax-secondplan"></div>
-          <div class="footer__parralax-premierplan"></div>
-          <div class="footer__parralax-voiture"></div>
-        </div>
-        <div class="container">
-          <div class="footer__columns">
-            <div class="footer__col">
-              <h3 class="footer__col-title">
-                <i data-feather="shopping-bag"></i> <span>About</span>
-              </h3>
-              <nav class="footer__nav">
-                <ul class="footer__nav-list">
-                  <li class="footer__nav-item">
-                    <a href="/about" class="/about">
-                      About Us
-                    </a>
-                  </li>
-                  <li class="footer__nav-item">
-                    <a href="/contact" class="/contact">
-                      Contact Us
-                    </a>
-                  </li>
-                  <li class="footer__nav-item">
-                    <a href="/Terms-and-conditions" class="/Terms-and-conditions">
-                      Terms & Conditions
-                    </a>
-                  </li>
-                  <li class="footer__nav-item">
-                    <a href="/privacy_policy" class="footer__nav-link">
-                      Privacy Policy
-                    </a>
-                  </li>
-    
-                </ul>
-              </nav>
-            </div>
-            <div class="footer__col">
-              <h3 class="footer__col-title">
-                <i data-feather="share-2"></i> <span>Contact Us</span>
-              </h3>
-              <nav class="footer__nav">
-                <ul class="footer__nav-list">
-                  <li class="footer__nav-item">
-                    <a href class="footer__nav-link">
-                      <i data-feather="youtube"></i><span>Youtube</span>
-                    </a>
-                  </li>
-                  <li class="footer__nav-item">
-                    <a href class="footer__nav-link">
-                      <i data-feather="facebook"></i><span>Facebook</span>
-    
-                    </a>
-                  </li>
-                  <li class="footer__nav-item">
-                    <a href="https://www.instagram.com/as_usual.clothing/" class="footer__nav-link">
-                      <i data-feather="instagram"></i><span>Instagram</span>
-    
-                    </a>
-                  </li>
-                  <li class="footer__nav-item footer-nav-email">
-                    <a href="mailto:asusualclothing@gmail.com" class="footer__nav-link">
-                      <!-- <i data-feather="mail"></i> -->
-                      <i data-feather="at-sign"></i>
-                      <span>asusualclothing@gmail.com</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-            <div class="footer__col_last">
-              <h3 class="footer__col-title">
-                <i data-feather="send"></i> <span>Contact Us</span>
-              </h3>
-              <nav class="footer__nav">
-                <ul class="footer__nav-list">
-                  <li class="footer__nav-item">
-                    <a href="mailto:asusualclothing@gmail.com" class="footer__nav-link">
-                      <!-- <i data-feather="mail"></i> -->
-                      <i data-feather="at-sign"></i>
-                      <span>asusualclothing@gmail.com</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
+      <div class="footer__parralax">
+        <div class="footer__parralax-trees"></div>
+        <div class="footer__parralax-moto"></div>
+        <div class="footer__parralax-secondplan"></div>
+        <div class="footer__parralax-premierplan"></div>
+        <div class="footer__parralax-voiture"></div>
+      </div>
+      <div class="container">
+        <div class="footer__columns">
+          <div class="footer__col">
+            <h3 class="footer__col-title">
+              <i data-feather="shopping-bag"></i> <span>About</span>
+            </h3>
+            <nav class="footer__nav">
+              <ul class="footer__nav-list">
+                <li class="footer__nav-item">
+                  <a href="/about" class="/about"> About Us </a>
+                </li>
+                <li class="footer__nav-item">
+                  <a href="/contact" class="/contact"> Contact Us </a>
+                </li>
+                <li class="footer__nav-item">
+                  <a href="/Terms-and-conditions" class="/Terms-and-conditions">
+                    Terms & Conditions
+                  </a>
+                </li>
+                <li class="footer__nav-item">
+                  <a href="/privacy_policy" class="footer__nav-link">
+                    Privacy Policy
+                  </a>
+                </li>
+              </ul>
+            </nav>
           </div>
-    
+          <div class="footer__col">
+            <h3 class="footer__col-title">
+              <i data-feather="share-2"></i> <span>Contact Us</span>
+            </h3>
+            <nav class="footer__nav">
+              <ul class="footer__nav-list">
+                <li class="footer__nav-item">
+                  <a href class="footer__nav-link">
+                    <i data-feather="youtube"></i><span>Youtube</span>
+                  </a>
+                </li>
+                <li class="footer__nav-item">
+                  <a href class="footer__nav-link">
+                    <i data-feather="facebook"></i><span>Facebook</span>
+                  </a>
+                </li>
+                <li class="footer__nav-item">
+                  <a
+                    href="https://www.instagram.com/as_usual.clothing/"
+                    class="footer__nav-link"
+                  >
+                    <i data-feather="instagram"></i><span>Instagram</span>
+                  </a>
+                </li>
+                <li class="footer__nav-item footer-nav-email">
+                  <a
+                    href="mailto:asusualclothing@gmail.com"
+                    class="footer__nav-link"
+                  >
+                    <!-- <i data-feather="mail"></i> -->
+                    <i data-feather="at-sign"></i>
+                    <span>asusualclothing@gmail.com</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div class="footer__col_last">
+            <h3 class="footer__col-title">
+              <i data-feather="send"></i> <span>Contact Us</span>
+            </h3>
+            <nav class="footer__nav">
+              <ul class="footer__nav-list">
+                <li class="footer__nav-item">
+                  <a
+                    href="mailto:asusualclothing@gmail.com"
+                    class="footer__nav-link"
+                  >
+                    <!-- <i data-feather="mail"></i> -->
+                    <i data-feather="at-sign"></i>
+                    <span>asusualclothing@gmail.com</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
-      </footer>
-
+      </div>
+    </footer>
     <script>
+      // Toastify notification configuration
+  const notificationConfig = {
+    duration: 4000,
+    close: true,
+    gravity: "top",
+    position: "center",
+    stopOnFocus: true,
+    style: {
+      fontSize: "14px",
+      padding: "10px ",
+      borderRadius: "4px",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.15)"
+    }
+  };
+
+  // Show notification function
+  function showNotification(message, isSuccess = true) {
+    Toastify({
+      text: message,
+      ...notificationConfig,
+      backgroundColor: isSuccess ? "#4CAF50" : "#f44336",
+      className: isSuccess ? "toastify-success" : "toastify-error"
+    }).showToast();
+  }
+    
       // Function to generate and send OTP
       function generateAndSendOTP(email, otpFieldId, verifyButtonId) {
+        if (!email) {
+          showNotification("Please enter your email first.", false);
+          return;
+        }
+    
         fetch("/generate-otp", {
           method: "POST",
           headers: {
@@ -370,26 +295,24 @@
             if (data.success) {
               document.getElementById(otpFieldId).style.display = "block";
               document.getElementById(verifyButtonId).style.display = "block";
-              alert("OTP sent to your email!");
+              showNotification("OTP sent to your email!");
             } else {
-              alert("Failed to send OTP. Maybe user already exists");
+              showNotification(data.message || "Failed to send OTP. Maybe user already exists", false);
             }
           })
           .catch((error) => {
             console.error("Error:", error);
-            alert("Failed to send OTP.");
+            showNotification("Failed to send OTP. Please try again.", false);
           });
       }
-
+    
       // Function to verify OTP
-      function verifyOTP(
-        email,
-        otp,
-        verifiedFieldId,
-        passwordFieldId,
-        confirmPasswordFieldId,
-        submitButtonId
-      ) {
+      function verifyOTP(email, otp, verifiedFieldId, submitButtonId) {
+        if (!email || !otp) {
+          showNotification("Please enter both email and OTP.", false);
+          return;
+        }
+    
         fetch("/verify-otp", {
           method: "POST",
           headers: {
@@ -401,68 +324,43 @@
           .then((data) => {
             if (data.success) {
               document.getElementById(verifiedFieldId).value = "true";
-              document.getElementById(passwordFieldId).disabled = false;
-              if (confirmPasswordFieldId) {
-                document.getElementById(
-                  confirmPasswordFieldId
-                ).disabled = false;
-              }
               document.getElementById(submitButtonId).disabled = false;
-              alert("OTP verified successfully!");
+              showNotification("OTP verified successfully!");
             } else {
-              alert(data.message || "Invalid OTP.");
+              showNotification(data.message || "Invalid OTP.", false);
             }
           })
           .catch((error) => {
             console.error("Error:", error);
-            alert("Failed to verify OTP.");
+            showNotification("Failed to verify OTP. Please try again.", false);
           });
       }
-
+    
       // Signup OTP Generation
-      document
-        .getElementById("generateOtpSignup")
-        .addEventListener("click", function () {
-          const email = document.querySelector(
-            '#signupForm input[name="email"]'
-          ).value;
-          if (!email) {
-            alert("Please enter your email first.");
-            return;
-          }
-          generateAndSendOTP(email, "otpSignup", "verifyOtpSignup");
-        });
-
-      // Signup OTP Verification
-      document
-        .getElementById("verifyOtpSignup")
-        .addEventListener("click", function () {
-          const email = document.querySelector(
-            '#signupForm input[name="email"]'
-          ).value;
-          const otp = document.getElementById("otpSignup").value;
-          if (email && otp) {
-            verifyOTP(
-              email,
-              otp,
-              "otpVerifiedSignup",
-              "passwordSignup",
-              "confirmPasswordSignup",
-              "signUp"
-            );
-          }
-        });
-
-      // Toggle between Sign Up and Sign In forms
-      document.getElementById("signInOverlay").addEventListener("click", () => {
-        document
-          .getElementById("container")
-          .classList.remove("right-panel-active");
+      document.getElementById("generateOtpSignup").addEventListener("click", function () {
+        const email = document.querySelector('#signupForm input[name="email"]').value;
+        generateAndSendOTP(email, "otpSignup", "verifyOtpSignup");
       });
-      document.getElementById("signUpOverlay").addEventListener("click", () => {
-        document
-          .getElementById("container")
-          .classList.add("right-panel-active");
+    
+      // Signup OTP Verification
+      document.getElementById("verifyOtpSignup").addEventListener("click", function () {
+        const email = document.querySelector('#signupForm input[name="email"]').value;
+        const otp = document.getElementById("otpSignup").value;
+        verifyOTP(email, otp, "otpVerifiedSignup", "signUp");
+      });
+    
+      // Form submission handling
+      document.getElementById("signupForm").addEventListener("submit", function(e) {
+        const otpVerified = document.getElementById("otpVerifiedSignup").value;
+        if (otpVerified !== "true") {
+          e.preventDefault();
+          showNotification("Please verify your OTP first.", false);
+        }
+      });
+    
+      // Login form handling
+      document.getElementById("loginForm").addEventListener("submit", function(e) {
+        // Add any login form validation here if needed
       });
     </script>
     <script src="scripts/script.js"></script>
