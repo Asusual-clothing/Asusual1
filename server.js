@@ -564,7 +564,7 @@ app.post('/add-to-cart', async (req, res) => {
     try {
         // Find the user's cart
         let cart = await Cart.findOne({ user: userId });
-
+        
         if (cart) {
             // Check if the item already exists in the cart
             const existingItem = cart.items.find(
@@ -1246,7 +1246,7 @@ app.get('/product_details/:id', async (req, res) => {
 app.get('/Products', async (req, res) => {
     try {
         const products = await Product.find().sort({ createdAt: 'desc' }).lean();
-        
+        const notification = await Notification.findOne({}) || { notification: '' };
         // Get unique available colors from products
         const availableColors = [...new Set(
             products
@@ -1254,7 +1254,7 @@ app.get('/Products', async (req, res) => {
                 .filter(color => color) // Remove undefined/null values
         )];
         
-        res.render('allProduct', {
+        res.render('allProduct', {notification,
             products: products.map(p => ({
                 ...p,
                 id: p._id.toString()
@@ -2062,6 +2062,15 @@ app.get('/orders', async (req, res) => {
 // GET: All Orders for a Logged-In User
 // In your route handler where you fetch orders
 app.get('/all-orders', async (req, res) => {
+    if (!req.user) {
+        return res.send(`
+            <script>
+                alert('Please log in to view your orders');
+                window.location.href = '/signup';
+            </script>
+        `);
+    }
+
     try {
         const orders = await Order.find({ user: req.user._id })
             .sort({ createdAt: -1 })
@@ -2071,7 +2080,6 @@ app.get('/all-orders', async (req, res) => {
                 model: 'Product'
             });
 
-        // Add a flag to each order indicating if it has deleted products
         const ordersWithStatus = orders.map(order => {
             const hasDeletedProducts = order.items.some(item => !item.product);
             return {
@@ -2090,6 +2098,7 @@ app.get('/all-orders', async (req, res) => {
         res.status(500).render('error', { message: 'Error fetching your orders' });
     }
 });
+
 
 
 // Get specific order details (without user checking)//Admin  ke lie

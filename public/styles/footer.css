@@ -36,7 +36,7 @@ body {
 .footer__columns {
   display: flex;
   justify-content: space-evenly;
-  padding: 3.2rem;
+  padding: 5.2rem;
 }
 .footer__col-title {
   font-size: 1.6rem;

@@ -55,6 +55,7 @@
   width: 150px;
   height: auto;
   object-fit: contain;
+  margin-top: -8px;
   transition: transform 0.3s ease-in-out;
 }
 

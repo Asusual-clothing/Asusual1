@@ -28,7 +28,11 @@ function lerp({ x, y }, { x: targetX, y: targetY }) {
       this.images = el.getElementsByTagName('img');
       
       document.getElementById('slider-dots')
-        .addEventListener('click', this.onDotClick.bind(this));
+  .addEventListener('click', this.onDotClick.bind(this));
+  
+document.getElementById('slider-dots')
+  .addEventListener('touchend', this.onDotClick.bind(this));
+
       
       document.getElementById('left')
         .addEventListener('click', this.prev.bind(this));
@@ -143,10 +147,15 @@ function lerp({ x, y }, { x: targetX, y: targetY }) {
         translateY(${maxImgOffset * yCoeff}em)
       `);  
     }
-    onDotClick ({ target }) {
+    onDotClick(event) {
+      // Prevent default for touch events
+      if (this.isMobile && event.type === 'touchend') {
+        event.preventDefault();
+      }
+      
       if (this.inTransit) return;
       
-      const dot = target.closest('.slider__nav-dot');
+      const dot = event.target.closest('.slider__nav-dot');
       
       if (!dot) return;
       
