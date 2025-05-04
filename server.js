@@ -125,7 +125,8 @@ const CustomTshirt = require('./models/CustomTshirtSchema');
 const Poster = require('./models/posterSchema');
 const Order = require('./models/OrderSchema');
 const Contact = require('./models/Contact');
-const Notification=require('./models/Notification');;
+const Notification=require('./models/Notification');
+const Subscription=require('./models/subscription');
 const Coupon = require('./models/CouponSchema '); // Adjust path if needed
 
 
@@ -526,7 +527,8 @@ app.get('/', async (req, res) => {
             posters,
             headings,
             titles,
-            notification
+            notification,
+            message: null 
         });
     } catch (err) {
         console.error(err);
@@ -625,6 +627,7 @@ app.post('/add-to-cart', async (req, res) => {
 
                     .green {
                         color: #5a9e6e;
+                        font-size: 1.5em;
                     }
 
                     .red {
@@ -1945,6 +1948,41 @@ app.post('/place-order', async (req, res) => {  // Changed route name
         });
     }
 });
+
+app.post('/subscribe', async (req, res) => {
+    const { email } = req.body;
+  
+    if (!email || email.trim() === '') {
+      return res.render('index', {
+        message: 'Please enter your email.'
+      });
+    }
+  
+    try {
+      const newSub = new Subscription({ email });
+      await newSub.save();
+      return res.render('index', {
+        message: 'Subscription successful!'
+      });
+    } catch (err) {
+      console.error(err);
+      if (err.code === 11000) {
+        return res.render('index', {
+          message: 'You are already subscribed.'
+        });
+      }
+      if (err.errors && err.errors.email) {
+        return res.render('index', {
+          message: err.errors.email.message
+        });
+      }
+      return res.render('index', {
+        message: 'Something went wrong. Please try again.'
+      });
+    }
+  });
+  
+  
 
 // Order confirmation page
 app.get('/confirmation/:id', async (req, res) => {

@@ -687,7 +687,42 @@
             <div class="swiper-pagination"></div>
           </div>
         </section>
+        <div class="flex flex-col items-center justify-center bg-[hsla(0,0%,13%,1)] w-full max-w-[945px] h-auto sm:h-[474px] rounded-[10px] shadow-[0_4px_20px_rgba(0,0,0,0.3)] p-6 sm:p-10 font-['Mulish'] mx-auto border border-gray-800">
+          <h2 class="font-bold text-[22px] sm:text-[26px] mb-4 sm:mb-[18px] text-center text-white">Let's keep in touch</h2>
+        
+          <% if (message) { %>
+            <p class="text-red-400 mb-4"><%= message %></p>
+          <% } %>
+        
+          <form method="POST" action="/subscribe" class="w-full" onsubmit="return validateCheckbox()">
+            <div class="mb-6 w-full flex flex-col sm:flex-row gap-4 items-center sm:items-start">
+              <input type="email" name="email" placeholder="Enter your email address"
+                class="w-full sm:w-[431px] px-6 py-4 rounded-[5px] border border-gray-700 bg-gray-800 text-[16px] text-white focus:outline-none focus:ring-2 focus:ring-gray-600 placeholder-gray-500"
+                required />
+              <button type="submit"
+                class="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 w-full sm:w-[244px] rounded-[5px] text-sm sm:text-base transition-colors">Send</button>
+            </div>
+          
+            <div class="flex items-start gap-2 text-sm max-w-[400px] text-gray-400">
+              <input type="checkbox" id="consent" class="mt-1 accent-gray-500" />
+              <span>I agree to my email address being stored and used to receive the monthly Updates.</span>
+            </div>
+          </form>
+          
+          <script>
+            function validateCheckbox() {
+              const checkbox = document.getElementById('consent');
+              if (!checkbox.checked) {
+                alert('Please agree to the terms before subscribing.');
+                return false;
+              }
+              return true;
+            }
+          </script>
+          
+        
       </div>
+      
 
       <!-- Initialize Swiper -->
       <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
