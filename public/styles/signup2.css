@@ -156,10 +156,18 @@
         width: 80%;
         margin: 0 auto  ;
     }
-    .main {
-      width: 90%;
-      height: 103%;
+    .signup {
+      height: 102%;
+      margin-top: 39px;
+  }
+
+    #loginForm {
+     height: 82%;
     }
+    .main {
+      width: 94%;
+      height: 80%;
+  }
 
     input {
       width: 80%;

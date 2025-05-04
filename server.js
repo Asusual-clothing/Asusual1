@@ -124,7 +124,8 @@ const Admin = require('./models/AdminSchema');
 const CustomTshirt = require('./models/CustomTshirtSchema');
 const Poster = require('./models/posterSchema');
 const Order = require('./models/OrderSchema');
-const Contact = require('./models/Contact')
+const Contact = require('./models/Contact');
+const Notification=require('./models/Notification');;
 const Coupon = require('./models/CouponSchema '); // Adjust path if needed
 
 
@@ -165,9 +166,17 @@ app.get('/admin-login', (req, res) => {
     res.render("admin_login");
 })
 
-app.get('/edit-poster', (req, res) => {
-    res.render("edit_poster")
-})
+app.get('/edit-poster', async (req, res) => {
+    try {
+      const poster = await Poster.findOne({});
+      const notification = await Notification.findOne({}) || { notification: '' };
+      res.render('edit_poster', { poster, notification });
+    } catch (error) {
+      console.error('Error loading edit-poster:', error);
+      res.status(500).send('Server Error');
+    }
+  });
+  
 
 app.get('/admin-option', async (req, res) => {
     try {
@@ -264,7 +273,25 @@ app.post('/admin/login', async (req, res) => {
 });
 
 
+// For Notification Update
 
+app.post('/admin/update-notification', async (req, res) => {
+    try {
+      const { notification } = req.body;
+  
+      await Notification.findOneAndUpdate(
+        {},
+        { notification },
+        { upsert: true, new: true, setDefaultsOnInsert: true }
+      );
+  
+      res.redirect('/edit-poster');
+    } catch (error) {
+      console.error('Notification Update Error:', error);
+      res.status(500).send('Failed to update notification');
+    }
+  });
+  
 
 app.post('/admin/edit-poster', uploads.fields([
     { name: 'poster1', maxCount: 1 },
@@ -488,6 +515,7 @@ app.get('/', async (req, res) => {
 
         const shuffledProducts = shuffle([...Products]); // Create a copy and shuffle
 
+        const notification = await Notification.findOne({}) || { notification: '' };
         const poster = await Poster.findOne({});
         const posters = poster ? poster.image : [];
         const headings = poster ? poster.Heading : [];
@@ -497,7 +525,8 @@ app.get('/', async (req, res) => {
             Products: shuffledProducts,
             posters,
             headings,
-            titles
+            titles,
+            notification
         });
     } catch (err) {
         console.error(err);
@@ -2101,6 +2130,10 @@ app.get('/admin/contacts', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+app.get('/reset-password', (req, res) => {
+    res.render('forget_password', { message: null });
+});
+
 
 
 // Route to display reset password form
@@ -2168,6 +2201,10 @@ app.post('/reset-password-submit', async (req, res) => {
 app.post('/reset-password', async (req, res) => {
     const { email } = req.body;
 
+    if (!email || email.trim() === "") {
+        return res.render('forget_password', { message: "Please enter your email address." });
+    }
+
     try {
         const user = await User.findOne({ email });
 
@@ -2175,16 +2212,13 @@ app.post('/reset-password', async (req, res) => {
             return res.render('forget_password', { message: "Email not registered" });
         }
 
-        // Generate a reset token and store it in the database with expiration time
         const resetToken = crypto.randomBytes(20).toString('hex');
-        const resetTokenExpiration = Date.now() + 15 * 60 * 1000; // 15 minutes from now
+        const resetTokenExpiration = Date.now() + 15 * 60 * 1000;
 
         user.resetToken = resetToken;
         user.resetTokenExpiration = resetTokenExpiration;
-
         await user.save();
 
-        // Send the reset link via email
         const resetLink = `${process.env.BASE_URL || 'http://localhost:8000'}/reset-password/${user._id}`;
 
         const mailOptions = {
@@ -2210,21 +2244,30 @@ app.post('/reset-password', async (req, res) => {
             },
         });
 
-        // Send email with the reset link
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.log('Error:', error);
+                return res.render('forget_password', { message: "Failed to send email. Try again later." });
             } else {
                 console.log('Reset Password Email sent:', info.response);
+                return res.send(`
+                    <script>
+                      alert('Reset link has been sent to your email');
+                      window.location.href = '/reset-password';
+                    </script>
+                `);
             }
         });
 
-        res.render('forget_password', { message: "Password reset link sent to your email!" });
     } catch (err) {
         console.error(err);
-        res.render('forget_password', { message: "Something went wrong. Try again later." });
+        return res.render('forget_password', { message: "Something went wrong. Try again later." });
     }
 });
+
+
+
+
 
 
 
