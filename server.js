@@ -2022,37 +2022,39 @@ app.get('/orders', async (req, res) => {
 });
 
 // GET: All Orders for a Logged-In User
+// In your route handler where you fetch orders
 app.get('/all-orders', async (req, res) => {
     try {
-        // No need to check userId manually - attachUser middleware already did this
-        if (!req.user) {
-            return res.redirect('/signup');
-        }
-
         const orders = await Order.find({ user: req.user._id })
+            .sort({ createdAt: -1 })
             .populate({
                 path: 'items.product',
-                select: 'name images price'
-            })
-            .sort({ createdAt: -1 })
-            .lean(); // Add lean() for better performance
+                select: 'name images price',
+                model: 'Product'
+            });
 
-        res.render('allorders', {
-            orders,
-            // No need to explicitly pass user - middleware handles it via res.locals
+        // Add a flag to each order indicating if it has deleted products
+        const ordersWithStatus = orders.map(order => {
+            const hasDeletedProducts = order.items.some(item => !item.product);
+            return {
+                ...order.toObject(),
+                hasDeletedProducts
+            };
+        });
+
+        res.render('allorders', { 
+            orders: ordersWithStatus,
+            user: req.user,
+            cartCount: req.session.cartCount || 0
         });
     } catch (error) {
-        console.error('Order fetch error:', error);
-        req.flash('error', 'Failed to load orders');
-        res.status(500).render('error', {
-            message: 'Failed to load your orders',
-            error: process.env.NODE_ENV === 'development' ? error : {}
-        });
+        console.error('Error fetching orders:', error);
+        res.status(500).render('error', { message: 'Error fetching your orders' });
     }
 });
 
 
-// Get specific order details (without user checking)
+// Get specific order details (without user checking)//Admin  ke lie
 app.get('/orders/:id', async (req, res) => {
     try {
         const order = await Order.findById(req.params.id)
@@ -2068,23 +2070,31 @@ app.get('/orders/:id', async (req, res) => {
         res.status(500).render('error', { message: 'Server error fetching order details' });
     }
 });
-// Get specific order details (without user checking)
+// Get specific order details (without user checking)//user ke lie
 app.get('/user-orders/:id', async (req, res) => {
     try {
         const order = await Order.findById(req.params.id)
             .populate('items.product', 'name images price description');
 
         if (!order) {
-            return res.status(404).render('error', { message: 'Order not found' });
+            return res.status(404).render('error', { 
+                message: 'Order not found',
+                user: req.user 
+            });
         }
 
-        res.render('user-order_details', { order }, { user: req.user });
+        res.render('user-order_details', { 
+            order,
+            user: req.user 
+        });
     } catch (error) {
         console.error('Error fetching order details:', error);
-        res.status(500).render('error', { message: 'Server error fetching order details' });
+        res.status(500).render('error', { 
+            message: 'Server error fetching order details',
+            user: req.user 
+        });
     }
 });
-
 
 app.post('/contact', async (req, res) => {
     try {

@@ -164,10 +164,17 @@
                         </div>
                         
                         <div class="order-footer">
-                            <a href="/user-orders/<%= order._id %>" class="details-btn">
-                                View Details
-                            </a>
-                        </div>
+                          <% const allProductsAvailable = order.items.every(item => item.product); %>
+                          <% if (allProductsAvailable) { %>
+                              <a href="/user-orders/<%= order._id.toString() %>" class="details-btn">
+                                  View Details
+                              </a>
+                          <% } else { %>
+                              <span class="details-btn disabled-btn" title="Some items are no longer available">
+                                  View Details Unavailable
+                              </span>
+                          <% } %>
+                      </div>
                     </div>
                 <% }) %>
             </div>
