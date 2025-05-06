@@ -45,7 +45,7 @@
   text-decoration: none;
   transition: transform 0.3s ease-in-out;
   position: absolute;
-  top: -60%;
+  top: -40%;
   left: 45%;
   z-index: 1000;
 }
