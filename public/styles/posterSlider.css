@@ -438,7 +438,7 @@ body {
   
   
   .slider__nav-dot {
-    margin: 0 1.4em;
+    margin: 0 1em;
     width: 1em;
     height: 0.5em;
     border: 2px solid rgba(255, 255, 255, 0.5);
@@ -450,7 +450,7 @@ body {
   .slider__nav-dots::before {
     content: '';
     position: absolute;
-    left: 10px; /* Start from container edge */
+    left: 13px; /* Start from container edge */
     top: 50%;
     transform: translateY(-50%);
     width: 1em;
@@ -459,7 +459,7 @@ body {
     transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     transform: 
       translateY(-50%)
-      translateX(calc((1em + 0.8em * 2) * (var(--from-left) - 1) + 0.8em));
+      translateX(calc((1.4em + 0.8em * 2) * (var(--from-left) - 1) + 0.8em));
     /* Added 0.8em to account for container padding */
     border-radius: 1px;
     border: 2px solid transparent;
