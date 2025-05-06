@@ -44,7 +44,6 @@
 
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    
   </head>
 
   <body>
@@ -75,18 +74,17 @@
         <!-- <div class="brand-name"><img
             src="assests/horizontalLogo-removebg-preview.png" alt="Logo"></div> -->
       </div>
-      
     </div>
 
     <!-- Homepage Content -->
     <div class="homepage-content" id="homepage-content" style="display: none">
-      <!-- marquee for notification --> 
+      <!-- marquee for notification -->
       <div class="notification-bar">
         <span class="notification-text">
-          <%= notification.notification || 'No new updates at the moment.' %> 
+          <%= notification.notification || 'No new updates at the moment.' %>
         </span>
       </div>
-      
+
       <div class="notification-bar">
         <span class="notification-text"> </span>
       </div>
@@ -127,16 +125,16 @@
           </div>
           <div class="AS-nav-btn">
             <% if (user) { %>
-              <li>
-                <a href="/cart" class="cart-icon">
-                  <i class="fas fa-shopping-cart"></i>
-                  <span>Cart</span>
-                  <% if (cartCount > 0) { %>
-                    <span class="cart-count"><%= cartCount %></span>
-                  <% } %>
-                </a>
-              </li>
-           
+            <li>
+              <a href="/cart" class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Cart</span>
+                <% if (cartCount> 0) { %>
+                <span class="cart-count"> <%= cartCount %> </span>
+                <% } %>
+              </a>
+            </li>
+
             <!-- Dropdown for logged-in users -->
             <!-- Profile Dropdown -->
             <div class="profile-dropdown">
@@ -185,98 +183,97 @@
       </nav>
       <!-- this is slider of poster  -->
       <div
-  class="slider"
-  id="slider"
-  style="--img-prev: url(<%= posters[posters.length - 1] || '' %>);"
->
-  <div class="slider__content" id="slider-content">
-    <div class="slider__images">
-      <% if (posters && posters.length > 0) { %>
-        <% posters.forEach((poster, index) => { %>
-          <div
-            class="slider__images-item <%= index === 0 ? 'slider__images-item--active' : '' %>"
-            data-id="<%= index + 1 %>"
-          >
-            <img
-              src="<%= poster %>"
-              alt="Fashion Style <%= index + 1 %>"
-            />
+        class="slider"
+        id="slider"
+        style="--img-prev: url(<%=posters[posters.length-1]||''%>)"
+      >
+        <div class="slider__content" id="slider-content">
+          <div class="slider__images">
+            <% if (posters && posters.length> 0) { %> <%
+            posters.forEach((poster, index)=> { %>
+            <div
+              class="slider__images-item <%= index === 0 ? 'slider__images-item--active' : '' %>"
+              data-id="<%= index + 1 %>"
+            >
+              <img src="<%= poster %>" alt="Fashion Style <%= index + 1 %>" />
+            </div>
+            <% }); %> <% } %>
           </div>
-        <% }); %>
-      <% } %>
-    </div>
 
-    <div class="slider__text">
-      <% posters.forEach((poster, index) => { %>
-        <div
-          class="slider__text-item <%= index === 0 ? 'slider__text-item--active' : '' %>"
-          data-id="<%= index + 1 %>"
-        >
-          <div class="slider__text-item-head">
-            <h3><%= headings?.[index] || 'Default Heading' %></h3>
-          </div>
-          <div class="slider__text-item-info">
-            <p><%= titles?.[index] || 'Default Title' %></p>
+          <div class="slider__text">
+            <% posters.forEach((poster, index)=> { %>
+            <div
+              class="slider__text-item <%= index === 0 ? 'slider__text-item--active' : '' %>"
+              data-id="<%= index + 1 %>"
+            >
+              <div class="slider__text-item-head">
+                <h3><%= headings?.[index] || 'Default Heading' %></h3>
+              </div>
+              <div class="slider__text-item-info">
+                <p><%= titles?.[index] || 'Default Title' %></p>
+              </div>
+            </div>
+            <% }); %>
           </div>
         </div>
-      <% }); %>
-    </div>
-  </div>
 
-  <div class="slider__nav">
-    <div class="slider__nav-arrows">
-      <div class="slider__nav-arrow slider__nav-arrow--left" id="left">
-        to left
+        <div class="slider__nav">
+          <div class="slider__nav-arrows">
+            <div class="slider__nav-arrow slider__nav-arrow--left" id="left">
+              to left
+            </div>
+            <div class="slider__nav-arrow slider__nav-arrow--right" id="right">
+              to right
+            </div>
+          </div>
+
+          <div class="slider__nav-dots" id="slider-dots">
+            <% posters.forEach((poster, index)=> { %>
+            <div
+              class="slider__nav-dot <%= index === 0 ? 'slider__nav-dot--active' : '' %>"
+              data-id="<%= index + 1 %>"
+            ></div>
+            <% }); %>
+          </div>
+        </div>
       </div>
-      <div class="slider__nav-arrow slider__nav-arrow--right" id="right">
-        to right
-      </div>
-    </div>
-
-    <div class="slider__nav-dots" id="slider-dots">
-      <% posters.forEach((poster, index) => { %>
-        <div
-          class="slider__nav-dot <%= index === 0 ? 'slider__nav-dot--active' : '' %>"
-          data-id="<%= index + 1 %>"
-        ></div>
-      <% }); %>
-    </div>
-  </div>
-</div>
-
 
       <!-- this is the second section -->
-      <%
-  const bestsellers = Products.filter(p => p.bestseller);
-  const nonBestsellers = Products.filter(p => !p.bestseller);
+      <% const bestsellers=Products.filter(p=> p.bestseller); const
+      nonBestsellers = Products.filter(p => !p.bestseller); const finalProducts
+      = bestsellers.slice(0, 4); if (finalProducts.length < 4) {
+      finalProducts.push(...nonBestsellers.slice(0, 4 - finalProducts.length));
+      } %>
+      <h2
+      class="text-white text-3xl sm:text-4xl md:text-5xl font-extrabold text-center my-8 pt-5 sm:pt-0"
+      style="text-shadow: 0 0 5px #000000, 0 0 10px #ff0000, 0 0 20px #ff0000;"
+    >
+      Bestsellers
+    </h2>
+    
+    
 
-  const finalProducts = bestsellers.slice(0, 4);
-  if (finalProducts.length < 4) {
-    finalProducts.push(...nonBestsellers.slice(0, 4 - finalProducts.length));
-  }
-%>
-
-<div class="page2" id="page2">
-  <% finalProducts.forEach(product => { %>
-    <div class="card" data-url="/product_details/<%= product._id %>">
-      <div class="imgBox">
-        <div class="front">
-          <img src="<%= product.front_image %>" alt="<%= product.name %>" />
+      <div class="page2" id="page2">
+        <% finalProducts.forEach(product=> { %>
+        <div class="card" data-url="/product_details/<%= product._id %>">
+          <div class="imgBox">
+            <div class="front">
+              <img src="<%= product.front_image %>" alt="<%= product.name %>" />
+            </div>
+            <div class="back">
+              <img src="<%= product.back_image %>" alt="<%= product.name %>" />
+            </div>
+          </div>
+          <div class="contentBox">
+            <h3><%= product.name %></h3>
+            <h2 class="price"><small>₹<%= product.price %></small></h2>
+            <a href="/product_details/<%= product._id %>" class="buy"
+              >Buy Now</a
+            >
+          </div>
         </div>
-        <div class="back">
-          <img src="<%= product.back_image %>" alt="<%= product.name %>" />
-        </div>
+        <% }) %>
       </div>
-      <div class="contentBox">
-        <h3><%= product.name %></h3>
-        <h2 class="price"><small>₹<%= product.price %></small></h2>
-        <a href="/product_details/<%= product._id %>" class="buy">Buy Now</a>
-      </div>
-    </div>
-  <% }) %>
-</div>
-
-      
 
       <!-- this is the third section -->
       <div class="pagenew">
@@ -487,72 +484,80 @@
 
       <div class="page4" id="page4">
         <div class="scroller">
-          <% for(let i = 0; i < 6; i++) { %>
-            <div class="card" data-url="/product_details/<%= Products[i]._id %>">
-              <div class="imgBox">
-                <div class="front">
-                  <img src="<%= Products[i].front_image %>" alt="<%= Products[i].name %>" />
-                </div>
-                <div class="back">
-                  <img src="<%= Products[i].back_image %>" alt="<%= Products[i].name %>" />
-                </div>
+          <% for(let i=0; i < 6; i++) { %>
+          <div class="card" data-url="/product_details/<%= Products[i]._id %>">
+            <div class="imgBox">
+              <div class="front">
+                <img
+                  src="<%= Products[i].front_image %>"
+                  alt="<%= Products[i].name %>"
+                />
               </div>
-              <div class="contentBox">
-                <h3><%= Products[i].name %></h3>
-                <h2 class="price"><small>₹<%= Products[i].price %></small></h2>
-                <a href="/product_details/<%= Products[i]._id %>" class="buy">Buy Now</a>
+              <div class="back">
+                <img
+                  src="<%= Products[i].back_image %>"
+                  alt="<%= Products[i].name %>"
+                />
               </div>
             </div>
+            <div class="contentBox">
+              <h3><%= Products[i].name %></h3>
+              <h2 class="price"><small>₹<%= Products[i].price %></small></h2>
+              <a href="/product_details/<%= Products[i]._id %>" class="buy"
+                >Buy Now</a
+              >
+            </div>
+          </div>
           <% } %>
         </div>
       </div>
-      
+
       <style>
         .card.flipped .imgBox {
           transform: rotateY(180deg);
         }
       </style>
-    <script>
-      function setupCardClickBehavior() {
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        const screenWidth = window.innerWidth;
-    
-        console.log("Screen width:", screenWidth);
-        console.log("isMobile (based on user agent):", isMobile);
-    
-        document.querySelectorAll(".card").forEach((card) => {
-          if (isMobile || screenWidth <= 768) {
-            // Mobile behavior (or small screen in inspect)
-            card.addEventListener("click", (e) => {
-              if (e.target.classList.contains("buy")) return;
-    
-              if (!card.classList.contains("flipped")) {
-                console.log("Flipping card...");
-                card.classList.add("flipped");
-              } else {
-                console.log("Navigating to product detail...");
+      <script>
+        function setupCardClickBehavior() {
+          const isMobile = /iPhone|iPad|iPod|Android/i.test(
+            navigator.userAgent
+          );
+          const screenWidth = window.innerWidth;
+
+          console.log("Screen width:", screenWidth);
+          console.log("isMobile (based on user agent):", isMobile);
+
+          document.querySelectorAll(".card").forEach((card) => {
+            if (isMobile || screenWidth <= 768) {
+              // Mobile behavior (or small screen in inspect)
+              card.addEventListener("click", (e) => {
+                if (e.target.classList.contains("buy")) return;
+
+                if (!card.classList.contains("flipped")) {
+                  console.log("Flipping card...");
+                  card.classList.add("flipped");
+                } else {
+                  console.log("Navigating to product detail...");
+                  const url = card.getAttribute("data-url");
+                  window.location.href = url;
+                }
+              });
+            } else {
+              // Desktop behavior
+              card.addEventListener("click", (e) => {
+                if (e.target.classList.contains("buy")) return;
+
                 const url = card.getAttribute("data-url");
+                console.log("Desktop click: navigating to", url);
                 window.location.href = url;
-              }
-            });
-          } else {
-            // Desktop behavior
-            card.addEventListener("click", (e) => {
-              if (e.target.classList.contains("buy")) return;
-    
-              const url = card.getAttribute("data-url");
-              console.log("Desktop click: navigating to", url);
-              window.location.href = url;
-            });
-          }
-        });
-      }
-    
-      document.addEventListener("DOMContentLoaded", setupCardClickBehavior);
-    </script>
-    
-      
-    
+              });
+            }
+          });
+        }
+
+        document.addEventListener("DOMContentLoaded", setupCardClickBehavior);
+      </script>
+
       <!-- Testimonial Section -->
       <div class="page5" id="page5">
         <section class="bg-black text-white py-16 px-4 sm:px-6 lg:px-20">
@@ -568,10 +573,13 @@
               <p
                 class="text-lg md:text-xl font-medium text-gray-400 relative z-10 px-4"
               >
-                They Came. They Wore. They Slayed. Hear it straight from our AsUsual legends
+                They Came. They Wore. They Slayed. Hear it straight from our As
+                usual legends
               </p>
               <div class="absolute inset-0 flex items-center justify-center">
-                <div class="h-px w-full bg-gradient-to-r from-transparent via-gray-600 to-transparent hidden sm:block"></div>
+                <div
+                  class="h-px w-full bg-gradient-to-r from-transparent via-gray-600 to-transparent hidden sm:block"
+                ></div>
               </div>
             </div>
           </div>
@@ -587,7 +595,6 @@
                     fabric, and flair—everything's just perfect!"
                   </p>
                   <div class="flex items-center gap-4 mt-6">
-                    
                     <div>
                       <p class="font-semibold">Aanya Sharma</p>
                       <p class="text-sm text-gray-400">Fashion Blogger</p>
@@ -604,7 +611,6 @@
                     feels. AsUsual is now my go-to clothing brand!"
                   </p>
                   <div class="flex items-center gap-4 mt-6">
-                    
                     <div>
                       <p class="font-semibold">Rahul Verma</p>
                       <p class="text-sm text-gray-400">Graphic Designer</p>
@@ -621,7 +627,6 @@
                     I've been recommending AsUsual to all my friends!"
                   </p>
                   <div class="flex items-center gap-4 mt-6">
-                    
                     <div>
                       <p class="font-semibold">Zoya Malik</p>
                       <p class="text-sm text-gray-400">Lifestyle Influencer</p>
@@ -639,7 +644,6 @@
                     items and each one feels premium."
                   </p>
                   <div class="flex items-center gap-4 mt-6">
-                  
                     <div>
                       <p class="font-semibold">Neha Patel</p>
                       <p class="text-sm text-gray-400">Marketing Executive</p>
@@ -656,7 +660,6 @@
                     are always on point with current trends."
                   </p>
                   <div class="flex items-center gap-4 mt-6">
-                    
                     <div>
                       <p class="font-semibold">Arjun Khanna</p>
                       <p class="text-sm text-gray-400">Fashion Stylist</p>
@@ -673,7 +676,6 @@
                     outfits both to work and on weekends."
                   </p>
                   <div class="flex items-center gap-4 mt-6">
-                    
                     <div>
                       <p class="font-semibold">Priya Joshi</p>
                       <p class="text-sm text-gray-400">Software Engineer</p>
@@ -687,42 +689,7 @@
             <div class="swiper-pagination"></div>
           </div>
         </section>
-        <div class="flex flex-col items-center justify-center bg-[hsla(0,0%,13%,1)] w-full max-w-[945px] h-auto sm:h-[474px] rounded-[10px] shadow-[0_4px_20px_rgba(0,0,0,0.3)] p-6 sm:p-10 font-['Mulish'] mx-auto border border-gray-800">
-          <h2 class="font-bold text-[22px] sm:text-[26px] mb-4 sm:mb-[18px] text-center text-white">Let's keep in touch</h2>
-        
-          <% if (message) { %>
-            <p class="text-red-400 mb-4"><%= message %></p>
-          <% } %>
-        
-          <form method="POST" action="/subscribe" class="w-full" onsubmit="return validateCheckbox()">
-            <div class="mb-6 w-full flex flex-col sm:flex-row gap-4 items-center sm:items-start">
-              <input type="email" name="email" placeholder="Enter your email address"
-                class="w-full sm:w-[431px] px-6 py-4 rounded-[5px] border border-gray-700 bg-gray-800 text-[16px] text-white focus:outline-none focus:ring-2 focus:ring-gray-600 placeholder-gray-500"
-                required />
-              <button type="submit"
-                class="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 w-full sm:w-[244px] rounded-[5px] text-sm sm:text-base transition-colors">Send</button>
-            </div>
-          
-            <div class="flex items-start gap-2 text-sm max-w-[400px] text-gray-400">
-              <input type="checkbox" id="consent" class="mt-1 accent-gray-500" />
-              <span>I agree to my email address being stored and used to receive the monthly Updates.</span>
-            </div>
-          </form>
-          
-          <script>
-            function validateCheckbox() {
-              const checkbox = document.getElementById('consent');
-              if (!checkbox.checked) {
-                alert('Please agree to the terms before subscribing.');
-                return false;
-              }
-              return true;
-            }
-          </script>
-          
-        
       </div>
-      
 
       <!-- Initialize Swiper -->
       <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
@@ -753,15 +720,16 @@
           },
         });
       </script>
-
       <style>
         .testimonial-swiper {
           padding: 20px 0;
         }
+
         .swiper-slide {
           height: auto;
           padding: 10px;
         }
+
         .swiper-button-next,
         .swiper-button-prev {
           color: white;
@@ -773,27 +741,103 @@
           align-items: center;
           justify-content: center;
         }
+
         @media only screen and (max-width: 600px) {
           .swiper-button-next,
           .swiper-button-prev {
             display: none;
           }
         }
+
         .swiper-button-next::after,
         .swiper-button-prev::after {
           font-size: 20px;
         }
+
         .swiper-pagination-bullet {
           background: white;
           opacity: 0.5;
         }
+
         .swiper-pagination-bullet-active {
           opacity: 1;
         }
       </style>
 
+      <!-- stay up to date  -->
+      <div
+        class="flex flex-col items-center justify-center bg-black w-full  h-auto sm:h-[474px]  shadow-[0_10px_40px_rgba(0,0,0,0.6)] p-6 sm:p-10 font-['Mulish'] mx-auto border border-gray-800 transition-all duration-300 ease-in-out"
+      >
+        <h2
+          class="font-extrabold text-3xl sm:text-4xl mb-3 sm:mb-5 text-center text-white tracking-tight"
+        >
+          Join Our Community
+        </h2>
+        <p
+          class="text-center text-gray-400 text-sm sm:text-base mb-6 max-w-[600px]"
+        >
+          Subscribe to receive our latest news, community updates, and exclusive
+          insights delivered monthly to your inbox.
+        </p>
+
+        <% if (message) { %>
+        <p class="text-red-500 font-medium mb-4 animate-pulse">
+          <%= message %>
+        </p>
+        <% } %>
+
+        <form
+          method="POST"
+          action="/subscribe"
+          class="w-full"
+          onsubmit="return validateCheckbox()"
+        >
+          <div
+            class="flex flex-col sm:flex-row items-center justify-center sm:items-start gap-4 w-full mb-6"
+          >
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email address"
+              class="w-full sm:w-[431px] px-6 py-4 rounded-lg border border-gray-700 bg-[#121212] text-white text-base focus:outline-none focus:ring-2 focus:ring-gray-600 placeholder-gray-500 transition-all duration-200"
+              required
+            />
+            <button
+              type="submit"
+              class="w-full sm:w-[244px] px-6 py-4 bg-white text-black font-semibold rounded-lg text-sm sm:text-base transition-all duration-200 hover:bg-gray-300 shadow-md"
+            >
+              Subscribe Now
+            </button>
+          </div>
+
+          <div
+            class="flex items-center justify-center gap-3 text-sm  text-gray-400"
+          >
+            <input
+              type="checkbox"
+              id="consent"
+              class="mt-1 accent-white cursor-pointer"
+            />
+            <label for="consent" class="cursor-pointer"
+              >I'm in — send me the latest updates each month.</label
+            >
+          </div>
+        </form>
+
+        <script>
+          function validateCheckbox() {
+            const checkbox = document.getElementById("consent");
+            if (!checkbox.checked) {
+              alert("Please agree to receive updates before subscribing.");
+              return false;
+            }
+            return true;
+          }
+        </script>
+      </div>
+
       <!-- footer  -->
-     
+
       <footer class="footer">
         <div class="footer__parralax">
           <div class="footer__parralax-trees"></div>
@@ -811,17 +855,16 @@
               <nav class="footer__nav">
                 <ul class="footer__nav-list">
                   <li class="footer__nav-item">
-                    <a href="/about" class="/about">
-                      About Us
-                    </a>
+                    <a href="/about" class="/about"> About Us </a>
                   </li>
                   <li class="footer__nav-item">
-                    <a href="/contact" class="/contact">
-                      Contact Us
-                    </a>
+                    <a href="/contact" class="/contact"> Contact Us </a>
                   </li>
                   <li class="footer__nav-item">
-                    <a href="/Terms-and-conditions" class="/Terms-and-conditions">
+                    <a
+                      href="/Terms-and-conditions"
+                      class="/Terms-and-conditions"
+                    >
                       Terms & Conditions
                     </a>
                   </li>
@@ -830,7 +873,6 @@
                       Privacy Policy
                     </a>
                   </li>
-
                 </ul>
               </nav>
             </div>
@@ -848,19 +890,21 @@
                   <li class="footer__nav-item">
                     <a href class="footer__nav-link">
                       <i data-feather="facebook"></i><span>Facebook</span>
-
                     </a>
                   </li>
                   <li class="footer__nav-item">
-                    <a href="https://www.instagram.com/as_usual.clothing/"
-                      class="footer__nav-link">
-                      <i
-                        data-feather="instagram"></i><span>Instagram</span>
-
+                    <a
+                      href="https://www.instagram.com/as_usual.clothing/"
+                      class="footer__nav-link"
+                    >
+                      <i data-feather="instagram"></i><span>Instagram</span>
                     </a>
                   </li>
                   <li class="footer__nav-item footer-nav-email">
-                    <a href="mailto:asusualclothing@gmail.com" class="footer__nav-link">
+                    <a
+                      href="mailto:asusualclothing@gmail.com"
+                      class="footer__nav-link"
+                    >
                       <!-- <i data-feather="mail"></i> -->
                       <i data-feather="at-sign"></i>
                       <span>asusualclothing@gmail.com</span>
@@ -876,7 +920,10 @@
               <nav class="footer__nav">
                 <ul class="footer__nav-list">
                   <li class="footer__nav-item">
-                    <a href="mailto:asusualclothing@gmail.com" class="footer__nav-link">
+                    <a
+                      href="mailto:asusualclothing@gmail.com"
+                      class="footer__nav-link"
+                    >
                       <!-- <i data-feather="mail"></i> -->
                       <i data-feather="at-sign"></i>
                       <span>asusualclothing@gmail.com</span>
@@ -886,7 +933,6 @@
               </nav>
             </div>
           </div>
-          
         </div>
       </footer>
     </div>
