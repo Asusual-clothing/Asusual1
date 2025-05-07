@@ -29,16 +29,16 @@ body {
 .image-gallery {
     flex: 1;
     padding: 20px;
-    overflow-y: auto;
-    max-height: 600px;
+    /* overflow-y: auto; */
+    /* max-height: 600px; */
     border-right: 1px solid #333;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    /* scrollbar-width: none; */
+    /* -ms-overflow-style: none; */
 }
-
+/* 
 .image-gallery::-webkit-scrollbar {
     display: none;
-}
+} */
 
 .image-scroll {
     display: flex;

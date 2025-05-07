@@ -126,23 +126,77 @@
     <div class="product_details_container">
         <!-- Left Section: Scrollable Image Gallery -->
         <div class="image-gallery">
-            <div class="image-scroll">
-                <% if (product && product.images && product.images.length> 0) { %>
-                    <div class="display_image">
-                        <img src="<%= product.images[0] %>" alt="<%= product.name %>"
-                            style="max-width: 100%; height: auto;">
-                    </div>
-                    <div class="change_image">
-                        <% for(let i=0; i < product.images.length; i++) { %>
-                            <img src="<%= product.images[i] %>" alt="<%= product.name %>"
-                                style="max-width: 100%; height: auto;">
-                            <% } %>
-                    </div>
-                    <% } else { %>
-                        <p>No images available</p>
-                        <% } %>
-            </div>
-        </div>
+          <div class="image-scroll">
+              <% if (product && product.images && product.images.length> 0) { %>
+                  <div class="display_image">
+                      <img src="<%= product.images[0] %>" alt="<%= product.name %>"
+                          style="max-width: 100%;">
+                  </div>
+                  <div class="change_image">
+                      <% for(let i=0; i < product.images.length; i++) { %>
+                          <img src="<%= product.images[i] %>" alt="<%= product.name %>"
+                              style="max-width: 100px; height: auto; cursor: pointer; margin-right: 10px;">
+                          <% } %>
+                  </div>
+                  <% } else { %>
+                      <p>No images available</p>
+                      <% } %>
+          </div>
+      </div>
+      
+      <style>
+          .image-gallery {
+              max-width: 100%;
+          }
+          
+          .display_image {
+              margin-bottom: 15px;
+          }
+          
+          .change_image {
+              display: flex;
+              overflow-x: auto;
+              gap: 10px;
+              padding-bottom: 10px; /* Space for scrollbar */
+          }
+          
+          .change_image img {
+              flex: 0 0 auto;
+              border: 1px solid #ddd;
+              transition: border 0.3s;
+          }
+          
+          .change_image img:hover {
+              border: 1px solid #999;
+          }
+          
+          /* Style the scrollbar (optional) */
+          .change_image::-webkit-scrollbar {
+              height: 5px;
+          }
+          
+          .change_image::-webkit-scrollbar-track {
+              background: #f1f1f1;
+          }
+          
+          .change_image::-webkit-scrollbar-thumb {
+              background: #888;
+          }
+          
+          .change_image::-webkit-scrollbar-thumb:hover {
+              background: #555;
+          }
+      </style>
+      
+      <script>
+          // Optional: Add click handler to change main image when thumbnails are clicked
+          document.querySelectorAll('.change_image img').forEach(thumb => {
+              thumb.addEventListener('click', function() {
+                  const mainImage = document.querySelector('.display_image img');
+                  mainImage.src = this.src;
+              });
+          });
+      </script>
 
         <!-- Right Section: Product Details -->
         <div class="product-details">

@@ -245,7 +245,7 @@ body {
     justify-content: center;
     align-items: center;
     gap: 2rem;
-    padding:0rem 4rem 4rem 4rem;
+    padding:0rem 1rem 1rem 1rem;
   }
 
   .card {
