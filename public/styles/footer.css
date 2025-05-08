@@ -218,6 +218,7 @@ body {
     /* flex-direction: column; */
     /* gap: 2rem; */
     padding: 4rem 0 0 0;
+    margin-left: 89px;
   }
 
   .footer__col-title {
@@ -284,6 +285,15 @@ body {
 
   .footer__parralax-secondplan {
     animation-duration: 500s;
+  }
+  .footer-nav-email {
+    display: block;
+  }
+  .footer__col_last {
+    display: none;
+  }
+  .footer__nav-link i {
+    display: none;
   }
 }
 
