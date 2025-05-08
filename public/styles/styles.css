@@ -90,11 +90,12 @@ body {
   content: "ASUSUAL";
   position: absolute;
   bottom: 0;
-  left: 15px;
+  left: 16px;
   font-weight: 600;
-  font-size: 4rem;
+  font-size: 3.8rem;
   color: rgba(255, 255, 255, 0.1);
 }
+
 
 /* Card Image */
 .card .imgBox {
@@ -287,7 +288,7 @@ body {
 
   .card::after {
     font-size: 3rem;
-    left: 20px;
+    left: 11px;
   }
   .AS-nav-btn li a {
     padding: 0 15px;
