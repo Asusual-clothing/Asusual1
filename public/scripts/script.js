@@ -2,88 +2,41 @@ document.addEventListener("DOMContentLoaded", () => {
   const loader = document.getElementById("loader");
   const homepageContent = document.getElementById("homepage-content");
 
-  // Use gsap.matchMedia() to define responsive animations
-  let mm = gsap.matchMedia();
+  const lastVisit = localStorage.getItem("lastVisit");
+  const currentTime = new Date().getTime();
 
-  mm.add("(min-width: 768px)", () => {
-    // Animations for larger screens (desktops and tablets)
-    gsap.to(".moon", {
-      scale: 3,
-      opacity: 1,
-      duration: 2,
-      ease: "power2.inOut",
-    });
+  // If there's a last visit timestamp, check if an hour has passed
+  if (lastVisit && currentTime - lastVisit < 3600000) { // 1 hour = 3600000ms
+    // If the page was visited within the last hour, skip the loader
+    loader.classList.add("hidden");
+    homepageContent.style.display = "block";
+    initializeAnimations();
+  } else {
+    // If it's the first visit or an hour has passed, show the loader
+    localStorage.setItem("lastVisit", currentTime); // Update the visit timestamp
 
-    gsap.to(".brand-name", {
-      opacity: 1,
-      zIndex: 3,
-      y: -150,
-      duration: 2,
-      ease: "power2.inOut",
-    });
+    let mm = gsap.matchMedia();
 
-    gsap.to(".sword-left", {
-      x: 850,
-      rotate: 180,
-      duration: 2,
-      scaleX: -1,
-      zIndex: 2,
-      ease: "power2.inOut",
-    });
-
-    gsap.to(".sword-right", {
-      x: -850,
-      rotate: -180,
-      duration: 2,
-      zIndex: 2,
-      ease: "power2.inOut",
-      onComplete: () => {
+    mm.add("(min-width: 768px)", () => {
+      gsap.to(".moon", { scale: 3, opacity: 1, duration: 2, ease: "power2.inOut" });
+      gsap.to(".sword-left", { x: 850, rotate: 180, duration: 2, scaleX: -1, ease: "power2.inOut" });
+      gsap.to(".sword-right", { x: -850, rotate: -180, duration: 2, ease: "power2.inOut", onComplete: () => {
         loader.classList.add("hidden");
         homepageContent.style.display = "block";
         initializeAnimations();
-      },
-    });
-  });
-
-  mm.add("(max-width: 767px)", () => {
-    // Animations for smaller screens (mobile devices)
-    gsap.to(".moon", {
-      scale: 1.3,
-      opacity: 1,
-      duration: 2,
-      ease: "power2.inOut",
+      } });
     });
 
-    gsap.to(".brand-name", {
-      opacity: 1,
-      zIndex: 3,
-      y: -100,
-      duration: 2,
-      ease: "power2.inOut",
-    });
-
-    gsap.to(".sword-left", {
-      x: 250,
-      rotate: 180,
-      duration: 2,
-      scaleX: -1,
-      zIndex: 2,
-      ease: "power2.inOut",
-    });
-
-    gsap.to(".sword-right", {
-      x: -250,
-      rotate: -180,
-      duration: 2,
-      zIndex: 2,
-      ease: "power2.inOut",
-      onComplete: () => {
+    mm.add("(max-width: 767px)", () => {
+      gsap.to(".moon", { scale: 1.3, opacity: 1, duration: 2, ease: "power2.inOut" });
+      gsap.to(".sword-left", { x: 250, rotate: 180, duration: 2, scaleX: -1, ease: "power2.inOut" });
+      gsap.to(".sword-right", { x: -250, rotate: -180, duration: 2, ease: "power2.inOut", onComplete: () => {
         loader.classList.add("hidden");
         homepageContent.style.display = "block";
         initializeAnimations();
-      },
+      } });
     });
-  });
+  }
 
   // Handle audio unmute after user interaction
   const audio = document.getElementById("background-sound");
@@ -91,6 +44,12 @@ document.addEventListener("DOMContentLoaded", () => {
     audio.muted = false;
   });
 });
+
+// Your custom animation function
+function initializeAnimations() {
+  // Add any animations you want to run after the loader
+  console.log("Animations initialized!");
+}
 
 const AsHamburger = document.querySelector('.As-hamburger');
 const AsNavLinks = document.querySelector('.As-nav-links');
