@@ -626,13 +626,18 @@ app.post('/add-to-cart', async (req, res) => {
                     }
 
                     .green {
-                        color: #5a9e6e;
-                        font-size: 1.5em;
-                    }
+    color: hsla(0, 0%, 13%, 1);
+    font-size: 1.9em;
+}
 
-                    .red {
-                        color: #d45d6d;
-                    }
+
+
+                    .green {
+    color: hsla(0, 0%, 13%, 1);
+    font-size: 1.9em;
+}
+
+
 
                     .alert {
                         font-weight: 700;
