@@ -1,313 +1,345 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Privacy Policy | As Usual Clothing</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  
-  <link rel="stylesheet" href="styles/styles.css">
-  <link rel="stylesheet" href="styles/footer.css">
-  <link rel="stylesheet" href="styles/navbar.css">
-  <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-/>
-<style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Policy | As Usual Clothing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-@media (min-width: 1280px) {
-    .container {
-        max-width: 1374px;
-        margin-left: 116px;
-    }
-}
-</style>
-</head>
-<body class="min-h-screen bg-[#444] text-white font-sans">
-  <div class="notification-bar">
-    <span class="notification-text"> </span>
-  </div>
-  <!-- this is the responsive navbar -->
-  <nav class="As-navbar">
-    <div class="As-container">
-      <ul class="As-nav-links">
-        <li>
-          <a href="/"><i class="fas fa-home"></i> <span>Home</span></a>
-        </li>
-        <li>
-          <a href="/about"
-            ><i class="fas fa-info-circle"></i> <span>About Us</span></a
-          >
-        </li>
-        <li>
-          <a href="/Products"
-            ><i class="fas fa-box"></i> <span>All Products</span></a
-          >
-        </li>
-        <li>
-          <a href="/all-orders"
-            ><i class="fa fa-shirt"></i><span>Your Orders</span></a
-          >
-        </li>
-        <li>
-          <a href="/contact"
-            ><i class="fas fa-phone"></i><span>Contact Us</span></a
-          >
-        </li>
-      </ul>
-      <div class="As-logo">
-        <a href="/"
-          ><img
-            src="assests/horizontalLogo-removebg-preview.png"
-            alt="Logo"
-        /></a>
-      </div>
-      <div class="AS-nav-btn">
-        <% if (user) { %>
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link rel="stylesheet" href="styles/footer.css" />
+    <link rel="stylesheet" href="styles/navbar.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      @media (min-width: 1280px) {
+        .container {
+          max-width: 1374px;
+          margin-left: 116px;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-[#444] text-white font-sans">
+    <!-- Page Loader -->
+    <div id="page-loader" class="page-loader">
+      <h1 class="slide-in">Asusual</h1>
+      <div class="spinner"></div>
+    </div>
+    <div class="notification-bar">
+      <span class="notification-text"> </span>
+    </div>
+    <!-- this is the responsive navbar -->
+    <nav class="As-navbar">
+      <div class="As-container">
+        <ul class="As-nav-links">
+          <li>
+            <a href="/"><i class="fas fa-home"></i> <span>Home</span></a>
+          </li>
+          <li>
+            <a href="/about"
+              ><i class="fas fa-info-circle"></i> <span>About Us</span></a
+            >
+          </li>
+          <li>
+            <a href="/Products"
+              ><i class="fas fa-box"></i> <span>All Products</span></a
+            >
+          </li>
+          <li>
+            <a href="/all-orders"
+              ><i class="fa fa-shirt"></i><span>Your Orders</span></a
+            >
+          </li>
+          <li>
+            <a href="/contact"
+              ><i class="fas fa-phone"></i><span>Contact Us</span></a
+            >
+          </li>
+        </ul>
+        <div class="As-logo">
+          <a href="/"
+            ><img src="assests/horizontalLogo-removebg-preview.png" alt="Logo"
+          /></a>
+        </div>
+        <div class="AS-nav-btn">
+          <% if (user) { %>
           <li>
             <a href="/cart" class="cart-icon">
               <i class="fas fa-shopping-cart"></i>
               <span>Cart</span>
               <% if (cartCount > 0) { %>
-                <span class="cart-count"><%= cartCount %></span>
+              <span class="cart-count"><%= cartCount %></span>
               <% } %>
             </a>
           </li>
-       
-        <!-- Dropdown for logged-in users -->
-        <!-- Profile Dropdown -->
-        <div class="profile-dropdown">
-          <div class="profile-trigger">
-            <li>
-              <a href="#"
-                ><i class="fas fa-user-circle"></i><span>Profile</span></a
-              >
-            </li>
-          </div>
-          <div class="profile-details">
-            <p><i class="fas fa-user"></i> Name: <%= user.name %></p>
-            <p><i class="fas fa-envelope"></i> Email: <%= user.email %></p>
-            <p>
-              <i class="fas fa-phone"></i> Phone: <%= user.phone || 'N/A' %>
-            </p>
-            <p>
-              <i class="fas fa-calendar"></i> Member Since: <%=
-              user.createdAt ? new Date(user.createdAt).toDateString() :
-              'N/A' %>
-            </p>
-          </div>
-        </div>
-        <li>
-          <a href="/logout"
-            ><i class="fas fa-sign-out-alt"></i><span>Logout</span>
-          </a>
-        </li>
 
-        <% } else { %>
-        <!-- Sign-up link for guests -->
-        <li>
-          <a href="/signup"
-            ><i class="fas fa-user-plus"></i> <span>Sign-Up</span></a
-          >
-        </li>
-        <% } %>
+          <!-- Dropdown for logged-in users -->
+          <!-- Profile Dropdown -->
+          <div class="profile-dropdown">
+            <div class="profile-trigger">
+              <li>
+                <a href="#"
+                  ><i class="fas fa-user-circle"></i><span>Profile</span></a
+                >
+              </li>
+            </div>
+            <div class="profile-details">
+              <p><i class="fas fa-user"></i> Name: <%= user.name %></p>
+              <p><i class="fas fa-envelope"></i> Email: <%= user.email %></p>
+              <p>
+                <i class="fas fa-phone"></i> Phone: <%= user.phone || 'N/A' %>
+              </p>
+              <p>
+                <i class="fas fa-calendar"></i> Member Since: <%= user.createdAt
+                ? new Date(user.createdAt).toDateString() : 'N/A' %>
+              </p>
+            </div>
+          </div>
+          <li>
+            <a href="/logout"
+              ><i class="fas fa-sign-out-alt"></i><span>Logout</span>
+            </a>
+          </li>
+
+          <% } else { %>
+          <!-- Sign-up link for guests -->
+          <li>
+            <a href="/signup"
+              ><i class="fas fa-user-plus"></i> <span>Sign-Up</span></a
+            >
+          </li>
+          <% } %>
+        </div>
+
+        <div class="As-hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </div>
+    </nav>
+    <!-- Header -->
+    <header class="w-full bg-gray-800 py-6 text-center">
+      <h1 class="text-4xl font-bold">Privacy Policy</h1>
+    </header>
 
-      <div class="As-hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
+    <!-- Main Content -->
+    <main id="policyContent" class="max-w-5xl mx-auto px-4 py-10">
+      <!-- Section 1 -->
+      <section class="bg-gray-600 p-6 rounded-t-2xl">
+        <h2 class="text-2xl font-semibold mb-3">1. Data Collection</h2>
+        <ul class="list-disc list-inside space-y-1">
+          <li>
+            Name, phone number, and shipping address for order processing.
+          </li>
+          <li>Email and social media interactions for customer support.</li>
+        </ul>
+      </section>
+
+      <!-- Section 2 -->
+      <section class="bg-gray-700 p-6">
+        <h2 class="text-2xl font-semibold mb-3">2. Use of Information</h2>
+        <ul class="list-disc list-inside space-y-1">
+          <li>Process and ship orders.</li>
+          <li>Send order confirmations and updates.</li>
+          <li>Provide customer support and promotions.</li>
+        </ul>
+      </section>
+
+      <!-- Section 3 -->
+      <section class="bg-gray-600 p-6">
+        <h2 class="text-2xl font-semibold mb-3">
+          3. Data Protection & Security
+        </h2>
+        <ul class="list-disc list-inside space-y-1">
+          <li>
+            We do not sell, rent, or share your personal information with third
+            parties, except for order fulfillment purposes.
+          </li>
+          <li>
+            We implement industry-standard security measures to protect your
+            data.
+          </li>
+          <li>
+            No method of online transmission or storage is 100% secure, so we
+            cannot guarantee absolute security.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Section 4 -->
+      <section class="bg-gray-700 p-6">
+        <h2 class="text-2xl font-semibold mb-3">4. Cookies & Tracking</h2>
+        <ul class="list-disc list-inside space-y-1">
+          <li>
+            We may use cookies to improve your user experience on the website.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Section 5 -->
+      <section class="bg-gray-600 p-6">
+        <h2 class="text-2xl font-semibold mb-3">5. Third-Party Links</h2>
+        <ul class="list-disc list-inside space-y-1">
+          <li>Our website may include links to third-party websites.</li>
+          <li>
+            We are not responsible for their privacy practices or content.
+          </li>
+          <li>
+            Please review their privacy policies before sharing information.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Section 6 -->
+      <section class="bg-gray-700 p-6 rounded-b-2xl">
+        <h2 class="text-2xl font-semibold mb-3">
+          6. Updates to Privacy Policy
+        </h2>
+        <ul class="list-disc list-inside space-y-1">
+          <li>This policy may be updated periodically.</li>
+          <li>We recommend reviewing it regularly to stay informed.</li>
+        </ul>
+      </section>
+
+      <!-- Download Button -->
+      <div class="text-center mt-10">
+        <button
+          onclick="downloadPDF()"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow-lg transition duration-300"
+        >
+          Download PDF
+        </button>
       </div>
-    </div>
-  </nav>
-  <!-- Header -->
-  <header class="w-full bg-gray-800 py-6 text-center">
-    <h1 class="text-4xl font-bold">Privacy Policy</h1>
-  </header>
-
-  <!-- Main Content -->
-  <main id="policyContent" class="max-w-5xl mx-auto px-4 py-10">
-    
-    <!-- Section 1 -->
-    <section class="bg-gray-600 p-6 rounded-t-2xl">
-      <h2 class="text-2xl font-semibold mb-3">1. Data Collection</h2>
-      <ul class="list-disc list-inside space-y-1">
-        <li>Name, phone number, and shipping address for order processing.</li>
-        <li>Email and social media interactions for customer support.</li>
-      </ul>
-    </section>
-
-    <!-- Section 2 -->
-    <section class="bg-gray-700 p-6">
-      <h2 class="text-2xl font-semibold mb-3">2. Use of Information</h2>
-      <ul class="list-disc list-inside space-y-1">
-        <li>Process and ship orders.</li>
-        <li>Send order confirmations and updates.</li>
-        <li>Provide customer support and promotions.</li>
-      </ul>
-    </section>
-
-    <!-- Section 3 -->
-    <section class="bg-gray-600 p-6">
-      <h2 class="text-2xl font-semibold mb-3">3. Data Protection & Security</h2>
-      <ul class="list-disc list-inside space-y-1">
-        <li>We do not sell, rent, or share your personal information with third parties, except for order fulfillment purposes.</li>
-        <li>We implement industry-standard security measures to protect your data.</li>
-        <li>No method of online transmission or storage is 100% secure, so we cannot guarantee absolute security.</li>
-      </ul>
-    </section>
-
-    <!-- Section 4 -->
-    <section class="bg-gray-700 p-6">
-      <h2 class="text-2xl font-semibold mb-3">4. Cookies & Tracking</h2>
-      <ul class="list-disc list-inside space-y-1">
-        <li>We may use cookies to improve your user experience on the website.</li>
-      </ul>
-    </section>
-
-    <!-- Section 5 -->
-    <section class="bg-gray-600 p-6">
-      <h2 class="text-2xl font-semibold mb-3">5. Third-Party Links</h2>
-      <ul class="list-disc list-inside space-y-1">
-        <li>Our website may include links to third-party websites.</li>
-        <li>We are not responsible for their privacy practices or content.</li>
-        <li>Please review their privacy policies before sharing information.</li>
-      </ul>
-    </section>
-
-    <!-- Section 6 -->
-    <section class="bg-gray-700 p-6 rounded-b-2xl">
-      <h2 class="text-2xl font-semibold mb-3">6. Updates to Privacy Policy</h2>
-      <ul class="list-disc list-inside space-y-1">
-        <li>This policy may be updated periodically.</li>
-        <li>We recommend reviewing it regularly to stay informed.</li>
-      </ul>
-    </section>
-
-    <!-- Download Button -->
-    <div class="text-center mt-10">
-      <button onclick="downloadPDF()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow-lg transition duration-300">
-        Download PDF
-      </button>
-    </div>
-
-  </main>
-      <!-- footer  -->
-      <footer class="footer">
-        <div class="footer__parralax">
-          <div class="footer__parralax-trees"></div>
-          <div class="footer__parralax-moto"></div>
-          <div class="footer__parralax-secondplan"></div>
-          <div class="footer__parralax-premierplan"></div>
-          <div class="footer__parralax-voiture"></div>
-        </div>
-        <div class="container">
-          <div class="footer__columns">
-            <div class="footer__col">
-              <h3 class="footer__col-title">
-                <i data-feather="shopping-bag"></i> <span>About</span>
-              </h3>
-              <nav class="footer__nav">
-                <ul class="footer__nav-list">
-                  <li class="footer__nav-item">
-                    <a href="/about" class="/about">
-                      About Us
-                    </a>
-                  </li>
-                  <li class="footer__nav-item">
-                    <a href="/contact" class="/contact">
-                      Contact Us
-                    </a>
-                  </li>
-                  <li class="footer__nav-item">
-                    <a href="/Terms-and-conditions" class="/Terms-and-conditions">
-                      Terms & Conditions
-                    </a>
-                  </li>
-                  <li class="footer__nav-item">
-                    <a href="/privacy_policy" class="footer__nav-link">
-                      Privacy Policy
-                    </a>
-                  </li>
-
-                </ul>
-              </nav>
-            </div>
-            <div class="footer__col">
-              <h3 class="footer__col-title">
-                <i data-feather="share-2"></i> <span>Find Us</span>
-              </h3>
-              <nav class="footer__nav">
-                <ul class="footer__nav-list">
-                  <li class="footer__nav-item">
-                    <a href class="footer__nav-link">
-                      <i data-feather="youtube"></i><span>Youtube</span>
-                    </a>
-                  </li>
-                  <li class="footer__nav-item">
-                    <a href class="footer__nav-link">
-                      <i data-feather="facebook"></i><span>Facebook</span>
-
-                    </a>
-                  </li>
-                  <li class="footer__nav-item">
-                    <a href="https://www.instagram.com/as_usual.clothing/"
-                      class="footer__nav-link">
-                      <i
-                        data-feather="instagram"></i><span>Instagram</span>
-
-                    </a>
-                  </li>
-                  <li class="footer__nav-item footer-nav-email">
-                    <a href="mailto:asusualclothing@gmail.com" class="footer__nav-link">
-                      <!-- <i data-feather="mail"></i> -->
-                      <i data-feather="at-sign"></i>
-                      <span>asusualclothing@gmail.com</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-            <div class="footer__col_last">
-              <h3 class="footer__col-title">
-                <i data-feather="send"></i> <span>Contact Us</span>
-              </h3>
-              <nav class="footer__nav">
-                <ul class="footer__nav-list">
-                  <li class="footer__nav-item">
-                    <a href="mailto:asusualclothing@gmail.com" class="footer__nav-link">
-                      <!-- <i data-feather="mail"></i> -->
-                      <i data-feather="at-sign"></i>
-                      <span>asusualclothing@gmail.com</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
+    </main>
+    <!-- footer  -->
+    <footer class="footer">
+      <div class="footer__parralax">
+        <div class="footer__parralax-trees"></div>
+        <div class="footer__parralax-moto"></div>
+        <div class="footer__parralax-secondplan"></div>
+        <div class="footer__parralax-premierplan"></div>
+        <div class="footer__parralax-voiture"></div>
+      </div>
+      <div class="container">
+        <div class="footer__columns">
+          <div class="footer__col">
+            <h3 class="footer__col-title">
+              <i data-feather="shopping-bag"></i> <span>About</span>
+            </h3>
+            <nav class="footer__nav">
+              <ul class="footer__nav-list">
+                <li class="footer__nav-item">
+                  <a href="/about" class="/about"> About Us </a>
+                </li>
+                <li class="footer__nav-item">
+                  <a href="/contact" class="/contact"> Contact Us </a>
+                </li>
+                <li class="footer__nav-item">
+                  <a href="/Terms-and-conditions" class="/Terms-and-conditions">
+                    Terms & Conditions
+                  </a>
+                </li>
+                <li class="footer__nav-item">
+                  <a href="/privacy_policy" class="footer__nav-link">
+                    Privacy Policy
+                  </a>
+                </li>
+              </ul>
+            </nav>
           </div>
-          
+          <div class="footer__col">
+            <h3 class="footer__col-title">
+              <i data-feather="share-2"></i> <span>Find Us</span>
+            </h3>
+            <nav class="footer__nav">
+              <ul class="footer__nav-list">
+                <li class="footer__nav-item">
+                  <a href class="footer__nav-link">
+                    <i data-feather="youtube"></i><span>Youtube</span>
+                  </a>
+                </li>
+                <li class="footer__nav-item">
+                  <a href class="footer__nav-link">
+                    <i data-feather="facebook"></i><span>Facebook</span>
+                  </a>
+                </li>
+                <li class="footer__nav-item">
+                  <a
+                    href="https://www.instagram.com/as_usual.clothing/"
+                    class="footer__nav-link"
+                  >
+                    <i data-feather="instagram"></i><span>Instagram</span>
+                  </a>
+                </li>
+                <li class="footer__nav-item footer-nav-email">
+                  <a
+                    href="mailto:asusualclothing@gmail.com"
+                    class="footer__nav-link"
+                  >
+                    <!-- <i data-feather="mail"></i> -->
+                    <i data-feather="at-sign"></i>
+                    <span>asusualclothing@gmail.com</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div class="footer__col_last">
+            <h3 class="footer__col-title">
+              <i data-feather="send"></i> <span>Contact Us</span>
+            </h3>
+            <nav class="footer__nav">
+              <ul class="footer__nav-list">
+                <li class="footer__nav-item">
+                  <a
+                    href="mailto:asusualclothing@gmail.com"
+                    class="footer__nav-link"
+                  >
+                    <!-- <i data-feather="mail"></i> -->
+                    <i data-feather="at-sign"></i>
+                    <span>asusualclothing@gmail.com</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
-      </footer>
+      </div>
+    </footer>
 
-  <!-- PDF Script -->
-  <script>
-    async function downloadPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
+    <!-- PDF Script -->
+    <script>
+      async function downloadPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
 
-      let content = document.getElementById('policyContent').innerText;
+        let content = document.getElementById("policyContent").innerText;
 
-      const lines = doc.splitTextToSize(content, 180);
-      doc.text(lines, 15, 20);
+        const lines = doc.splitTextToSize(content, 180);
+        doc.text(lines, 15, 20);
 
-      doc.save('Privacy_Policy_AsUsual.pdf');
-    }  </script>
-<script src="scripts/script.js"></script>
-<script src="https://unpkg.com/feather-icons"></script>
-      <script>
-        feather.replace();
-      </script>
+        doc.save("Privacy_Policy_AsUsual.pdf");
+      }
+    </script>
+    <script src="scripts/script.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+      feather.replace();
+    </script>
 
-</body>
+    <script>
+      window.addEventListener("load", function () {
+        const loader = document.getElementById("page-loader");
+        if (loader) {
+          loader.classList.add("fade-out");
+          setTimeout(() => (loader.style.display = "none"), 500);
+        }
+      });
+    </script>
+  </body>
 </html>

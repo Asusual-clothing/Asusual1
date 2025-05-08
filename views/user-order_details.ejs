@@ -1,292 +1,337 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Order Details</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/styles/navbar.css">
-    <link rel="stylesheet" href="/styles/footer.css">
-    <link rel="stylesheet" href="/styles/styles.css">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles/navbar.css" />
+    <link rel="stylesheet" href="/styles/footer.css" />
+    <link rel="stylesheet" href="/styles/styles.css" />
     <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        dark: {
-                            900: '#0a0a0a',
-                            800: '#1a1a1a',
-                            700: '#2a2a2a',
-                            600: '#3a3a3a',
-                        },
-                        red: {
-                            primary: '#ef4444',
-                            dark: '#dc2626'
-                        }
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              dark: {
+                900: "#0a0a0a",
+                800: "#1a1a1a",
+                700: "#2a2a2a",
+                600: "#3a3a3a",
+              },
+              red: {
+                primary: "#ef4444",
+                dark: "#dc2626",
+              },
+            },
+          },
+        },
+      };
     </script>
     <style>
       .footer__columns {
         margin-left: 170px;
       }
     </style>
-</head>
+  </head>
 
-<body class="bg-dark-800 text-gray-200">
+  <body class="bg-dark-800 text-gray-200">
+    <!-- Page Loader -->
+    <div id="page-loader" class="page-loader">
+      <h1 class="slide-in">Asusual</h1>
+      <div class="spinner"></div>
+    </div>
+
     <div class="notification-bar">
-        <span class="notification-text"> </span>
-      </div>
-      <!-- this is the responsive navbar -->
-      <nav class="As-navbar">
-        <div class="As-container">
-          <ul class="As-nav-links">
-            <li>
-              <a href="/"><i class="fas fa-home"></i> <span>Home</span></a>
-            </li>
-            <li>
-              <a href="/about"
-                ><i class="fas fa-info-circle"></i> <span>About Us</span></a
-              >
-            </li>
-            <li>
-              <a href="/Products"
-                ><i class="fas fa-box"></i> <span>All Products</span></a
-              >
-            </li>
-            <li>
-              <a href="/contact"
-                ><i class="fas fa-phone"></i><span>Contact Us</span></a
-              >
-            </li>
-          </ul>
-          <div class="As-logo">
-            <a href="/"
-              ><img
-                src="/assests/horizontalLogo-removebg-preview.png"
-                alt="Logo"
-            /></a>
-          </div>
-          <div class="AS-nav-btn">
-            <% if (user) { %>
+      <span class="notification-text"> </span>
+    </div>
+    <!-- this is the responsive navbar -->
+    <nav class="As-navbar">
+      <div class="As-container">
+        <ul class="As-nav-links">
+          <li>
+            <a href="/"><i class="fas fa-home"></i> <span>Home</span></a>
+          </li>
+          <li>
+            <a href="/about"
+              ><i class="fas fa-info-circle"></i> <span>About Us</span></a
+            >
+          </li>
+          <li>
+            <a href="/Products"
+              ><i class="fas fa-box"></i> <span>All Products</span></a
+            >
+          </li>
+          <li>
+            <a href="/contact"
+              ><i class="fas fa-phone"></i><span>Contact Us</span></a
+            >
+          </li>
+        </ul>
+        <div class="As-logo">
+          <a href="/"
+            ><img src="/assests/horizontalLogo-removebg-preview.png" alt="Logo"
+          /></a>
+        </div>
+        <div class="AS-nav-btn">
+          <% if (user) { %>
+          <li>
+            <a href="/cart" class="cart-icon">
+              <i class="fas fa-shopping-cart"></i>
+              <span>Cart</span>
+              <% if (cartCount > 0) { %>
+              <span class="cart-count"><%= cartCount %></span>
+              <% } %>
+            </a>
+          </li>
+          <li>
+            <a href="/all-orders"
+              ><i class="fa fa-tshirt"></i><span>Your Orders</span></a
+            >
+          </li>
+          <!-- Dropdown for logged-in users -->
+          <!-- Profile Dropdown -->
+          <div class="profile-dropdown">
+            <div class="profile-trigger">
               <li>
-                <a href="/cart" class="cart-icon">
-                  <i class="fas fa-shopping-cart"></i>
-                  <span>Cart</span>
-                  <% if (cartCount > 0) { %>
-                    <span class="cart-count"><%= cartCount %></span>
-                  <% } %>
-                </a>
+                <a href="#"
+                  ><i class="fas fa-user-circle"></i><span>Profile</span></a
+                >
               </li>
-            <li>
-              <a href="/all-orders"
-                ><i class="fa fa-tshirt"></i><span>Your Orders</span></a
-              >
-            </li>
-            <!-- Dropdown for logged-in users -->
-            <!-- Profile Dropdown -->
-            <div class="profile-dropdown">
-              <div class="profile-trigger">
-                <li>
-                  <a href="#"
-                    ><i class="fas fa-user-circle"></i><span>Profile</span></a
-                  >
-                </li>
-              </div>
-              <div class="profile-details">
-                <p><i class="fas fa-user"></i> Name: <%= user.name %></p>
-                <p><i class="fas fa-envelope"></i> Email: <%= user.email %></p>
-                <p>
-                  <i class="fas fa-phone"></i> Phone: <%= user.phone || 'N/A' %>
-                </p>
-                <p>
-                  <i class="fas fa-calendar"></i> Member Since: <%=
-                  user.createdAt ? new Date(user.createdAt).toDateString() :
-                  'N/A' %>
-                </p>
-              </div>
             </div>
-            <li>
-              <a href="/logout"
-                ><i class="fas fa-sign-out-alt"></i><span>Logout</span>
-              </a>
-            </li>
-    
-            <% } else { %>
-            <!-- Sign-up link for guests -->
-            <li>
-              <a href="/signup"
-                ><i class="fas fa-user-plus"></i> <span>Sign-Up</span></a
-              >
-            </li>
-            <% } %>
+            <div class="profile-details">
+              <p><i class="fas fa-user"></i> Name: <%= user.name %></p>
+              <p><i class="fas fa-envelope"></i> Email: <%= user.email %></p>
+              <p>
+                <i class="fas fa-phone"></i> Phone: <%= user.phone || 'N/A' %>
+              </p>
+              <p>
+                <i class="fas fa-calendar"></i> Member Since: <%= user.createdAt
+                ? new Date(user.createdAt).toDateString() : 'N/A' %>
+              </p>
+            </div>
           </div>
-    
-          <div class="As-hamburger">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
+          <li>
+            <a href="/logout"
+              ><i class="fas fa-sign-out-alt"></i><span>Logout</span>
+            </a>
+          </li>
+
+          <% } else { %>
+          <!-- Sign-up link for guests -->
+          <li>
+            <a href="/signup"
+              ><i class="fas fa-user-plus"></i> <span>Sign-Up</span></a
+            >
+          </li>
+          <% } %>
         </div>
-      </nav>
+
+        <div class="As-hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
     <div class="min-h-screen flex flex-col md:flex-row">
+      <!-- Main Content -->
+      <div class="flex-1 p-4 md:p-8">
+        <div
+          class="bg-dark-700 rounded-xl shadow-md p-4 md:p-6 border border-dark-600"
+        >
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-semibold text-red-primary">
+              Order Details
+            </h2>
+          </div>
 
-        <!-- Main Content -->
-        <div class="flex-1 p-4 md:p-8">
-            <div class="bg-dark-700 rounded-xl shadow-md p-4 md:p-6 border border-dark-600">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-semibold text-red-primary">Order Details</h2>
-                </div>
-
-                <!-- Order Summary -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <!-- Order Information -->
-                    <div class="bg-dark-600 p-4 rounded-lg border border-dark-500">
-                        <h4 class="text-lg font-medium text-gray-200 mb-3 border-b border-dark-500 pb-2">Order
-                            Information</h4>
-                        <div class="space-y-3">
-                            <p class="text-sm"><span class="font-medium text-gray-400">Order #:</span>
-                                <span class="text-red-primary">
-                                    <%= order._id.toString() %>
-                                </span>
-                            </p>
-                            <p class="text-sm"><span class="font-medium text-gray-400">Date:</span>
-                                <%= new Date(order.createdAt).toLocaleString('en-IN', { day: 'numeric' , month: 'short'
-                                    , year: 'numeric' , hour: '2-digit' , minute: '2-digit' }) %>
-                            </p>
-                            <p class="text-sm flex items-center">
-                                <span class="font-medium text-gray-400">Status:</span>
-                                <span class="ml-2 px-2 py-1 rounded-full text-xs font-medium 
-                                    <%= order.status.toLowerCase() === 'completed' ? 'bg-green-900 text-green-300' : 
-                                       order.status.toLowerCase() === 'processing' ? 'bg-blue-900 text-blue-300' :
-                                       order.status.toLowerCase() === 'cancelled' ? 'bg-red-900 text-red-300' :
-                                       'bg-yellow-900 text-yellow-300' %>">
-                                    <%= order.status %>
-                                </span>
-                            </p>
-                            <p class="text-sm"><span class="font-medium text-gray-400">Payment Method:</span>
-                                <%= order.paymentMethod %>
-                            </p>
-                            <p class="text-sm"><span class="font-medium text-gray-400">Payment Status:</span>
-                                <span
-                                    class="<%= order.paymentStatus.toLowerCase() === 'paid' ? 'text-green-400' : 'text-red-400' %>">
-                                    <%= order.paymentStatus %>
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Shipping Address -->
-                    <div class="bg-dark-600 p-4 rounded-lg border border-dark-500">
-                        <h4 class="text-lg font-medium text-gray-200 mb-3 border-b border-dark-500 pb-2">Shipping
-                            Address</h4>
-                        <div class="space-y-3">
-                            <p class="text-sm">
-                                <%= order.shippingAddress.line1 %>
-                            </p>
-                            <% if (order.shippingAddress.line2) { %>
-                                <p class="text-sm">
-                                    <%= order.shippingAddress.line2 %>
-                                </p>
-                                <% } %>
-                                    <p class="text-sm">
-                                        <%= order.shippingAddress.city %>, <%= order.shippingAddress.state %>
-                                    </p>
-                                    <p class="text-sm">
-                                        <%= order.shippingAddress.postalCode %>, <%= order.shippingAddress.country %>
-                                    </p>
-                                    <p class="text-sm"><span class="font-medium text-gray-400">Phone:</span>
-                                        <%= order.shippingAddress.contactNumber %>
-                                    </p>
-                                    <% if (order.trackingNumber) { %>
-                                        <p class="text-sm"><span class="font-medium text-gray-400">Tracking #:</span>
-                                            <span class="text-blue-400">
-                                                <%= order.trackingNumber %>
-                                            </span>
-                                        </p>
-                                        <% } %>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Order Items -->
-                <div class="mb-8">
-                    <h4 class="text-lg font-medium text-gray-200 mb-4">Order Items</h4>
-                    <div class="divide-y divide-dark-500 border border-dark-500 rounded-lg overflow-hidden">
-                        <% order.items.forEach(item=> { %>
-                            <div class="p-4 flex flex-col sm:flex-row gap-4 hover:bg-dark-600 transition">
-                                <img src="<%= item.product.images[0] %>" alt="<%= item.product.name %>"
-                                    class="w-20 h-20 object-cover rounded-md border border-dark-500">
-                                <div class="flex-1">
-                                    <a href="/products/<%= item.product._id.toString() %>"
-                                        class="text-red-primary hover:text-red-300 font-medium">
-                                        <%= item.product.name %>
-                                    </a>
-                                    <div class="flex flex-wrap gap-4 mt-2 text-sm text-gray-400">
-                                        <p><span class="font-medium">Size:</span>
-                                            <%= item.size %>
-                                        </p>
-                                        <p><span class="font-medium">Qty:</span>
-                                            <%= item.quantity %>
-                                        </p>
-                                        <p><span class="font-medium">Price:</span> ₹<%= item.priceAtPurchase.toFixed(2)
-                                                %>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="font-medium text-gray-200 sm:text-right">
-                                    ₹<%= (item.priceAtPurchase * item.quantity).toFixed(2) %>
-                                </div>
-                            </div>
-                            <% }) %>
-                    </div>
-                </div>
-
-                <!-- Order Totals -->
-                <div class="bg-dark-600 p-6 rounded-lg border border-dark-500">
-                    <h4 class="text-lg font-medium text-gray-200 mb-4">Order Summary</h4>
-                    <div class="space-y-3 max-w-md ml-auto">
-                        <div class="flex justify-between">
-                            <span class="text-gray-400">Subtotal:</span>
-                            <span class="font-medium">₹<%= order.subtotal.toFixed(2) %></span>
-                        </div>
-                        <% if (order.discountAmount> 0) { %>
-                            <div class="flex justify-between">
-                                <span class="text-gray-400">Discount:</span>
-                                <span class="font-medium text-green-400">-₹<%= order.discountAmount.toFixed(2) %></span>
-                            </div>
-                            <% } %>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-400">Shipping:</span>
-                                    <span class="font-medium">₹<%= order.shippingFee.toFixed(2) %></span>
-                                </div>
-                                <div class="flex justify-between border-t border-dark-500 pt-3 mt-3">
-                                    <span class="text-lg font-medium">Total:</span>
-                                    <span class="text-lg font-bold text-red-primary">₹<%= order.totalAmount.toFixed(2)
-                                            %></span>
-                                </div>
-                    </div>
-                </div>
-
-                <!-- Order Actions -->
-                <div class="flex justify-end gap-3 mt-6">
-                    <% if (order.status==='Pending' ) { %>
-                        <button class="px-4 py-2 bg-red-primary text-white rounded-md hover:bg-red-dark transition">
-                            Cancel Order
-                        </button>
-                        <% } %>
-                            <a href="/orders"
-                                class="px-4 py-2 bg-dark-600 text-gray-200 rounded-md hover:bg-dark-500 transition border border-dark-500">
-                                Back to Orders
-                            </a>
-                </div>
+          <!-- Order Summary -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Order Information -->
+            <div class="bg-dark-600 p-4 rounded-lg border border-dark-500">
+              <h4
+                class="text-lg font-medium text-gray-200 mb-3 border-b border-dark-500 pb-2"
+              >
+                Order Information
+              </h4>
+              <div class="space-y-3">
+                <p class="text-sm">
+                  <span class="font-medium text-gray-400">Order #:</span>
+                  <span class="text-red-primary">
+                    <%= order._id.toString() %>
+                  </span>
+                </p>
+                <p class="text-sm">
+                  <span class="font-medium text-gray-400">Date:</span>
+                  <%= new Date(order.createdAt).toLocaleString('en-IN', { day:
+                  'numeric' , month: 'short' , year: 'numeric' , hour: '2-digit'
+                  , minute: '2-digit' }) %>
+                </p>
+                <p class="text-sm flex items-center">
+                  <span class="font-medium text-gray-400">Status:</span>
+                  <span
+                    class="ml-2 px-2 py-1 rounded-full text-xs font-medium <%= order.status.toLowerCase() === 'completed' ? 'bg-green-900 text-green-300' : order.status.toLowerCase() === 'processing' ? 'bg-blue-900 text-blue-300' : order.status.toLowerCase() === 'cancelled' ? 'bg-red-900 text-red-300' : 'bg-yellow-900 text-yellow-300' %>"
+                  >
+                    <%= order.status %>
+                  </span>
+                </p>
+                <p class="text-sm">
+                  <span class="font-medium text-gray-400">Payment Method:</span>
+                  <%= order.paymentMethod %>
+                </p>
+                <p class="text-sm">
+                  <span class="font-medium text-gray-400">Payment Status:</span>
+                  <span
+                    class="<%= order.paymentStatus.toLowerCase() === 'paid' ? 'text-green-400' : 'text-red-400' %>"
+                  >
+                    <%= order.paymentStatus %>
+                  </span>
+                </p>
+              </div>
             </div>
+
+            <!-- Shipping Address -->
+            <div class="bg-dark-600 p-4 rounded-lg border border-dark-500">
+              <h4
+                class="text-lg font-medium text-gray-200 mb-3 border-b border-dark-500 pb-2"
+              >
+                Shipping Address
+              </h4>
+              <div class="space-y-3">
+                <p class="text-sm"><%= order.shippingAddress.line1 %></p>
+                <% if (order.shippingAddress.line2) { %>
+                <p class="text-sm"><%= order.shippingAddress.line2 %></p>
+                <% } %>
+                <p class="text-sm">
+                  <%= order.shippingAddress.city %>, <%=
+                  order.shippingAddress.state %>
+                </p>
+                <p class="text-sm">
+                  <%= order.shippingAddress.postalCode %>, <%=
+                  order.shippingAddress.country %>
+                </p>
+                <p class="text-sm">
+                  <span class="font-medium text-gray-400">Phone:</span>
+                  <%= order.shippingAddress.contactNumber %>
+                </p>
+                <% if (order.trackingNumber) { %>
+                <p class="text-sm">
+                  <span class="font-medium text-gray-400">Tracking #:</span>
+                  <span class="text-blue-400">
+                    <%= order.trackingNumber %>
+                  </span>
+                </p>
+                <% } %>
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Items -->
+          <div class="mb-8">
+            <h4 class="text-lg font-medium text-gray-200 mb-4">Order Items</h4>
+            <div
+              class="divide-y divide-dark-500 border border-dark-500 rounded-lg overflow-hidden"
+            >
+              <% order.items.forEach(item=> { %>
+              <div
+                class="p-4 flex flex-col sm:flex-row gap-4 hover:bg-dark-600 transition"
+              >
+                <img
+                  src="<%= item.product.images[0] %>"
+                  alt="<%= item.product.name %>"
+                  class="w-20 h-20 object-cover rounded-md border border-dark-500"
+                />
+                <div class="flex-1">
+                  <a
+                    href="/products/<%= item.product._id.toString() %>"
+                    class="text-red-primary hover:text-red-300 font-medium"
+                  >
+                    <%= item.product.name %>
+                  </a>
+                  <div class="flex flex-wrap gap-4 mt-2 text-sm text-gray-400">
+                    <p>
+                      <span class="font-medium">Size:</span>
+                      <%= item.size %>
+                    </p>
+                    <p>
+                      <span class="font-medium">Qty:</span>
+                      <%= item.quantity %>
+                    </p>
+                    <p>
+                      <span class="font-medium">Price:</span> ₹<%=
+                      item.priceAtPurchase.toFixed(2) %>
+                    </p>
+                  </div>
+                </div>
+                <div class="font-medium text-gray-200 sm:text-right">
+                  ₹<%= (item.priceAtPurchase * item.quantity).toFixed(2) %>
+                </div>
+              </div>
+              <% }) %>
+            </div>
+          </div>
+
+          <!-- Order Totals -->
+          <div class="bg-dark-600 p-6 rounded-lg border border-dark-500">
+            <h4 class="text-lg font-medium text-gray-200 mb-4">
+              Order Summary
+            </h4>
+            <div class="space-y-3 max-w-md ml-auto">
+              <div class="flex justify-between">
+                <span class="text-gray-400">Subtotal:</span>
+                <span class="font-medium"
+                  >₹<%= order.subtotal.toFixed(2) %></span
+                >
+              </div>
+              <% if (order.discountAmount> 0) { %>
+              <div class="flex justify-between">
+                <span class="text-gray-400">Discount:</span>
+                <span class="font-medium text-green-400"
+                  >-₹<%= order.discountAmount.toFixed(2) %></span
+                >
+              </div>
+              <% } %>
+              <div class="flex justify-between">
+                <span class="text-gray-400">Shipping:</span>
+                <span class="font-medium"
+                  >₹<%= order.shippingFee.toFixed(2) %></span
+                >
+              </div>
+              <div
+                class="flex justify-between border-t border-dark-500 pt-3 mt-3"
+              >
+                <span class="text-lg font-medium">Total:</span>
+                <span class="text-lg font-bold text-red-primary"
+                  >₹<%= order.totalAmount.toFixed(2) %></span
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Order Actions -->
+          <div class="flex justify-end gap-3 mt-6">
+            <% if (order.status==='Pending' ) { %>
+            <button
+              class="px-4 py-2 bg-red-primary text-white rounded-md hover:bg-red-dark transition"
+            >
+              Cancel Order
+            </button>
+            <% } %>
+            <a
+              href="/orders"
+              class="px-4 py-2 bg-dark-600 text-gray-200 rounded-md hover:bg-dark-500 transition border border-dark-500"
+            >
+              Back to Orders
+            </a>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- footer  -->
@@ -307,14 +352,10 @@
             <nav class="footer__nav">
               <ul class="footer__nav-list">
                 <li class="footer__nav-item">
-                  <a href="/about" class="/about">
-                    About Us
-                  </a>
+                  <a href="/about" class="/about"> About Us </a>
                 </li>
                 <li class="footer__nav-item">
-                  <a href="/contact" class="/contact">
-                    Contact Us
-                  </a>
+                  <a href="/contact" class="/contact"> Contact Us </a>
                 </li>
                 <li class="footer__nav-item">
                   <a href="/Terms-and-conditions" class="/Terms-and-conditions">
@@ -326,7 +367,6 @@
                     Privacy Policy
                   </a>
                 </li>
-
               </ul>
             </nav>
           </div>
@@ -344,19 +384,21 @@
                 <li class="footer__nav-item">
                   <a href class="footer__nav-link">
                     <i data-feather="facebook"></i><span>Facebook</span>
-
                   </a>
                 </li>
                 <li class="footer__nav-item">
-                  <a href="https://www.instagram.com/as_usual.clothing/"
-                    class="footer__nav-link">
-                    <i
-                      data-feather="instagram"></i><span>Instagram</span>
-
+                  <a
+                    href="https://www.instagram.com/as_usual.clothing/"
+                    class="footer__nav-link"
+                  >
+                    <i data-feather="instagram"></i><span>Instagram</span>
                   </a>
                 </li>
                 <li class="footer__nav-item footer-nav-email">
-                  <a href="mailto:asusualclothing@gmail.com" class="footer__nav-link">
+                  <a
+                    href="mailto:asusualclothing@gmail.com"
+                    class="footer__nav-link"
+                  >
                     <!-- <i data-feather="mail"></i> -->
                     <i data-feather="at-sign"></i>
                     <span>asusualclothing@gmail.com</span>
@@ -372,7 +414,10 @@
             <nav class="footer__nav">
               <ul class="footer__nav-list">
                 <li class="footer__nav-item">
-                  <a href="mailto:asusualclothing@gmail.com" class="footer__nav-link">
+                  <a
+                    href="mailto:asusualclothing@gmail.com"
+                    class="footer__nav-link"
+                  >
                     <!-- <i data-feather="mail"></i> -->
                     <i data-feather="at-sign"></i>
                     <span>asusualclothing@gmail.com</span>
@@ -382,14 +427,22 @@
             </nav>
           </div>
         </div>
-        
       </div>
     </footer>
-      <script src="scripts/script.js"></script>
-      <script src="https://unpkg.com/feather-icons"></script>
-      <script>
-        feather.replace();
-      </script>
-</body>
-
+    <script src="scripts/script.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+      feather.replace();
+    </script>
+    
+    <script>
+      window.addEventListener("load", function () {
+        const loader = document.getElementById("page-loader");
+        if (loader) {
+          loader.classList.add("fade-out");
+          setTimeout(() => (loader.style.display = "none"), 500);
+        }
+      });
+    </script>
+  </body>
 </html>
