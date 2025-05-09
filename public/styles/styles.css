@@ -306,10 +306,10 @@ body {
   overflow: hidden;
   position: relative;
   width: 100%;
-
-  font-family: "Dancing Script", cursive;
+  font-weight: bold;
+  /* font-family: "Dancing Script", cursive; */
   font-optical-sizing: auto;
-  font-weight: 600;
+  /* font-weight: 600; */
   font-style: normal;
 }
 
@@ -365,6 +365,9 @@ body {
     font-size: smaller;
   }
   .profile-details i {
+    display: none;
+  }
+  .blank-notification{
     display: none;
   }
 }
