@@ -1955,37 +1955,32 @@ app.post('/place-order', async (req, res) => {  // Changed route name
 });
 
 app.post('/subscribe', async (req, res) => {
-    const { email } = req.body;
-  
-    if (!email || email.trim() === '') {
-      return res.render('index', {
-        message: 'Please enter your email.'
-      });
-    }
-  
-    try {
-      const newSub = new Subscription({ email });
-      await newSub.save();
-      return res.render('index', {
-        message: 'Subscription successful!'
-      });
-    } catch (err) {
-      console.error(err);
-      if (err.code === 11000) {
-        return res.render('index', {
-          message: 'You are already subscribed.'
-        });
-      }
-      if (err.errors && err.errors.email) {
-        return res.render('index', {
-          message: err.errors.email.message
-        });
-      }
-      return res.render('index', {
-        message: 'Something went wrong. Please try again.'
-      });
-    }
-  });
+  const { email } = req.body;
+
+  try {
+    const newSub = new Subscription({ email });
+    await newSub.save();
+    return res.send(`
+      <script>
+        alert('Subscription successful!');
+        window.location.href = '/';
+      </script>
+    `);
+  } catch (err) {
+    console.error(err);
+    let message = 'Something went wrong. Please try again.';
+    if (err.code === 11000) message = 'You are already subscribed.';
+    if (err.errors && err.errors.email) message = err.errors.email.message;
+
+    return res.send(`
+      <script>
+        alert('${message}');
+        window.location.href = '/';
+      </script>
+    `);
+  }
+});
+
   
   
 
