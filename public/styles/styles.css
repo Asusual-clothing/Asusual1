@@ -104,7 +104,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 20px;
+  /* padding-top: 20px; */
   z-index: 1;
 }
 .card:hover .imgBox {
@@ -200,8 +200,8 @@ body {
 
 .front img,
 .back img {
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+    height: 100%;
 }
 
 .back {
@@ -260,7 +260,8 @@ body {
 
   .card img {
     width: 100%;
-            margin-bottom: 48px;
+    object-fit: fill;  
+    margin-bottom: 48px;
   }
 
   .card .contentBox .buy {

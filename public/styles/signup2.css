@@ -1,209 +1,259 @@
+/* Base Styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Jost", sans-serif;
+}
 
-  body {
-    margin: 0;
-    padding: 0;
+/* Main Container */
+.singup-main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #000, #5a0202, #860505);
+  padding: 20px;
+  box-sizing: border-box;
+}
 
+/* Form Container */
+.main {
+  width: 100%;
+  max-width: 500px;
+  height: 630px;
+  overflow: hidden;
+  background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/cover;
+  border-radius: 10px;
+  box-shadow: 5px 20px 50px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+/* Toggle Checkbox */
+#chk {
+  display: none;
+}
+
+/* Login Form (Default Visible) */
+.login {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  background: #fff;
+  transition: all 0.8s ease-in-out;
+}
+
+/* Signup Form (Hidden by Default) */
+.signup {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background:#5a0202;
+  border-radius: 60% / 10%;
+  transform: translateY(-180px);
+  transition: all 0.8s ease-in-out;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+/* Form Labels */
+label {
+  color: #860505;
+  font-size: 2.3em;
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+}
+
+.signup label {
+  color: #fff;
+  transform: scale(0.6);
+  margin: 50px 0;
+}
+
+/* Form Inputs */
+input {
+  width: 60%;
+  height: 20px;
+  background: #e0dede;
+  margin: 15px auto;
+  padding: 18px;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  display: block;
+  font-family: "Jost", sans-serif;
+  font-size: 0.9em;
+}
+
+/* Form Buttons */
+button {
+  width: 60%;
+  height: 40px;
+  margin: 20px auto;
+  color: #fff;
+  background: #860505;
+  font-size: 1em;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  transition: all 0.2s ease-in;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+button:hover {
+  background: #6e0404;
+  transform: translateY(-2px);
+}
+
+/* Forgot Password Link */
+.remember-me {
+  text-align: center;
+font-size: 0.9em;
+  margin-top: 10px;
+}
+
+.remember-me a {
+  color: #860505;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.remember-me a:hover {
+  text-decoration: underline;
+}
+
+/* OTP Verification Section */
+.otpverification {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  margin: 0 auto;
+  gap: 10px;
+}
+
+#otpSignup {
+  flex: 1;
+  margin: 0;
+}
+
+#verifyOtpSignup {
+  width: auto;
+  margin: 0;
+  padding: 0 15px;
+}
+
+/* Toggle Animation States */
+#chk:checked ~ .signup {
+  transform: translateY(-500px);
+  border-radius: 0;
+}
+
+#chk:checked ~ .signup label {
+  transform: scale(1);
+  margin: 0px 0;
+}
+
+#chk:checked ~ .login label {
+  transform: scale(0.6);
+  margin: 50px 0;
+}
+
+/* Loading Spinner */
+.button-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
-  .singup-main-container{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: linear-gradient(to bottom, #000, #5a0202, #860505);
-  }
+}
 
+/* Notification Styles */
+.toastify-success {
+  background: #4caf50;
+}
+
+.toastify-error {
+  background: #f44336;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
   .main {
-    width: 100%;
-    max-width: 500px;
-    height: 700px;
-    background: red;
-    overflow: hidden;
-    background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/ cover;
-    border-radius: 10px;
-    font-family: "Jost", sans-serif;
-    box-shadow: 5px 20px 50px #000;
+    width: 90%;
+    height: auto;
+    min-height: 600px;
   }
 
-  #chk {
-    display: none;
+  input,
+  button,
+  .otpverification {
+    width: 80%;
   }
+}
 
-  .signup {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
+@media screen and (max-width: 480px) {
+  .main {
+    width: 95%;
+    height: auto;
+    min-height: 550px;
   }
 
   label {
-    color: #fff;
-    font-size: 2.3em;
-    justify-content: center;
-    display: flex;
-    /* margin: 50px; */
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.5s ease-in-out;
+    font-size: 1.8em;
+    margin: 30px 0;
   }
 
-  input {
-    width: 60%;
-    height: 10px;
-    background: #e0dede;
-    justify-content: center;
-    display: flex;
-    margin: 20px auto;
-    padding: 18px;
-    border: none;
-    outline: none;
-    border-radius: 5px;
-  }
-
+  input,
   button {
-    width: 60%;
-    height: 40px;
-    margin: 10px auto;
-    justify-content: center;
-    display: block;
-    color: #fff;
-    background: #860505;
-    font-size: 1em;
-    font-weight: bold;
-    margin-top: 30px;
-    outline: none;
-    border: none;
-    border-radius: 5px;
-    transition: 0.2s ease-in;
-    cursor: pointer;
-    box-shadow: 5px 20px 50px #000;
-  }
-
-  button:hover {
-    background: #860505db;
-  }
-
-  .login {
-    height: 460px;
-    background: #eee;
-    border-radius: 60% / 10%;
-    transform: translateY(-180px);
-    transition: 0.8s ease-in-out;
-  }
-
-  .login_label {
-    color: #860505;
-    transform: scale(0.6);
-    margin: 60px;
-  }
-
-  .login label a {
-    color: #860505;
-    transform: scale(.4);
-    margin: 0;
-    text-decoration: none;
-  }
-
-  .remember-me {
-    margin: 0;
+    width: 85%;
+    padding: 15px;
   }
 
   .otpverification {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    #otpSignup,
-    #verifyOtpSignup {
-      margin: 0;
-      flex: 1;
-    }
-
+    width: 85%;
+    flex-direction: column;
+    gap: 5px;
   }
 
-  #chk:checked~.login {
-    transform: translateY(-500px);
+  #verifyOtpSignup {
+    width: 85%;
+    margin-top: 5px;
   }
 
-  #chk:checked~.login label {
-    transform: scale(1);
+  #chk:checked ~ .signup {
+    transform: translateY(-480px);
   }
+}
 
-  #chk:checked~.signup label {
-    transform: scale(0.6);
-  }
-  @media screen and (max-width: 768px) {
-    .singup-main-container {
-      height: 100vh;
-    }
+/* Accessibility Focus Styles */
+input:focus,
+button:focus {
+  outline: 2px solid #860505;
+  outline-offset: 2px;
+}
 
-    .main {
-      width: 90%;
-      height: 100%;
-    }
-
-    input {
-      width: 80%;
-    }
-
-    button {
-      width: 80%;
-    }
-    
-  }
-  @media screen and (max-width: 480px) {
-  
-    .otpverification{
-        width: 80%;
-        margin: 0 auto  ;
-    }
-    .signup {
-      height: 102%;
-      margin-top: 39px;
-  }
-
-    #loginForm {
-     height: 82%;
-    }
-    .main {
-      width: 94%;
-      height: 80%;
-  }
-
-    input {
-      width: 80%;
-    }
-
-    button {
-      width: 80%;
-      margin: 5px auto; 
-    }
-    
-  }
-
-
-    .button-spinner {
-      display: inline-block;
-      width: 14px;
-      height: 14px;
-      border: 2px solid rgba(255, 255, 255, 0.7);
-      border-radius: 50%;
-      border-top-color: transparent;
-      animation: spin 1s linear infinite;
-      margin-right: 8px;
-      vertical-align: middle;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    /* Toastify custom styles */
-    .toastify-success {
-      background: #4caf50;
-    }
-
-    .toastify-error {
-      background: #f44336;
-    }
+/* Disabled Button State */
+button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+}

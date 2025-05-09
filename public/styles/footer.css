@@ -5,16 +5,17 @@ body {
 }
 
 body {
-  font-family: "Open Sans", sans-serif;
   display: flex;
   flex-direction: column;
   padding-top: 300px;
-} */
+  } */
+  
+  .container .footer-container {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    font-family: "Open Sans", sans-serif;
 
-.container .footer-container {
-  width: 100%;
-  max-width: 1600px;
-  margin: 0 auto;
 }
 
 .footer__col {
@@ -218,7 +219,7 @@ body {
     /* flex-direction: column; */
     /* gap: 2rem; */
     padding: 4rem 0 0 0;
-    margin-left: 89px;
+    
   }
 
   .footer__col-title {
@@ -361,4 +362,10 @@ body {
       max-width: 1280px;
       margin-left: 116px;
   }
+}
+@media (max-width: 768px) {
+    .footer__nav {
+font-size: small;
+        
+    }
 }

@@ -78,6 +78,25 @@
       <div class="main">
         <input type="checkbox" id="chk" aria-hidden="true" />
 
+        <div class="login">
+          <form action="/user/login" method="POST" id="loginForm">
+            <label for="chk" aria-hidden="true" class="login_label">Login</label>
+            <input type="email" name="email" placeholder="Email" required />
+            <input
+              type="password"
+              name="password"
+              id="passwordSignin"
+              placeholder="Password"
+              required
+            />
+
+            <label for="" class="remember-me">
+              <a href="/forget-password">Forgot password?</a>
+            </label>
+            <button type="submit" id="signIn">Sign In</button>
+          </form>
+        </div>
+
         <div class="signup">
           <form action="/user/signup" method="POST" id="signupForm">
             <label for="chk" aria-hidden="true">Sign up</label>
@@ -105,13 +124,6 @@
               required
             />
 
-            <input
-              type="text"
-              name="address"
-              id="address"
-              placeholder="Address"
-              required
-            />
             <button type="button" id="generateOtpSignup">Generate OTP</button>
             <div class="otpverification">
               <input
@@ -135,27 +147,6 @@
             />
 
             <button type="submit" id="signUp" disabled>Sign Up</button>
-          </form>
-        </div>
-
-        <div class="login">
-          <form action="/user/login" method="POST" id="loginForm">
-            <label for="chk" aria-hidden="true" class="login_label"
-              >Login</label
-            >
-            <input type="email" name="email" placeholder="Email" required />
-            <input
-              type="password"
-              name="password"
-              id="passwordSignin"
-              placeholder="Password"
-              required
-            />
-
-            <label for="" class="remember-me">
-              <a href="/forget-password">Forgot password?</a>
-            </label>
-            <button type="submit" id="signIn">Sign In</button>
           </form>
         </div>
       </div>
