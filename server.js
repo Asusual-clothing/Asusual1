@@ -49,6 +49,41 @@ const attachUser = async (req, res, next) => {
     }
 };
 
+// Admin Authentication Middleware
+const checkAdminAuth = async (req, res, next) => {
+    try {
+        // Check for admin ID in session or cookies
+        const adminId = req.session.adminId || req.cookies.adminId;
+        
+        if (!adminId) {
+            // If no admin ID found, redirect to admin login
+            return res.redirect('/admin-login');
+        }
+
+        // Verify the admin exists in database
+        const admin = await Admin.findById(adminId);
+        
+        if (!admin) {
+            // If admin not found, clear session and cookies
+            req.session.destroy();
+            res.clearCookie('adminId');
+            return res.redirect('/admin-login');
+        }
+
+        // Attach admin to request object for use in routes
+        req.admin = admin;
+        res.locals.admin = admin; // Make admin available in views
+        
+        next(); // Proceed to the next middleware/route
+    } catch (error) {
+        console.error('Admin auth error:', error);
+        // Clear invalid session/cookies on error
+        req.session.destroy();
+        res.clearCookie('adminId');
+        res.redirect('/admin-login');
+    }
+};
+
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -167,7 +202,7 @@ app.get('/admin-login', (req, res) => {
     res.render("admin_login");
 })
 
-app.get('/edit-poster', async (req, res) => {
+app.get('/edit-poster',  checkAdminAuth, async (req, res) => {
     try {
       const poster = await Poster.findOne({});
       const notification = await Notification.findOne({}) || { notification: '' };
@@ -179,7 +214,7 @@ app.get('/edit-poster', async (req, res) => {
   });
   
 
-app.get('/admin-option', async (req, res) => {
+app.get('/admin-option',  checkAdminAuth, async (req, res) => {
     try {
         // Get counts in parallel
         const [totalProducts, totalOrders, activeCoupons] = await Promise.all([
@@ -276,7 +311,7 @@ app.post('/admin/login', async (req, res) => {
 
 // For Notification Update
 
-app.post('/admin/update-notification', async (req, res) => {
+app.post('/admin/update-notification',  async (req, res) => {
     try {
       const { notification } = req.body;
   
@@ -355,7 +390,7 @@ app.post('/admin/logout', (req, res) => {
 
 
 
-app.get('/admindashboard', async (req, res) => {
+app.get('/admindashboard', checkAdminAuth, async (req, res) => {
     try {
         const products = await Product.find().sort({ createdAt: 'desc' });
         res.render('admindashboard', { products });
@@ -488,7 +523,7 @@ app.post('/delete_product/:id', async (req, res) => {
 
 
 
-app.get('/edit-product', async (req, res) => {
+app.get('/edit-product',  checkAdminAuth, async (req, res) => {
     const products = await Product.find({}, 'name price front_image category brand bestseller sizes description');
     const updatedProducts = products.map(product => ({
         ...product._doc,
@@ -538,7 +573,7 @@ app.get('/', async (req, res) => {
 
 
 
-app.get('/add-product', (req, res) => {
+app.get('/add-product',  checkAdminAuth, (req, res) => {
     res.render('add_product');
 });
 
@@ -1287,7 +1322,7 @@ app.get('/coupons', async (req, res) => {
 });
 
 // GET: Form to add new coupon
-app.get('/add-coupon', (req, res) => {
+app.get('/add-coupon',  checkAdminAuth, (req, res) => {
     res.render('coupon_form', {
         coupons: [],
         coupon: null
@@ -1295,7 +1330,7 @@ app.get('/add-coupon', (req, res) => {
 });
 
 // GET: Form to edit existing coupon
-app.get('/edit/:id', async (req, res) => {
+app.get('/edit/:id',  checkAdminAuth, async (req, res) => {
     try {
         const [coupons, coupon] = await Promise.all([
             Coupon.find().sort({ createdAt: -1 }),
@@ -1719,7 +1754,7 @@ app.post('/cart/apply-coupon', async (req, res) => {
 
 // Remove Coupon Route - Now using redirects
 // Change from POST to GET
-app.get('/cart/remove-coupon', async (req, res) => {
+app.get('/cart/remove-coupon',  checkAdminAuth, async (req, res) => {
     try {
         const userId = req.user?._id || req.session.userId;
         if (!userId) {
@@ -2023,7 +2058,7 @@ app.post('/api/save-design', async (req, res) => {
 // Get all orders for the current user
 // Get all orders (without user filtering)
 // GET: All Orders for Admin
-app.get('/orders', async (req, res) => {
+app.get('/orders',  checkAdminAuth, async (req, res) => {
     try {
         const orders = await Order.find()
             .populate({
@@ -2178,7 +2213,7 @@ app.delete('/admin/contacts/:id', async (req, res) => {
     }
 });
 
-app.get('/admin/contacts', async (req, res) => {
+app.get('/admin/contacts',  checkAdminAuth, async (req, res) => {
     try {
         const contacts = await Contact.find().sort({ submittedAt: -1 });
         res.render('contact_request', { contacts });
