@@ -37,7 +37,7 @@ body {
 .login {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 101%;
   padding: 20px;
   box-sizing: border-box;
   background: #fff;
@@ -199,8 +199,6 @@ font-size: 0.9em;
 @media screen and (max-width: 768px) {
   .main {
     width: 90%;
-    height: auto;
-    min-height: 600px;
   }
 
   input,
@@ -213,8 +211,6 @@ font-size: 0.9em;
 @media screen and (max-width: 480px) {
   .main {
     width: 95%;
-    height: auto;
-    min-height: 550px;
   }
 
   label {
