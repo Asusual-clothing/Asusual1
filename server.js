@@ -97,6 +97,7 @@ app.use(session({
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     cookie: { secure: false, maxAge: 3600000 }
 }));
+
 app.use(express.json()); // For JSON bodies
 app.use(express.urlencoded({ extended: true })); // For form data
 app.use(flash());
@@ -162,6 +163,7 @@ const Order = require('./models/OrderSchema');
 const Contact = require('./models/Contact');
 const Notification=require('./models/Notification');
 const Subscription=require('./models/subscription');
+const Testimonial=require('./models/Testimonial')
 const Coupon = require('./models/CouponSchema '); // Adjust path if needed
 
 
@@ -486,6 +488,72 @@ app.post('/edit-product/:id',
     }
 }
 
+
+
+
+//##################################Testimonial editiing###########################################33
+// Show testimonial page with list + form (edit if ID exists)
+app.get('/admin/testimonials/:id?', async (req, res) => {
+  const testimonials = await Testimonial.find();
+  const testimonial = req.params.id ? await Testimonial.findById(req.params.id) : null;
+  res.render('testimonials', { testimonials, testimonial });
+});
+app.post('/admin/testimonials', uploads.single('image'), async (req, res) => {
+  try {
+    let imageUrl = '';
+    if (req.file) {
+      imageUrl = req.file.path; // This is the Cloudinary URL
+    }
+
+    const testimonial = new Testimonial({
+      name: req.body.name,
+      role: req.body.role,
+      imageUrl: imageUrl,
+      quote: req.body.quote,
+    });
+
+    await testimonial.save();
+    res.redirect('/admin/testimonials');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error uploading image or saving testimonial');
+  }
+});
+
+
+
+// POST route to handle editing a testimonial
+app.post('/admin/testimonials/:id', uploads.single('image'), async (req, res) => {
+  try {
+    const testimonial = await Testimonial.findById(req.params.id);
+    if (!testimonial) return res.status(404).send('Testimonial not found');
+
+    // Use new image if uploaded, else keep old
+    const imageUrl = req.file ? req.file.path : testimonial.imageUrl;
+
+    testimonial.name = req.body.name;
+    testimonial.role = req.body.role;
+    testimonial.imageUrl = imageUrl;
+    testimonial.quote = req.body.quote;
+
+    await testimonial.save();
+    res.redirect('/admin/testimonials');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error updating testimonial');
+  }
+});
+
+
+// Handle add/update
+
+// Handle delete
+app.post('/admin/testimonials/:id/delete', async (req, res) => {
+  await Testimonial.findByIdAndDelete(req.params.id);
+  res.redirect('/admin/testimonials');
+});
+
+
 app.post('/delete_product/:id', async (req, res) => {
     try {
         const product = await Product.findById(req.params.id);
@@ -550,7 +618,7 @@ app.get('/', async (req, res) => {
         }
 
         const shuffledProducts = shuffle([...Products]); // Create a copy and shuffle
-
+        const testimonials = await Testimonial.find({});
         const notification = await Notification.findOne({}) || { notification: '' };
         const poster = await Poster.findOne({});
         const posters = poster ? poster.image : [];
@@ -561,6 +629,7 @@ app.get('/', async (req, res) => {
             Products: shuffledProducts,
             posters,
             headings,
+            testimonials,
             titles,
             notification,
             message: null 
