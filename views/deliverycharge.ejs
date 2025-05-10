@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +8,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="min-h-screen flex flex-col md:flex-row">
-  <div class="bg-indigo-800 text-white w-full md:w-64 p-4">
+  <div class="min-h-screen flex flex-col md:flex-row">  
+
+
+     <div class="bg-indigo-800 text-white w-full md:w-64 p-4">
             <div class="mb-8 p-4 border-b border-indigo-700">
                 <h1 class="text-2xl font-bold">Admin Dashboard</h1>
                 <p class="text-indigo-300 text-sm">AsUsual</p>
@@ -57,51 +59,31 @@
                 </button>
             </div>
         </div>
-
-  <div class="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md">
-  <h1 class="text-2xl font-bold mb-4">Manage Testimonials</h1>
-
-  <!-- List of All Testimonials -->
-  <h2 class="text-xl font-semibold mb-3">All Testimonials</h2>
-  <ul class="space-y-4 mb-6">
-    <% testimonials.forEach(t => { %>
-      <li class="flex items-start gap-4 bg-gray-50 p-4 rounded-md shadow-sm">
-        <img src="<%= t.imageUrl %>" alt="image" class="w-12 h-12 rounded-full object-cover border border-gray-300" />
-        <div class="flex-1">
-          <strong class="block text-lg"><%= t.name %></strong>
-          <span class="text-sm text-gray-600"><%= t.role %></span>
-          <p class="mt-1 text-gray-800 italic">"<%= t.quote %>"</p>
-          <div class="mt-2 space-x-2">
-            <a href="/admin/testimonials/<%= t._id %>" class="text-blue-600 hover:underline">Edit</a>
-            |
-            <form method="POST" action="/admin/testimonials/<%= t._id %>/delete" class="inline">
-              <button type="submit" onclick="return confirm('Delete this testimonial?')" class="text-red-500 hover:underline">Delete</button>
-            </form>
-          </div>
-        </div>
-      </li>
-    <% }) %>
-  </ul>
-
-  <!-- Add/Edit Testimonial Form -->
-  <h2 class="text-xl font-semibold mb-3"><%= testimonial ? 'Edit' : 'Add' %> Testimonial</h2>
-  <form method="POST" action="/admin/testimonials/<%= testimonial ? testimonial._id : '' %>" enctype="multipart/form-data" class="space-y-4">
-    <input type="text" name="name" placeholder="Name" value="<%= testimonial?.name || '' %>" required
-      class="w-full p-2 border border-gray-300 rounded-md" />
-    <input type="text" name="role" placeholder="Role" value="<%= testimonial?.role || '' %>" required
-      class="w-full p-2 border border-gray-300 rounded-md" />
-    <input type="file" name="image" accept="image/*" <%= testimonial ? '' : 'required' %>
-      class="w-full p-2 border border-gray-300 rounded-md" />
-    <textarea name="quote" placeholder="Testimonial" required
-      class="w-full p-2 border border-gray-300 rounded-md resize-none h-28"><%= testimonial?.quote || '' %></textarea>
-    <button type="submit"
-      class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-all duration-200">
-      <%= testimonial ? 'Update' : 'Add' %> Testimonial
+     <div class="max-w-md mx-auto mt-12 bg-white p-6 rounded-xl shadow-md border border-gray-200">
+  <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Set Delivery Cost</h1>
+  <form method="POST" action="/admin/delivery-cost" class="space-y-4">
+    <div>
+      <label for="cost" class="block text-gray-700 font-medium mb-2">Delivery Cost (in ₹):</label>
+      <input 
+        type="number" 
+        name="cost" 
+        id="cost" 
+        value="<%= delivery.cost %>" 
+        required 
+        min="0"
+        class="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+    <button 
+      type="submit" 
+      class="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+    >
+      Save
     </button>
   </form>
 </div>
 
-
+  </div>
 
 </body>
 </html>

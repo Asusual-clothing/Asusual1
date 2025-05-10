@@ -164,6 +164,7 @@ const Contact = require('./models/Contact');
 const Notification=require('./models/Notification');
 const Subscription=require('./models/subscription');
 const Testimonial=require('./models/Testimonial')
+const DeliveryCost = require('./models/Deliveryschema');
 const Coupon = require('./models/CouponSchema '); // Adjust path if needed
 
 
@@ -585,11 +586,6 @@ app.post('/delete_product/:id', async (req, res) => {
     }
 });
 
-  
-  
-
-
-
 
 app.get('/edit-product',  checkAdminAuth, async (req, res) => {
     const products = await Product.find({}, 'name price front_image category brand bestseller sizes description');
@@ -601,6 +597,38 @@ app.get('/edit-product',  checkAdminAuth, async (req, res) => {
 });
 
 
+//##################################Delivery charge######################################
+app.get('/admin/delivery-cost', async (req, res) => {
+  try {
+    let delivery = await DeliveryCost.findOne();
+    if (!delivery) {
+      delivery = new DeliveryCost({ cost: 0 });
+      await delivery.save();
+    }
+    res.render('deliverycharge', { delivery });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
+
+// Update delivery cost
+app.post('/admin/delivery-cost', async (req, res) => {
+  try {
+    let delivery = await DeliveryCost.findOne();
+    if (!delivery) {
+      delivery = new DeliveryCost({ cost: req.body.cost });
+    } else {
+      delivery.cost = req.body.cost;
+      delivery.updatedAt = Date.now();
+    }
+    await delivery.save();
+    res.redirect('/admin/delivery-cost');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
 
 
 //##################################### Handle homepage ####################################################
@@ -1878,6 +1906,10 @@ app.get('/cart', async (req, res) => {
             .populate('items.product')
             .populate('appliedCoupon');
 
+        // Get the latest delivery cost from database
+        const deliveryCostDoc = await DeliveryCost.findOne().sort({ updatedAt: -1 });
+        const deliveryCost = deliveryCostDoc ? deliveryCostDoc.cost : 5.00; // Default to 5.00 if not found
+
         let discountAmount = 0;
         const couponMessage = req.session.couponMessage;
         delete req.session.couponMessage; // Clear the message after displaying
@@ -1903,10 +1935,20 @@ app.get('/cart', async (req, res) => {
             cart = { items: [] };
         }
 
+        // Calculate subtotal
+        let subtotal = 0;
+        if (cart.items && cart.items.length > 0) {
+            subtotal = cart.items.reduce((sum, item) => {
+                return sum + (item.product ? item.product.price * item.quantity : 0);
+            }, 0);
+        }
+
         res.render('cart', {
             user,
             cart,
+            deliveryCost, // Pass deliveryCost to the view
             discountAmount,
+            subtotal, // Pass subtotal to avoid recalculating in the view
             message: couponMessage,
             error: null
         });
@@ -1916,6 +1958,9 @@ app.get('/cart', async (req, res) => {
         res.status(500).render('cart', {
             user: { name: "Guest" },
             cart: { items: [] },
+            deliveryCost: 5.00, // Fallback delivery cost
+            discountAmount: 0,
+            subtotal: 0,
             error: 'Failed to load cart'
         });
     }
@@ -2018,7 +2063,8 @@ app.post('/place-order', async (req, res) => {  // Changed route name
         const subtotal = cart.items.reduce((total, item) =>
             total + (item.product.price * item.quantity), 0);
 
-        const shippingFee = 5.00;
+         const deliverySetting = await DeliveryCost.findOne({});
+    const shippingFee = deliverySetting ? deliverySetting.cost : 0;
         const discountAmount = cart.discountAmount || 0;
         const totalAmount = subtotal - discountAmount + shippingFee;
 

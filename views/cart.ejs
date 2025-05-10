@@ -305,16 +305,15 @@
             </div>
 
             <% if (cart && cart.items && cart.items.length > 0) { 
-                let subtotal = 0;
-                cart.items.forEach(item => {
-                    if (item.product && item.product.price) {
-                        subtotal += item.product.price * item.quantity;
-                    }
-                });
-                
-                const shipping = 5.00;
-                let total = subtotal + shipping - (discountAmount || 0);
-            %>
+    let subtotal = 0;
+    cart.items.forEach(item => {
+        if (item.product && item.product.price) {
+            subtotal += item.product.price * item.quantity;
+        }
+    });
+    
+    let total = subtotal + deliveryCost - (discountAmount || 0);
+%>
                 <div class="cart-summary">
                     <h5><b>Summary</b></h5>
                     <hr>
@@ -324,10 +323,11 @@
                     </div>
 
                     <form id="coupon-form" action="/cart/apply-coupon" method="POST">
-                        <p style="margin-top: 18px;">SHIPPING</p>
-                        <select>
-                            <option>Standard Delivery - Rs<%= shipping.toFixed(2) %></option>
-                        </select>
+
+                    <p style="margin-top: 18px;">SHIPPING</p>
+                    <select>
+                      <option>Standard Delivery - Rs<%= deliveryCost.toFixed(2) %></option>
+                    </select>
 
                         <p style="    margin-top: 15px;">DISCOUNT CODE</p>
                         <div class="coupon-input-group">
@@ -357,17 +357,17 @@
                     </form>
 
                     <div class="summary-total">
-                        <div class="price-breakdown">
-                            <div class="price-line total-line">
-                                <span>TOTAL PRICE:</span>
-                                <span>Rs <%= total.toFixed(2) %></span>
-                            </div>
-                        </div>
+        <div class="price-breakdown">
+            <div class="price-line total-line">
+                <span>TOTAL PRICE:</span>
+                <span>Rs <%= (subtotal + deliveryCost - (discountAmount || 0)).toFixed(2) %></span>
+            </div>
+        </div>
 
-                        <% if (discountAmount > 0) { %>
-                            <p class="discount-message">You saved: Rs <%= discountAmount.toFixed(2) %></p>
-                        <% } %>
-                    </div>
+        <% if (discountAmount > 0) { %>
+            <p class="discount-message">You saved: Rs <%= discountAmount.toFixed(2) %></p>
+        <% } %>
+    </div>
 
                     <div class="order-controls">
                         <button id="proceed-to-order" class="proceed-btn">Proceed to Order</button>
@@ -556,87 +556,88 @@
 
     <script src="/scripts/cart.js"></script>
     <script>
-        // Toggle shipping form visibility
-        document.getElementById('proceed-to-order').addEventListener('click', function() {
-            document.getElementById('shipping-form-container').style.display = 'block';
-        });
+    // Toggle shipping form visibility
+    document.getElementById('proceed-to-order').addEventListener('click', function () {
+        document.getElementById('shipping-form-container').style.display = 'block';
+    });
 
-        document.getElementById('cancel-order').addEventListener('click', function() {
-            document.getElementById('shipping-form-container').style.display = 'none';
-        });
+    document.getElementById('cancel-order').addEventListener('click', function () {
+        document.getElementById('shipping-form-container').style.display = 'none';
+    });
 
-        // Quantity adjustment functionality
-        document.querySelectorAll('.increase').forEach(button => {
-            button.addEventListener('click', function() {
-                const quantityElement = this.parentElement.querySelector('.cart-quantity');
-                let quantity = parseInt(quantityElement.textContent);
-                quantityElement.textContent = quantity + 1;
+    // Quantity adjustment functionality
+    document.querySelectorAll('.increase').forEach(button => {
+        button.addEventListener('click', function () {
+            const quantityElement = this.parentElement.querySelector('.cart-quantity');
+            let quantity = parseInt(quantityElement.textContent);
+            quantityElement.textContent = quantity + 1;
+            updateItemTotal(this.closest('.cart-item'));
+        });
+    });
+
+    document.querySelectorAll('.decrease').forEach(button => {
+        button.addEventListener('click', function () {
+            const quantityElement = this.parentElement.querySelector('.cart-quantity');
+            let quantity = parseInt(quantityElement.textContent);
+            if (quantity > 1) {
+                quantityElement.textContent = quantity - 1;
                 updateItemTotal(this.closest('.cart-item'));
-            });
+            }
         });
+    });
 
-        document.querySelectorAll('.decrease').forEach(button => {
-            button.addEventListener('click', function() {
-                const quantityElement = this.parentElement.querySelector('.cart-quantity');
-                let quantity = parseInt(quantityElement.textContent);
-                if (quantity > 1) {
-                    quantityElement.textContent = quantity - 1;
-                    updateItemTotal(this.closest('.cart-item'));
-                }
-            });
+    function updateItemTotal(itemElement) {
+        const price = parseFloat(itemElement.dataset.price);
+        const quantity = parseInt(itemElement.querySelector('.cart-quantity').textContent);
+        const totalElement = itemElement.querySelector('.item-total');
+        totalElement.textContent = (price * quantity).toFixed(2);
+        updateCartTotal();
+    }
+
+    function updateCartTotal() {
+        const deliveryCost = <%= deliveryCost %>;
+        let subtotal = 0;
+        document.querySelectorAll('.cart-item').forEach(item => {
+            subtotal += parseFloat(item.querySelector('.item-total').textContent);
         });
+        const discount = <%= discountAmount || 0 %>;
+        const total = subtotal + deliveryCost - discount;
 
-        function updateItemTotal(itemElement) {
-            const price = parseFloat(itemElement.dataset.price);
-            const quantity = parseInt(itemElement.querySelector('.cart-quantity').textContent);
-            const totalElement = itemElement.querySelector('.item-total');
-            totalElement.textContent = (price * quantity).toFixed(2);
-            updateCartTotal();
-        }
+        document.getElementById('total-price').textContent = subtotal.toFixed(2);
+        document.querySelector('.total-line span:last-child').textContent = 'Rs ' + total.toFixed(2);
+    }
 
-        function updateCartTotal() {
-            let subtotal = 0;
-            document.querySelectorAll('.cart-item').forEach(item => {
-                subtotal += parseFloat(item.querySelector('.item-total').textContent);
-            });
-            
-            const shipping = 5.00;
-            const discount = <%= discountAmount || 0 %>;
-            const total = subtotal + shipping - discount;
-            
-            document.getElementById('total-price').textContent = subtotal.toFixed(2);
-            document.querySelector('.total-line span:last-child').textContent = 'Rs ' + total.toFixed(2);
-        }
+    // Remove item functionality
+    document.querySelectorAll('.cart-remove').forEach(button => {
+        button.addEventListener('click', async function () {
+            const itemElement = this.closest('.cart-item');
+            const productId = itemElement.dataset.productId;
 
-        // Remove item functionality
-        document.querySelectorAll('.cart-remove').forEach(button => {
-            button.addEventListener('click', function() {
-                const itemElement = this.closest('.cart-item');
-                const productId = itemElement.dataset.productId;
-                
-                fetch('/cart/remove-item', {
+            try {
+                const response = await fetch('/cart/remove-item', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ productId: productId })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        itemElement.remove();
-                        updateCartTotal();
-                    } else {
-                        alert('Failed to remove item: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while removing the item');
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ productId })
                 });
-            });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    itemElement.remove();
+                    updateCartTotal();
+                } else {
+                    alert('Failed to remove item: ' + data.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while removing the item');
+            }
         });
-    </script>
+    });
+
+    // Initialize cart total on load
+    window.addEventListener('load', updateCartTotal);
+</script>
      <script src="https://unpkg.com/feather-icons"></script>
      <script>
        feather.replace();
