@@ -1308,7 +1308,7 @@ app.get('/Products', async (req, res) => {
     }
 });
 
-app.get('/coupons', async (req, res) => {
+app.get('/coupons',checkAdminAuth, async (req, res) => {
     try {
         const coupons = await Coupon.find().sort({ createdAt: -1 });
         res.render('coupon_form', {
@@ -1754,7 +1754,7 @@ app.post('/cart/apply-coupon', async (req, res) => {
 
 // Remove Coupon Route - Now using redirects
 // Change from POST to GET
-app.get('/cart/remove-coupon',  checkAdminAuth, async (req, res) => {
+app.get('/cart/remove-coupon',  async (req, res) => {
     try {
         const userId = req.user?._id || req.session.userId;
         if (!userId) {
