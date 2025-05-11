@@ -9,13 +9,13 @@
 </head>
 <body class="bg-gray-100">
     <div class="min-h-screen flex flex-col md:flex-row">
-        <!-- Sidebar - Same as dashboard -->
+        <!-- Sidebar -->
         <div class="bg-indigo-800 text-white w-full md:w-64 p-4">
             <div class="mb-8 p-4 border-b border-indigo-700">
                 <h1 class="text-2xl font-bold">Admin Dashboard</h1>
                 <p class="text-indigo-300 text-sm">AsUsual</p>
             </div>
-            
+
             <nav class="space-y-2">
                 <a href="/add-product" class="flex items-center space-x-2 p-3 rounded-lg hover:bg-indigo-700 transition">
                     <i class="fas fa-plus w-5"></i>
@@ -41,14 +41,6 @@
                     <i class="fas fa-shopping-bag w-5"></i>
                     <span>Orders</span>
                 </a>
-                <a href="/admin/testimonials" class="flex items-center space-x-2 p-3 rounded-lg hover:bg-indigo-700 transition">
-                    <i class="fas fa-shopping-bag w-5"></i>
-                    <span>Testimonial</span>
-                </a>
-                <a href="/admin/delivery-cost" class="flex items-center space-x-2 p-3 rounded-lg hover:bg-indigo-700 transition">
-                    <i class="fas fa-shopping-bag w-5"></i>
-                    <span>Delivery Charge</span>
-                </a>
             </nav>
             
             <div class="mt-auto pt-4 border-t border-indigo-700">
@@ -66,20 +58,18 @@
             <div class="bg-white rounded-xl shadow-md p-6 mb-8">
                 <h2 class="text-xl font-semibold text-gray-800 mb-4">Edit Notification</h2>
                 <form action="/admin/update-notification" method="POST" class="space-y-4">
-                  <div>
-                    <label for="notification" class="block text-sm font-medium text-gray-700 mb-2">Notification Message</label>
-                    <textarea id="notification" name="notification" rows="3"
-  class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none"><%= notification.notification %></textarea>
-    
-                </div>
-                  <div class="text-right">
-                    <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition flex items-center gap-2">
-                      <i class="fas fa-paper-plane"></i> Update Notification
-                    </button>
-                  </div>
+                    <div>
+                        <label for="notification" class="block text-sm font-medium text-gray-700 mb-2">Notification Message</label>
+                        <textarea id="notification" name="notification" rows="3"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none"><%= notification.notification %></textarea>
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition flex items-center gap-2">
+                            <i class="fas fa-paper-plane"></i> Update Notification
+                        </button>
+                    </div>
                 </form>
-              </div>
-
+            </div>
 
             <div class="bg-white rounded-xl shadow-md p-6">
                 <div class="flex justify-between items-center mb-6">
@@ -88,70 +78,89 @@
                 
                 <form action="/admin/edit-poster" method="POST" enctype="multipart/form-data" class="space-y-8">
                     <!-- Poster 1 -->
-                    <div class="border-b pb-6">
-                        <h3 class="text-lg font-medium text-gray-700 mb-4">Poster 1</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="poster1" class="block text-sm font-medium text-gray-700 mb-2">Upload Image</label>
-                                <input type="file" id="poster1" name="poster1" accept="image/*" required
-                                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
-                            </div>
-                            <div>
-                                <label for="Heading1" class="block text-sm font-medium text-gray-700 mb-2">Heading</label>
-                                <input type="text" id="Heading1" name="Heading1" required
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
-                            </div>
-                            <div>
-                                <label for="Title1" class="block text-sm font-medium text-gray-700 mb-2">Title</label>
-                                <input type="text" id="Title1" name="Title1" required
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Poster 2 -->
-                    <div class="border-b pb-6">
-                        <h3 class="text-lg font-medium text-gray-700 mb-4">Poster 2</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="poster2" class="block text-sm font-medium text-gray-700 mb-2">Upload Image</label>
-                                <input type="file" id="poster2" name="poster2" accept="image/*" required
-                                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
-                            </div>
-                            <div>
-                                <label for="Heading2" class="block text-sm font-medium text-gray-700 mb-2">Heading</label>
-                                <input type="text" id="Heading2" name="Heading2" required
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
-                            </div>
-                            <div>
-                                <label for="Title2" class="block text-sm font-medium text-gray-700 mb-2">Title</label>
-                                <input type="text" id="Title2" name="Title2" required
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Poster 3 -->
-                    <div class="border-b pb-6">
-                        <h3 class="text-lg font-medium text-gray-700 mb-4">Poster 3</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="poster3" class="block text-sm font-medium text-gray-700 mb-2">Upload Image</label>
-                                <input type="file" id="poster3" name="poster3" accept="image/*" required
-                                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
-                            </div>
-                            <div>
-                                <label for="Heading3" class="block text-sm font-medium text-gray-700 mb-2">Heading</label>
-                                <input type="text" id="Heading3" name="Heading3" required
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
-                            </div>
-                            <div>
-                                <label for="Title3" class="block text-sm font-medium text-gray-700 mb-2">Title</label>
-                                <input type="text" id="Title3" name="Title3" required
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Poster 1 -->
+<div class="border-b pb-6">
+    <h3 class="text-lg font-medium text-gray-700 mb-4">Poster 1</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+            <label for="poster1" class="block text-sm font-medium text-gray-700 mb-2">Upload Image</label>
+            <input type="file" id="poster1" name="poster1" accept="image/*"
+                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+            <% if (poster.image && poster.image[0]) { %>
+                <div class="mt-2">
+                    <p class="text-sm text-gray-500 mb-1">Current Image:</p>
+                    <img src="<%= poster.image[0] %>" alt="Current Poster 1" class="h-20 object-contain">
+                </div>
+            <% } %>
+        </div>
+        <div>
+            <label for="Heading1" class="block text-sm font-medium text-gray-700 mb-2">Heading</label>
+            <input type="text" id="Heading1" name="Heading1" value="<%= poster.Heading && poster.Heading[0] || '' %>"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+            <label for="Title1" class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+            <input type="text" id="Title1" name="Title1" value="<%= poster.Title && poster.Title[0] || '' %>"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+    </div>
+</div>
+
+<!-- Poster 2 -->
+<div class="border-b pb-6">
+    <h3 class="text-lg font-medium text-gray-700 mb-4">Poster 2</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+            <label for="poster2" class="block text-sm font-medium text-gray-700 mb-2">Upload Image</label>
+            <input type="file" id="poster2" name="poster2" accept="image/*"
+                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+            <% if (poster.image && poster.image[1]) { %>
+                <div class="mt-2">
+                    <p class="text-sm text-gray-500 mb-1">Current Image:</p>
+                    <img src="<%= poster.image[1] %>" alt="Current Poster 2" class="h-20 object-contain">
+                </div>
+            <% } %>
+        </div>
+        <div>
+            <label for="Heading2" class="block text-sm font-medium text-gray-700 mb-2">Heading</label>
+            <input type="text" id="Heading2" name="Heading2" value="<%= poster.Heading && poster.Heading[1] || '' %>"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+            <label for="Title2" class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+            <input type="text" id="Title2" name="Title2" value="<%= poster.Title && poster.Title[1] || '' %>"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+    </div>
+</div>
+
+<!-- Poster 3 -->
+<div class="border-b pb-6">
+    <h3 class="text-lg font-medium text-gray-700 mb-4">Poster 3</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+            <label for="poster3" class="block text-sm font-medium text-gray-700 mb-2">Upload Image</label>
+            <input type="file" id="poster3" name="poster3" accept="image/*"
+                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+            <% if (poster.image && poster.image[2]) { %>
+                <div class="mt-2">
+                    <p class="text-sm text-gray-500 mb-1">Current Image:</p>
+                    <img src="<%= poster.image[2] %>" alt="Current Poster 3" class="h-20 object-contain">
+                </div>
+            <% } %>
+        </div>
+        <div>
+            <label for="Heading3" class="block text-sm font-medium text-gray-700 mb-2">Heading</label>
+            <input type="text" id="Heading3" name="Heading3" value="<%= poster.Heading && poster.Heading[2] || '' %>"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+        <div>
+            <label for="Title3" class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+            <input type="text" id="Title3" name="Title3" value="<%= poster.Title && poster.Title[2] || '' %>"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+        </div>
+    </div>
+</div>
                     
                     <!-- Submit Button -->
                     <div class="flex justify-end pt-4">

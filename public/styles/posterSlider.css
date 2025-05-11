@@ -80,9 +80,11 @@ body {
 }
 .slider__images-item img {
   display: block;
-  position: relative;
-  left: -1em;
-  top: -1em;
+  position: absolute;
+      left: 0em;
+    top: 0em;
+    bottom: 0em;
+    right: 0em;
   width: calc(100% + 1em * 2);
   height: calc(100% + 1em * 2);
   object-fit: cover;

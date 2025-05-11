@@ -48,6 +48,8 @@ body {
 }
 .footer__col-title * ~ span {
   margin-left: 1rem;
+  
+    font-weight: bold;
 }
 .footer a {
   display: flex;
@@ -310,7 +312,8 @@ body {
   /* Further adjustments for smaller mobile devices */
   .footer__col-title * ~ span {
     margin-left: 1rem;
-    font-size: 0.7rem;
+    font-size: 1.1rem;
+    font-weight: bold;
   }
   .footer__col-title {
     margin-bottom: 0;

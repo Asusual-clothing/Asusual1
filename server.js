@@ -205,16 +205,20 @@ app.get('/admin-login', (req, res) => {
     res.render("admin_login");
 })
 
-app.get('/edit-poster',  checkAdminAuth, async (req, res) => {
+app.get('/edit-poster', checkAdminAuth, async (req, res) => {
     try {
-      const poster = await Poster.findOne({});
-      const notification = await Notification.findOne({}) || { notification: '' };
-      res.render('edit_poster', { poster, notification });
+        const poster = await Poster.findOne({}) || { 
+            image: ['', '', ''], 
+            Heading: ['', '', ''], 
+            Title: ['', '', ''] 
+        };
+        const notification = await Notification.findOne({}) || { notification: '' };
+        res.render('edit_poster', { poster, notification });
     } catch (error) {
-      console.error('Error loading edit-poster:', error);
-      res.status(500).send('Server Error');
+        console.error('Error loading edit-poster:', error);
+        res.status(500).send('Server Error');
     }
-  });
+});
   
 
 app.get('/admin-option',  checkAdminAuth, async (req, res) => {
@@ -336,47 +340,54 @@ app.post('/admin/edit-poster', uploads.fields([
     { name: 'poster1', maxCount: 1 },
     { name: 'poster2', maxCount: 1 },
     { name: 'poster3', maxCount: 1 }
-  ]), async (req, res) => {
+]), async (req, res) => {
     try {
-      const files = req.files;
-      const imageUrls = [];
-      const headings = [];
-      const titles = [];
-  
-      for (let i = 1; i <= 3; i++) {
-        const field = `poster${i}`;
-        if (files[field]) {
-          const file = files[field][0];
-  
-          imageUrls.push(file.path); // Already a Cloudinary URL
-          headings.push(req.body[`Heading${i}`] || '');
-          titles.push(req.body[`Title${i}`] || '');
+        const files = req.files;
+        let poster = await Poster.findOne({}) || {
+            image: ['', '', ''],
+            Heading: ['', '', ''],
+            Title: ['', '', '']
+        };
+
+        // Create a copy of existing data
+        const update = {
+            image: [...poster.image],
+            Heading: [...poster.Heading],
+            Title: [...poster.Title]
+        };
+
+        // Update only the fields that were submitted
+        for (let i = 1; i <= 3; i++) {
+            const field = `poster${i}`;
+            if (files[field]) {
+                update.image[i-1] = files[field][0].path;
+            }
+            if (req.body[`Heading${i}`]) {
+                update.Heading[i-1] = req.body[`Heading${i}`];
+            }
+            if (req.body[`Title${i}`]) {
+                update.Title[i-1] = req.body[`Title${i}`];
+            }
         }
-      }
-  
-      const update = {
-        image: imageUrls,
-        Heading: headings,
-        Title: titles
-      };
-  
-      const poster = await Poster.findOneAndUpdate({}, update, {
-        upsert: true,
-        new: true,
-        setDefaultsOnInsert: true
-      });
-      return res.send(`
-        <script>
-          alert('Poster updated successfully');
-          window.location.href = '/';
-        </script>
-    `);
+
+        // Update or create the poster document
+        poster = await Poster.findOneAndUpdate({}, update, {
+            upsert: true,
+            new: true,
+            setDefaultsOnInsert: true
+        });
+
+        return res.send(`
+            <script>
+                alert('Poster updated successfully');
+                window.location.href = '/edit-poster';
+            </script>
+        `);
     } catch (error) {
-      console.error('Cloudinary Upload Error:', error);
-
+        console.error('Error updating poster:', error);
+        return res.status(500).send('Error updating posters');
     }
-  });
-
+});
 
 // Logout route
 app.post('/admin/logout', (req, res) => {
@@ -598,7 +609,7 @@ app.get('/edit-product',  checkAdminAuth, async (req, res) => {
 
 
 //##################################Delivery charge######################################
-app.get('/admin/delivery-cost', async (req, res) => {
+app.get('/admin/delivery-cost', checkAdminAuth, async (req, res) => {
   try {
     let delivery = await DeliveryCost.findOne();
     if (!delivery) {
@@ -1332,7 +1343,7 @@ app.post('/cart/apply-coupon', async (req, res) => {
 });
 // Remove Coupon Route - Now using redirects
 // Change from POST to GET
-app.get('/cart/remove-coupon',  async (req, res) => {
+app.get('/cart/remove-coupon',  checkAdminAuth, async (req, res) => {
     try {
         const userId = req.user?._id || req.session.userId;
         if (!userId) {
