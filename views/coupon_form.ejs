@@ -182,6 +182,12 @@
                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
               <label for="active" class="ml-2 block text-sm text-gray-700">Active</label>
             </div>
+            <div class="flex items-center">
+  <input id="useonce" name="useonce" type="checkbox" 
+         <%= coupon?.useonce ? 'checked' : '' %>
+         class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+  <label for="useonce" class="ml-2 block text-sm text-gray-700">Apply only once</label>
+</div>
 
             <div class="flex space-x-3 pt-4">
               <button type="submit" 

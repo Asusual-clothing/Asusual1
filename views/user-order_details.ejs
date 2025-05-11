@@ -35,9 +35,12 @@
       };
     </script>
     <style>
+      @media (max-width: 768px) {
       .footer__columns {
-        margin-left: 170px;
+        margin-left: 22px;
       }
+
+    }
     </style>
   </head>
 
@@ -317,15 +320,8 @@
 
           <!-- Order Actions -->
           <div class="flex justify-end gap-3 mt-6">
-            <% if (order.status==='Pending' ) { %>
-            <button
-              class="px-4 py-2 bg-red-primary text-white rounded-md hover:bg-red-dark transition"
-            >
-              Cancel Order
-            </button>
-            <% } %>
             <a
-              href="/orders"
+              href="/all-orders"
               class="px-4 py-2 bg-dark-600 text-gray-200 rounded-md hover:bg-dark-500 transition border border-dark-500"
             >
               Back to Orders

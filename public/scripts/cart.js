@@ -2,72 +2,59 @@ document.addEventListener("DOMContentLoaded", function() {
     // Initialize cart on page load
     updateCart();
 
-    // Function to update cart totals
-    function updateCart() {
-        let totalItems = 0;
-        let subtotal = 0;
-        const shipping = cartData.deliveryCost ;
+    // Event delegation for dynamic elements
+    document.addEventListener('click', function(e) {
+        // Quantity increase
+        if (e.target.classList.contains('increase')) {
+            const quantityElem = e.target.parentElement.querySelector('.cart-quantity');
+            const newQuantity = parseInt(quantityElem.textContent) + 1;
+            quantityElem.textContent = newQuantity;
+            updateCart();
+            updateQuantityInDatabase(quantityElem, newQuantity);
+        }
         
-        document.querySelectorAll(".cart-item").forEach(item => {
-        const quantityElem = item.querySelector(".cart-quantity");
-        const quantity = parseInt(quantityElem.textContent);
-        const price = parseFloat(item.dataset.price);
-        const itemTotalElem = item.querySelector(".item-total");
-
-        const itemTotal = price * quantity;
-        itemTotalElem.textContent = itemTotal.toFixed(2);
-        totalItems += quantity;
-        subtotal += itemTotal;
-    });
-
-        // Calculate discount if coupon is applied
-        let discountAmount = 0;
-        const couponElement = document.querySelector('.coupon-success');
-        if (couponElement) {
-            const couponText = couponElement.textContent;
-            if (couponText.includes('%')) {
-                const discountPercent = parseFloat(couponText.match(/(\d+)%/)[1]);
-                discountAmount = subtotal * (discountPercent / 100);
-            } else {
-                const fixedDiscount = parseFloat(couponText.match(/Rs(\d+)/)[1]);
-                discountAmount = Math.min(fixedDiscount, subtotal);
+        // Quantity decrease
+        if (e.target.classList.contains('decrease')) {
+            const quantityElem = e.target.parentElement.querySelector('.cart-quantity');
+            const currentQuantity = parseInt(quantityElem.textContent);
+            if (currentQuantity > 1) {
+                const newQuantity = currentQuantity - 1;
+                quantityElem.textContent = newQuantity;
+                updateCart();
+                updateQuantityInDatabase(quantityElem, newQuantity);
             }
         }
-
-        // Update DOM elements
-        document.getElementById("total-items").textContent = totalItems;
-        document.getElementById("total-price").textContent = subtotal.toFixed(2);
         
-        const discountedSubtotal = subtotal - discountAmount;
-        const finalTotal = Math.max(0, discountedSubtotal + shipping);
-        
-        document.querySelector(".total-line span:last-child").textContent = `Rs ${finalTotal.toFixed(2)}`;
-        
-        const discountMessage = document.querySelector('.discount-message');
-        if (discountAmount > 0) {
-            if (!discountMessage) {
-                const messageElement = document.createElement('p');
-                messageElement.className = 'discount-message';
-                messageElement.textContent = `You saved: Rs ${discountAmount.toFixed(2)}`;
-                document.querySelector('.summary-total').insertBefore(messageElement, document.querySelector('.order_btn_animation'));
-            } else {
-                discountMessage.textContent = `You saved: Rs ${discountAmount.toFixed(2)}`;
-            }
-        } else if (discountMessage) {
-            discountMessage.remove();
+        // Remove item
+        if (e.target.classList.contains('cart-remove')) {
+            const cartItem = e.target.closest('.cart-item');
+            cartItem.remove();
+            updateCart();
+            removeItemFromDatabase(e.target);
         }
-    }
-
-    // Proceed to order button
-    document.getElementById('proceed-to-order')?.addEventListener('click', function() {
-        this.style.display = 'none';
-        document.getElementById('shipping-form-container').style.display = 'block';
-    });
-
-    // Cancel order button
-    document.getElementById('cancel-order')?.addEventListener('click', function() {
-        document.getElementById('proceed-to-order').style.display = 'block';
-        document.getElementById('shipping-form-container').style.display = 'none';
+        
+        // Proceed to order
+        if (e.target.id === 'proceed-to-order') {
+            e.target.style.display = 'none';
+            document.getElementById('shipping-form-container').style.display = 'block';
+        }
+        
+        // Cancel order
+        if (e.target.id === 'cancel-order') {
+            document.getElementById('proceed-to-order').style.display = 'block';
+            document.getElementById('shipping-form-container').style.display = 'none';
+        }
+        
+        // Order button animation
+        if (e.target.classList.contains('order')) {
+            let button = e.target;
+            if(!button.classList.contains('animate')) {
+                button.classList.add('animate');
+                setTimeout(() => {
+                    button.classList.remove('animate');
+                }, 10000);
+            }
+        }
     });
 
     // Form submission
@@ -125,41 +112,61 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Quantity increase handlers
-    document.querySelectorAll(".increase").forEach(button => {
-        button.addEventListener("click", function() {
-            const quantityElem = this.parentElement.querySelector('.cart-quantity');
-            const newQuantity = parseInt(quantityElem.textContent) + 1;
-            quantityElem.textContent = newQuantity;
-            updateCart();
-            updateQuantityInDatabase(quantityElem, newQuantity);
+    // Function to update cart totals
+    function updateCart() {
+        let totalItems = 0;
+        let subtotal = 0;
+        const shipping = parseFloat(document.querySelector('select option').textContent.match(/Rs(\d+\.\d{2})/)[1]);
+        
+        document.querySelectorAll(".cart-item").forEach(item => {
+            const quantityElem = item.querySelector(".cart-quantity");
+            const quantity = parseInt(quantityElem.textContent);
+            const price = parseFloat(item.dataset.price);
+            const itemTotalElem = item.querySelector(".item-total");
+
+            const itemTotal = price * quantity;
+            itemTotalElem.textContent = itemTotal.toFixed(2);
+            totalItems += quantity;
+            subtotal += itemTotal;
         });
-    });
 
-    // Quantity decrease handlers
-    document.querySelectorAll(".decrease").forEach(button => {
-        button.addEventListener("click", function() {
-            const quantityElem = this.parentElement.querySelector('.cart-quantity');
-            const currentQuantity = parseInt(quantityElem.textContent);
-
-            if (currentQuantity > 1) {
-                const newQuantity = currentQuantity - 1;
-                quantityElem.textContent = newQuantity;
-                updateCart();
-                updateQuantityInDatabase(quantityElem, newQuantity);
+        // Calculate discount if coupon is applied
+        let discountAmount = 0;
+        const couponElement = document.querySelector('.coupon-success');
+        if (couponElement) {
+            const couponText = couponElement.textContent;
+            if (couponText.includes('%')) {
+                const discountPercent = parseFloat(couponText.match(/(\d+)%/)[1]);
+                discountAmount = subtotal * (discountPercent / 100);
+            } else {
+                const fixedDiscount = parseFloat(couponText.match(/Rs(\d+)/)[1]);
+                discountAmount = Math.min(fixedDiscount, subtotal);
             }
-        });
-    });
+        }
 
-    // Remove item handlers
-    document.querySelectorAll(".cart-remove").forEach(button => {
-        button.addEventListener("click", function() {
-            const cartItem = this.closest('.cart-item');
-            cartItem.remove();
-            updateCart();
-            removeItemFromDatabase(this);
-        });
-    });
+        // Update DOM elements
+        document.getElementById("total-items").textContent = totalItems;
+        document.getElementById("total-price").textContent = subtotal.toFixed(2);
+        
+        const discountedSubtotal = subtotal - discountAmount;
+        const finalTotal = Math.max(0, discountedSubtotal + shipping);
+        
+        document.querySelector(".total-line span:last-child").textContent = `Rs ${finalTotal.toFixed(2)}`;
+        
+        const discountMessage = document.querySelector('.discount-message');
+        if (discountAmount > 0) {
+            if (!discountMessage) {
+                const messageElement = document.createElement('p');
+                messageElement.className = 'discount-message';
+                messageElement.textContent = `You saved: Rs ${discountAmount.toFixed(2)}`;
+                document.querySelector('.summary-total').insertBefore(messageElement, document.querySelector('.order_btn_animation'));
+            } else {
+                discountMessage.textContent = `You saved: Rs ${discountAmount.toFixed(2)}`;
+            }
+        } else if (discountMessage) {
+            discountMessage.remove();
+        }
+    }
 
     // Helper functions for cart operations
     async function updateQuantityInDatabase(item, newQuantity) {
@@ -223,14 +230,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // Animation for order button
-    document.querySelector('.order')?.addEventListener('click', function(e) {
-        let button = $(this);
-        if(!button.hasClass('animate')) {
-            button.addClass('animate');
-            setTimeout(() => {
-                button.removeClass('animate');
-            }, 10000);
+    // Page loader
+    window.addEventListener("load", function() {
+        const loader = document.getElementById("page-loader");
+        if (loader) {
+            loader.classList.add("fade-out");
+            setTimeout(() => (loader.style.display = "none"), 500);
         }
     });
 });

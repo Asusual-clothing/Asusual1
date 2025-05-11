@@ -859,7 +859,7 @@ app.post('/delete/:id', async (req, res) => {
 // POST: Create new coupon
 app.post('/create', async (req, res) => {
     try {
-        const { code, discountType, discountValue, expiryDate, active } = req.body;
+        const { code, discountType, discountValue, expiryDate, active, useonce  } = req.body;
 
         if (!code || !discountType || !discountValue || !expiryDate) {
             return res.redirect('/coupons');
@@ -875,7 +875,8 @@ app.post('/create', async (req, res) => {
             discountType,
             discountValue: Number(discountValue),
             expiryDate: new Date(expiryDate),
-            active: active === 'on'
+            active: active === 'on',
+            useonce: useonce === 'on'
         });
 
         await coupon.save();
@@ -889,7 +890,7 @@ app.post('/create', async (req, res) => {
 // POST: Update existing coupon
 app.post('/update/:id', async (req, res) => {
     try {
-        const { code, discountType, discountValue, expiryDate, active } = req.body;
+        const { code, discountType, discountValue, expiryDate, active, useonce } = req.body;
         const couponId = req.params.id;
 
         if (!code || !discountType || !discountValue || !expiryDate) {
@@ -906,7 +907,8 @@ app.post('/update/:id', async (req, res) => {
             discountType,
             discountValue: Number(discountValue),
             expiryDate: new Date(expiryDate),
-            active: active === 'on'
+            active: active === 'on',
+            useonce: useonce === 'on'
         }, { new: true });
 
         res.redirect('/coupons');
@@ -1138,6 +1140,94 @@ app.get('/logout', (req, res) => {
 //apply coupon
 // In your routes/cart.js
 // Enhanced Coupon Application Route
+// Cart Route - Updated to use session messages
+app.get('/cart', async (req, res) => {
+    try {
+        let user = { name: "Guest" };
+        let userId = null;
+
+        // Authentication check
+        if (req.user) {
+            user = req.user;
+            userId = req.user._id;
+        } else {
+            userId = req.session.userId;
+            if (userId) {
+                user = await User.findById(userId, "name");
+            }
+        }
+
+        // Get cart with populated data
+        let cart = await Cart.findOne({ user: userId })
+            .populate('items.product')
+            .populate('appliedCoupon');
+
+        // Get the latest delivery cost from database
+        const deliveryCostDoc = await DeliveryCost.findOne().sort({ updatedAt: -1 });
+        const deliveryCost = deliveryCostDoc ? deliveryCostDoc.cost : 5.00; // Default to 5.00 if not found
+
+        let discountAmount = 0;
+        const couponMessage = req.session.couponMessage;
+        delete req.session.couponMessage; // Clear the message after displaying
+
+        // Validate cart and coupon
+        if (cart) {
+            if (!cart.items) cart.items = [];
+
+            // Check applied coupon validity
+            if (cart.appliedCoupon) {
+                const now = new Date();
+                const user = await User.findById(userId);
+                
+                // Check if coupon is expired or already used (for useonce coupons)
+                if (!cart.appliedCoupon.active || 
+                    cart.appliedCoupon.expiryDate < now ||
+                    (cart.appliedCoupon.useonce && user.useoncecoupon.includes(cart.appliedCoupon.code))) {
+                    
+                    // Coupon is no longer valid
+                    req.session.couponMessage = 'The applied coupon is no longer valid';
+                    cart.appliedCoupon = undefined;
+                    cart.discountAmount = 0;
+                    await cart.save();
+                } else {
+                    discountAmount = cart.discountAmount || 0;
+                }
+            }
+        } else {
+            cart = { items: [] };
+        }
+
+        // Calculate subtotal
+        let subtotal = 0;
+        if (cart.items && cart.items.length > 0) {
+            subtotal = cart.items.reduce((sum, item) => {
+                return sum + (item.product ? item.product.price * item.quantity : 0);
+            }, 0);
+        }
+
+        res.render('cart', {
+            user,
+            cart,
+            deliveryCost,
+            discountAmount,
+            subtotal,
+            message: couponMessage,
+            error: null
+        });
+
+    } catch (error) {
+        console.error('Error loading cart:', error);
+        res.status(500).render('cart', {
+            user: { name: "Guest" },
+            cart: { items: [] },
+            deliveryCost: 5.00,
+            discountAmount: 0,
+            subtotal: 0,
+            error: 'Failed to load cart'
+        });
+    }
+});
+
 // Apply Coupon Route - Now using redirects
 app.post('/cart/apply-coupon', async (req, res) => {
     try {
@@ -1153,7 +1243,7 @@ app.post('/cart/apply-coupon', async (req, res) => {
         const userId = req.user?._id || req.session.userId;
         if (!userId) {
             req.session.couponMessage = 'Please login to apply coupons';
-            return res.redirect('/login'); // Redirect to login page
+            return res.redirect('/login');
         }
 
         // Find coupon (case insensitive search)
@@ -1187,6 +1277,15 @@ app.post('/cart/apply-coupon', async (req, res) => {
 
             req.session.couponMessage = 'Invalid coupon code';
             return res.redirect('/cart');
+        }
+
+        // Check if this is a useonce coupon and has already been used
+        if (coupon.useonce) {
+            const user = await User.findById(userId);
+            if (user.useoncecoupon.includes(coupon.code)) {
+                req.session.couponMessage = 'This coupon can only be used once per customer';
+                return res.redirect('/cart');
+            }
         }
 
         // Get user's cart
@@ -1231,7 +1330,6 @@ app.post('/cart/apply-coupon', async (req, res) => {
         res.redirect('/cart');
     }
 });
-
 // Remove Coupon Route - Now using redirects
 // Change from POST to GET
 app.get('/cart/remove-coupon',  async (req, res) => {
@@ -1267,87 +1365,8 @@ app.get('/cart/remove-coupon',  async (req, res) => {
         res.redirect('/cart');
     }
 });
-// Cart Route - Updated to use session messages
-app.get('/cart', async (req, res) => {
-    try {
-        let user = { name: "Guest" };
-        let userId = null;
 
-        // Authentication check
-        if (req.user) {
-            user = req.user;
-            userId = req.user._id;
-        } else {
-            userId = req.session.userId;
-            if (userId) {
-                user = await User.findById(userId, "name");
-            }
-        }
 
-        // Get cart with populated data
-        let cart = await Cart.findOne({ user: userId })
-            .populate('items.product')
-            .populate('appliedCoupon');
-
-        // Get the latest delivery cost from database
-        const deliveryCostDoc = await DeliveryCost.findOne().sort({ updatedAt: -1 });
-        const deliveryCost = deliveryCostDoc ? deliveryCostDoc.cost : 5.00; // Default to 5.00 if not found
-
-        let discountAmount = 0;
-        const couponMessage = req.session.couponMessage;
-        delete req.session.couponMessage; // Clear the message after displaying
-
-        // Validate cart and coupon
-        if (cart) {
-            if (!cart.items) cart.items = [];
-
-            // Check applied coupon validity
-            if (cart.appliedCoupon) {
-                const now = new Date();
-                if (!cart.appliedCoupon.active || cart.appliedCoupon.expiryDate < now) {
-                    // Coupon is no longer valid
-                    req.session.couponMessage = 'The applied coupon is no longer valid';
-                    cart.appliedCoupon = undefined;
-                    cart.discountAmount = 0;
-                    await cart.save();
-                } else {
-                    discountAmount = cart.discountAmount || 0;
-                }
-            }
-        } else {
-            cart = { items: [] };
-        }
-
-        // Calculate subtotal
-        let subtotal = 0;
-        if (cart.items && cart.items.length > 0) {
-            subtotal = cart.items.reduce((sum, item) => {
-                return sum + (item.product ? item.product.price * item.quantity : 0);
-            }, 0);
-        }
-
-        res.render('cart', {
-            user,
-            cart,
-            deliveryCost, // Pass deliveryCost to the view
-            discountAmount,
-            subtotal, // Pass subtotal to avoid recalculating in the view
-            message: couponMessage,
-            error: null
-        });
-
-    } catch (error) {
-        console.error('Error loading cart:', error);
-        res.status(500).render('cart', {
-            user: { name: "Guest" },
-            cart: { items: [] },
-            deliveryCost: 5.00, // Fallback delivery cost
-            discountAmount: 0,
-            subtotal: 0,
-            error: 'Failed to load cart'
-        });
-    }
-});
 
 // Add these routes to your Express app
 
@@ -1420,7 +1439,7 @@ app.post('/cart/remove-item', async (req, res) => {
 });
 
 
-app.post('/place-order', async (req, res) => {  // Changed route name
+app.post('/place-order', async (req, res) => {
     try {
         const userId = req.user?._id || req.session.userId;
 
@@ -1436,6 +1455,17 @@ app.post('/place-order', async (req, res) => {  // Changed route name
             return res.status(400).json({ success: false, message: 'Cart is empty' });
         }
 
+        // Check if coupon is useonce and has already been used by this user
+        if (cart.appliedCoupon?.useonce) {
+            const user = await User.findById(userId);
+            if (user.useoncecoupon.includes(cart.appliedCoupon.code)) {
+                return res.status(400).json({ 
+                    success: false, 
+                    message: 'This coupon can only be used once per user and has already been used' 
+                });
+            }
+        }
+
         const orderItems = cart.items.map(item => ({
             product: item.product._id,
             quantity: item.quantity,
@@ -1446,8 +1476,8 @@ app.post('/place-order', async (req, res) => {  // Changed route name
         const subtotal = cart.items.reduce((total, item) =>
             total + (item.product.price * item.quantity), 0);
 
-         const deliverySetting = await DeliveryCost.findOne({});
-    const shippingFee = deliverySetting ? deliverySetting.cost : 0;
+        const deliverySetting = await DeliveryCost.findOne({});
+        const shippingFee = deliverySetting ? deliverySetting.cost : 0;
         const discountAmount = cart.discountAmount || 0;
         const totalAmount = subtotal - discountAmount + shippingFee;
 
@@ -1464,6 +1494,13 @@ app.post('/place-order', async (req, res) => {  // Changed route name
             shippingAddress: req.body.shippingAddress,
             couponUsed: cart.appliedCoupon?._id
         });
+
+        // If coupon is useonce, add it to user's useoncecoupon array
+        if (cart.appliedCoupon?.useonce) {
+            await User.findByIdAndUpdate(userId, {
+                $addToSet: { useoncecoupon: cart.appliedCoupon.code }
+            });
+        }
 
         await newOrder.save();
 
@@ -1483,6 +1520,7 @@ app.post('/place-order', async (req, res) => {  // Changed route name
         console.error('Error creating order:', error);
         res.status(500).json({
             success: false,
+            message: 'An error occurred while creating the order'
         });
     }
 });

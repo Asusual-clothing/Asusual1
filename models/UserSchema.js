@@ -7,7 +7,10 @@ const UserSchema = new mongoose.Schema({
   resetTokenExpiration: { type: Date },
   createdAt: { type: Date, default: Date.now },
     phone: { type: String },
-    
+    useoncecoupon:  {
+        type: [String],
+        default: []
+    },
   });
 
   module.exports = mongoose.model('User', UserSchema);

@@ -10,6 +10,7 @@ const CouponSchema = new mongoose.Schema({
   discountValue: { type: Number, required: true }, // percentage or flat value
   expiryDate: { type: Date, required: true },
   active: { type: Boolean, default: true },
+  useonce: {type: Boolean, default: false},
   createdAt: { type: Date, default: Date.now }
 });
 

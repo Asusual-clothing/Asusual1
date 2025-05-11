@@ -323,39 +323,40 @@
                     </div>
 
                     <form id="coupon-form" action="/cart/apply-coupon" method="POST">
+    <p style="margin-top: 18px;">SHIPPING</p>
+    <select>
+        <option>Standard Delivery - Rs<%= deliveryCost.toFixed(2) %></option>
+    </select>
 
-                    <p style="margin-top: 18px;">SHIPPING</p>
-                    <select>
-                      <option>Standard Delivery - Rs<%= deliveryCost.toFixed(2) %></option>
-                    </select>
+    <p style="margin-top: 15px;">DISCOUNT CODE</p>
+    <div class="coupon-input-group">
+        <input id="cart-code" name="couponCode" placeholder="Enter your code" 
+               value="<%= cart.appliedCoupon ? cart.appliedCoupon.code : '' %>">
+        <% if (!cart.appliedCoupon) { %>
+            <button type="submit" class="apply-coupon-btn">Apply</button>
+        <% } else { %>
+            <a href="/cart/remove-coupon" class="remove-coupon-btn">Remove</a>
+        <% } %>
+    </div>
 
-                        <p style="    margin-top: 15px;">DISCOUNT CODE</p>
-                        <div class="coupon-input-group">
-                            <input id="cart-code" name="couponCode" placeholder="Enter your code" 
-                                   value="<%= cart.appliedCoupon ? cart.appliedCoupon.code : '' %>">
-                            <% if (!cart.appliedCoupon) { %>
-                                <button type="submit" class="apply-coupon-btn">Apply</button>
-                            <% } else { %>
-                                <a href="/cart/remove-coupon" class="remove-coupon-btn">Remove</a>
-                            <% } %>
-                        </div>
+    <% if (cart.appliedCoupon) { %>
+        <p class="coupon-success">
+            Coupon: <b><%= cart.appliedCoupon.code %></b> - 
+            <%= cart.appliedCoupon.discountType === 'percentage' ? 
+                `${cart.appliedCoupon.discountValue}% off` : 
+                `Rs${cart.appliedCoupon.discountValue} off` %>
+            <% if (cart.appliedCoupon.useonce) { %>
+                <br><small>(One-time use coupon)</small>
+            <% } %>
+        </p>
+    <% } %>
 
-                        <% if (cart.appliedCoupon) { %>
-                            <p class="coupon-success">
-                                Coupon: <b><%= cart.appliedCoupon.code %></b> - 
-                                <%= cart.appliedCoupon.discountType === 'percentage' ? 
-                                    `${cart.appliedCoupon.discountValue}% off` : 
-                                    `Rs${cart.appliedCoupon.discountValue} off` %>
-                            </p>
-                        <% } %>
-
-                        <% if (message) { %>
-                            <p class="<%= message.includes('successfully') ? 'coupon-success' : 'coupon-error' %>">
-                                <%= message %>
-                            </p>
-                        <% } %>
-                    </form>
-
+    <% if (message) { %>
+        <p class="<%= message.includes('successfully') ? 'coupon-success' : 'coupon-error' %>">
+            <%= message %>
+        </p>
+    <% } %>
+</form>
                     <div class="summary-total">
         <div class="price-breakdown">
             <div class="price-line total-line">
@@ -555,13 +556,7 @@
       </footer>
 
     <script src="/scripts/cart.js"></script>
-    <script>
-  // Pass server-side variables to JavaScript
-  const cartData = {
-    deliveryCost: <%= deliveryCost || 50 %>,
-    // Add other server-side variables if needed
-  };
-</script>
+    
      <script src="https://unpkg.com/feather-icons"></script>
      <script>
        feather.replace();
