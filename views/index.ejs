@@ -237,14 +237,7 @@
           </div>
         </div>
       </div>
-      <div class="slider__nav-dots slider__nav-dots--mobile" id="slider-dots">
-  <% posters.forEach((poster, index)=> { %>
-    <div
-      class="slider__nav-dot <%= index === 0 ? 'slider__nav-dot--active' : '' %>"
-      data-id="<%= index + 1 %>"
-    ></div>
-  <% }); %>
-</div>
+      
 
       <!-- this is the second section -->
       <% const bestsellers=Products.filter(p=> p.bestseller); const
@@ -259,7 +252,7 @@
             <h2
               class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-300 to-gray-100 mb-4 tracking-tight"
             >
-              Our bestsellers
+              Our Bestsellers
             </h2>
             <!-- Subtitle with decorative elements -->
             <div class="relative inline-block">
@@ -535,6 +528,9 @@
             </div>
           </div>
           <% } %>
+        <a href="/Products" > <div class="card">
+            Explore All
+          </div></a>
         </div>
       </div>
 
