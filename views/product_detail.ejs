@@ -290,15 +290,15 @@
                         <div class="quantity-controls">
                             <button type="button" onclick="changeQuantity(-1)">-</button>
                             <input type="text" id="quantity" name="quantity" value="1" readonly>
-                            <button type="button" onclick="changeQuantity(1)">+</button>
+                            <a href="/cart"><button type="button" onclick="changeQuantity(1)">+</button></a>
                         </div>
-
-                        <button type="submit" class="btn add-to-cart">Add to Cart</button>
+                        
+                        <button type="submit" name="action" value="add" class="btn add-to-cart">Add to Cart</button>
+                        <button type="submit" name="action" value="buy" class="btn buy-now">Buy Now</button>
                     </form>
                 </div>
             </div>
 
-            <button class="btn buy-now">Buy Now</button>
 
             <h4>Description</h4>
             <p class="price">
@@ -432,11 +432,15 @@ AsHamburger.addEventListener('click', () => {
 
         // Function to change quantity
         function changeQuantity(change) {
-            const quantityInput = document.getElementById("quantity");
-            let currentQuantity = parseInt(quantityInput.value);
-            currentQuantity = Math.max(1, currentQuantity + change);
-            quantityInput.value = currentQuantity;
-        }
+    const quantityInput = document.getElementById('quantity');
+    const displayInput = document.getElementById('quantityDisplay');
+    let current = parseInt(quantityInput.value);
+    if (current <= 1 && change === -1) return;
+    current += change;
+    quantityInput.value = current;
+    displayInput.value = current;
+}
+
 
         // Function to validate form submission
         document.querySelector("form").addEventListener("submit", function (event) {

@@ -6,19 +6,19 @@ document.addEventListener("DOMContentLoaded", function() {
     function updateCart() {
         let totalItems = 0;
         let subtotal = 0;
-        const shipping = 5.00;
+        const shipping = cartData.deliveryCost ;
         
         document.querySelectorAll(".cart-item").forEach(item => {
-            const quantityElem = item.querySelector(".cart-quantity");
-            const quantity = parseInt(quantityElem.textContent);
-            const price = parseFloat(item.dataset.price);
-            const itemTotalElem = item.querySelector(".item-total");
+        const quantityElem = item.querySelector(".cart-quantity");
+        const quantity = parseInt(quantityElem.textContent);
+        const price = parseFloat(item.dataset.price);
+        const itemTotalElem = item.querySelector(".item-total");
 
-            const itemTotal = price * quantity;
-            itemTotalElem.textContent = itemTotal.toFixed(2);
-            totalItems += quantity;
-            subtotal += itemTotal;
-        });
+        const itemTotal = price * quantity;
+        itemTotalElem.textContent = itemTotal.toFixed(2);
+        totalItems += quantity;
+        subtotal += itemTotal;
+    });
 
         // Calculate discount if coupon is applied
         let discountAmount = 0;
@@ -63,13 +63,13 @@ document.addEventListener("DOMContentLoaded", function() {
         this.style.display = 'none';
         document.getElementById('shipping-form-container').style.display = 'block';
     });
-    
+
     // Cancel order button
     document.getElementById('cancel-order')?.addEventListener('click', function() {
         document.getElementById('proceed-to-order').style.display = 'block';
         document.getElementById('shipping-form-container').style.display = 'none';
     });
-    
+
     // Form submission
     document.getElementById('shipping-form')?.addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Quantity increase handlers
     document.querySelectorAll(".increase").forEach(button => {
         button.addEventListener("click", function() {
-            const quantityElem = this.previousElementSibling;
+            const quantityElem = this.parentElement.querySelector('.cart-quantity');
             const newQuantity = parseInt(quantityElem.textContent) + 1;
             quantityElem.textContent = newQuantity;
             updateCart();
@@ -139,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Quantity decrease handlers
     document.querySelectorAll(".decrease").forEach(button => {
         button.addEventListener("click", function() {
-            const quantityElem = this.nextElementSibling;
+            const quantityElem = this.parentElement.querySelector('.cart-quantity');
             const currentQuantity = parseInt(quantityElem.textContent);
 
             if (currentQuantity > 1) {
@@ -147,11 +147,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 quantityElem.textContent = newQuantity;
                 updateCart();
                 updateQuantityInDatabase(quantityElem, newQuantity);
-            } else {
-                const cartItem = this.closest('.cart-item');
-                cartItem.remove();
-                updateCart();
-                removeItemFromDatabase(this);
             }
         });
     });
@@ -227,4 +222,15 @@ document.addEventListener("DOMContentLoaded", function() {
             updateCart();
         }
     }
+
+    // Animation for order button
+    document.querySelector('.order')?.addEventListener('click', function(e) {
+        let button = $(this);
+        if(!button.hasClass('animate')) {
+            button.addClass('animate');
+            setTimeout(() => {
+                button.removeClass('animate');
+            }, 10000);
+        }
+    });
 });

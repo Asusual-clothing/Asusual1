@@ -73,6 +73,7 @@
 /* Price Range Slider */
 .slider-container {
   margin-bottom: 1.5rem;
+      width: 96%;
 }
 
 .slider-container input[type="range"] {

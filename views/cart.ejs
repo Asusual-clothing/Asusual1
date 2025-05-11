@@ -556,87 +556,11 @@
 
     <script src="/scripts/cart.js"></script>
     <script>
-    // Toggle shipping form visibility
-    document.getElementById('proceed-to-order').addEventListener('click', function () {
-        document.getElementById('shipping-form-container').style.display = 'block';
-    });
-
-    document.getElementById('cancel-order').addEventListener('click', function () {
-        document.getElementById('shipping-form-container').style.display = 'none';
-    });
-
-    // Quantity adjustment functionality
-    document.querySelectorAll('.increase').forEach(button => {
-        button.addEventListener('click', function () {
-            const quantityElement = this.parentElement.querySelector('.cart-quantity');
-            let quantity = parseInt(quantityElement.textContent);
-            quantityElement.textContent = quantity + 1;
-            updateItemTotal(this.closest('.cart-item'));
-        });
-    });
-
-    document.querySelectorAll('.decrease').forEach(button => {
-        button.addEventListener('click', function () {
-            const quantityElement = this.parentElement.querySelector('.cart-quantity');
-            let quantity = parseInt(quantityElement.textContent);
-            if (quantity > 1) {
-                quantityElement.textContent = quantity - 1;
-                updateItemTotal(this.closest('.cart-item'));
-            }
-        });
-    });
-
-    function updateItemTotal(itemElement) {
-        const price = parseFloat(itemElement.dataset.price);
-        const quantity = parseInt(itemElement.querySelector('.cart-quantity').textContent);
-        const totalElement = itemElement.querySelector('.item-total');
-        totalElement.textContent = (price * quantity).toFixed(2);
-        updateCartTotal();
-    }
-
-    function updateCartTotal() {
-        const deliveryCost = <%= deliveryCost %>;
-        let subtotal = 0;
-        document.querySelectorAll('.cart-item').forEach(item => {
-            subtotal += parseFloat(item.querySelector('.item-total').textContent);
-        });
-        const discount = <%= discountAmount || 0 %>;
-        const total = subtotal + deliveryCost - discount;
-
-        document.getElementById('total-price').textContent = subtotal.toFixed(2);
-        document.querySelector('.total-line span:last-child').textContent = 'Rs ' + total.toFixed(2);
-    }
-
-    // Remove item functionality
-    document.querySelectorAll('.cart-remove').forEach(button => {
-        button.addEventListener('click', async function () {
-            const itemElement = this.closest('.cart-item');
-            const productId = itemElement.dataset.productId;
-
-            try {
-                const response = await fetch('/cart/remove-item', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ productId })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    itemElement.remove();
-                    updateCartTotal();
-                } else {
-                    alert('Failed to remove item: ' + data.message);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred while removing the item');
-            }
-        });
-    });
-
-    // Initialize cart total on load
-    window.addEventListener('load', updateCartTotal);
+  // Pass server-side variables to JavaScript
+  const cartData = {
+    deliveryCost: <%= deliveryCost || 50 %>,
+    // Add other server-side variables if needed
+  };
 </script>
      <script src="https://unpkg.com/feather-icons"></script>
      <script>
