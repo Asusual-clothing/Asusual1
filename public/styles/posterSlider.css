@@ -108,6 +108,7 @@ body {
 .slider__text {
   position: relative;
   height: 100%;
+  opacity: 0  ;
 }
 .slider__text-item {
   position: absolute;
@@ -167,7 +168,7 @@ body {
 .slider__text-item-head {
   top: -0.5em;
   transform: translateZ(3em);
-  display: none;
+
 }
 .slider__text-item-info {
   bottom: 0;
@@ -175,7 +176,6 @@ body {
   max-width: 75%;
   min-width: min-content;
   transform: translateZ(2em);
-  display: none;
 }
 .slider__text-item--active h3, .slider__text-item--active p {
   transform: translateX(0);
@@ -335,7 +335,7 @@ body {
   .slider {
     width: 100vw;
     height: 34vh;
-    margin-bottom: 44px;
+    margin-bottom: 46px;
   }
 
   /* Hide pseudo-elements for background images on mobile */
@@ -353,7 +353,7 @@ body {
 
   /* Slider images */
   .slider__images-item img {
-    left: 0;
+    left: -10px;
     top: 0;
     width: 100%;
     height: 100%;
