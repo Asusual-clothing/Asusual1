@@ -402,7 +402,7 @@
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label for="shipping-postalCode">Postal Code*</label>
-                                        <input type="text" id="shipping-postalCode" name="postalCode" required>
+                                        <input type="text" id="shipping-postalCode" name="postalCode" maxlength="6" pattern="\d{10}" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="shipping-country">Country*</label>
@@ -411,9 +411,10 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="shipping-contactNumber">Contact Number*</label>
-                                    <input type="tel" id="shipping-contactNumber" name="contactNumber" required>
+                                        <label for="shipping-contactNumber">Contact Number*</label>
+                                        <input type="text" id="shipping-contactNumber" name="contactNumber" maxlength="10" pattern="\d{10}" required>
                                 </div>
+
 
                                 <div class="form-actions">
                                     <button type="button" id="cancel-order" class="cancel-btn">Cancel</button>

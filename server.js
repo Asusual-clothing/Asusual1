@@ -335,6 +335,77 @@ app.post('/admin/update-notification',  async (req, res) => {
     }
   });
   
+  // For Notification Update (remains the same)
+app.post('/admin/update-notification', async (req, res) => {
+    try {
+        const { notification } = req.body;
+    
+        await Notification.findOneAndUpdate(
+            {},
+            { notification },
+            { upsert: true, new: true, setDefaultsOnInsert: true }
+        );
+    
+        res.redirect('/edit-poster');
+    } catch (error) {
+        console.error('Notification Update Error:', error);
+        res.status(500).send('Failed to update notification');
+    }
+});
+
+// New route for individual poster editing
+app.post('/admin/edit-poster/:index', uploads.single('posterImage'), async (req, res) => {
+    try {
+        const index = parseInt(req.params.index);
+        if (isNaN(index) || index < 0 || index > 2) {
+            return res.status(400).send('Invalid poster index');
+        }
+
+        const { Heading, Title } = req.body;
+        const file = req.file;
+
+        let poster = await Poster.findOne({}) || {
+            image: ['', '', ''],
+            Heading: ['', '', ''],
+            Title: ['', '', '']
+        };
+
+        // Create a copy of existing data
+        const update = {
+            image: [...poster.image],
+            Heading: [...poster.Heading],
+            Title: [...poster.Title]
+        };
+
+        // Update only the fields that were submitted
+        if (file) {
+            update.image[index] = file.path;
+        }
+        if (Heading !== undefined) {
+            update.Heading[index] = Heading;
+        }
+        if (Title !== undefined) {
+            update.Title[index] = Title;
+        }
+
+        // Update or create the poster document
+        poster = await Poster.findOneAndUpdate({}, update, {
+            upsert: true,
+            new: true,
+            setDefaultsOnInsert: true
+        });
+
+        return res.send(`
+            <script>
+                alert('Poster updated successfully');
+                window.location.href = '/edit-poster';
+            </script>
+        `);
+    } catch (error) {
+        console.error('Error updating poster:', error);
+        return res.status(500).send('Error updating poster');
+    }
+});
 
 app.post('/admin/edit-poster', uploads.fields([
     { name: 'poster1', maxCount: 1 },
