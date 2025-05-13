@@ -3,7 +3,7 @@
   https://codepen.io/rachsmith/post/animation-tip-lerp
 */
 function lerp({ x, y }, { x: targetX, y: targetY }) {
-    const fraction = 0.1;
+    const fraction = self.animationSpeed;
     
     x += (targetX - x) * fraction;
     y += (targetY - y) * fraction;
