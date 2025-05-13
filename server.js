@@ -1808,10 +1808,14 @@ app.post('/contact', async (req, res) => {
         // Save to DB
         const contact = new Contact({ name, email, message });
         await contact.save();
-        return res.sendFile(`<script>
-            alert('Thank you for your approach, we will get back to you shortly');
-              window.location.href = '/';
-            </script>`)
+
+        // Send success response with the alert
+        res.send(`
+            <script>
+                alert('Thank you for your approach, we will get back to you shortly');
+                window.location.href = '/';
+            </script>
+        `);
     } catch (error) {
         console.error('Error saving contact info:', error);
         res.status(500).send('An error occurred while submitting your message.');
