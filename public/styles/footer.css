@@ -80,6 +80,13 @@ body {
 .footer-nav-email {
   display: none;
 }
+.footer__nav-item:hover {
+  color: #790101; /* hover:text-[#870000] */
+  filter: drop-shadow(0 0 6px #8b2e2e); /* hover:drop-shadow-[0_0_6px_#903b3b] */
+  text-decoration: underline; /* hover:underline */
+  text-underline-offset: 4px; /* hover:underline-offset-4 */
+  transform: scale(1.05); /* hover:scale-105 */
+}
 @keyframes parralax {
   0% {
     background-position: 260px;
