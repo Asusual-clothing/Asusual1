@@ -205,9 +205,9 @@
 
         <!-- Right Section: Product Details -->
         <div class="product-details">
-            <h2>
+            <h1 style="margin-bottom: 17px;">
                 <%= product.name %>
-            </h2>
+            </h1>
             <p class="price">₹<%= product.price %>
             </p>
             <hr>
@@ -253,7 +253,7 @@
             </details>
             <hr>
 
-            <label>Available sizes:</label>
+            <h2><label>Available sizes:</label></h2>
             <div class="size-options">
               <% if (product.sizes && product.sizes.xsmall > 0) { %>
                   <button class="size-button" data-size="XS">XS</button>
@@ -300,7 +300,7 @@
             </div>
 
 
-            <h4>Description</h4>
+            <h2>Description</h2>
             <p class="price">
                 <%= product.description %>
             </p>

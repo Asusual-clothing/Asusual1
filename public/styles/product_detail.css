@@ -61,7 +61,7 @@ body {
 .product-details {
     flex: 1;
     padding: 20px;
-    max-height: 600px;
+        max-height: 750px;
     overflow-y: auto;
     background: #1E1E1E;
     border-left: 1px solid #333;
@@ -73,8 +73,8 @@ body {
     margin-bottom: 15px;
 }
 
-.product-details .price {
-    /* font-size: 22px; */
+ .price {
+    font-size: 22px;
     font-weight: 500;
     margin-bottom: 20px;
     color: #fff;

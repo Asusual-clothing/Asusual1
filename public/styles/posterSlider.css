@@ -337,7 +337,7 @@ body {
   .slider {
     width: 100vw;
     height: 34vh;
-    margin-bottom: 46px;
+    margin-bottom: 16px;
   }
 
   /* Hide pseudo-elements for background images on mobile */
@@ -360,6 +360,12 @@ body {
     width: 100%;
     height: 100%;
     object-fit: fill;
+  }
+  .slider__images {
+    height: 85%
+  }
+  .slider__images-item {
+    height: 85%;
   }
 
   /* Text adjustments */
@@ -428,7 +434,7 @@ body {
 
   /* Navigation dots - Merged and improved version */
   .slider__nav-dots {
-    margin-top: 35.55vh;
+    margin-top: 31.55vh;
     background-color: rgba(0, 0, 0, 0.4);
     padding: 0.8em;
     border-radius: 1em;

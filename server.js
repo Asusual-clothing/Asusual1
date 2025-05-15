@@ -370,25 +370,28 @@ app.post('/admin/edit-poster/:index', uploads.single('posterImage'), async (req,
             Title: ['', '', '']
         };
 
-        // Create a copy of existing data
         const update = {
             image: [...poster.image],
             Heading: [...poster.Heading],
             Title: [...poster.Title]
         };
 
-        // Update only the fields that were submitted
         if (file) {
-            update.image[index] = file.path;
-        }
-        if (Heading !== undefined) {
-            update.Heading[index] = Heading;
-        }
-        if (Title !== undefined) {
-            update.Title[index] = Title;
+            // Upload with quality optimization
+            const result = await cloudinary.uploader.upload(file.path, {
+                quality: 'auto:best',
+                fetch_format: 'auto',
+                width: 1200,
+                height: 600,
+                crop: 'fill',
+                gravity: 'auto'
+            });
+            update.image[index] = result.secure_url;
         }
 
-        // Update or create the poster document
+        if (Heading !== undefined) update.Heading[index] = Heading;
+        if (Title !== undefined) update.Title[index] = Title;
+
         poster = await Poster.findOneAndUpdate({}, update, {
             upsert: true,
             new: true,
@@ -497,54 +500,85 @@ app.post('/edit-product/:id',
     ]),
     async (req, res) => {
         const { id } = req.params;
-  
+    
         try {
-            // Get the existing product data to compare with new ones
             const product = await Product.findById(id);
             if (!product) return res.status(404).send("Product not found");
 
             const updateData = req.body;
 
-            // If front image is updated, delete the old one from Cloudinary
+            // Handle front image update
             if (req.files['front_image']) {
                 const oldFrontImage = extractPublicIdFromUrl(product.front_image);
                 if (oldFrontImage) {
-                    const result = await cloudinary.uploader.destroy(oldFrontImage);
-                    
+                    await cloudinary.uploader.destroy(oldFrontImage);
                 }
-                updateData.front_image = req.files['front_image'][0].path;
+                
+                const result = await cloudinary.uploader.upload(
+                    req.files['front_image'][0].path,
+                    {
+                        quality: '85',
+                        fetch_format: 'auto',
+                        width: 800,
+                        height: 1000,
+                        crop: 'fill',
+                        gravity: 'auto:faces'
+                    }
+                );
+                updateData.front_image = result.secure_url;
             }
 
-            // If back image is updated, delete the old one from Cloudinary
+            // Handle back image update
             if (req.files['back_image']) {
                 const oldBackImage = extractPublicIdFromUrl(product.back_image);
                 if (oldBackImage) {
-                    const result = await cloudinary.uploader.destroy(oldBackImage);
-                   
+                    await cloudinary.uploader.destroy(oldBackImage);
                 }
-                updateData.back_image = req.files['back_image'][0].path;
+                
+                const result = await cloudinary.uploader.upload(
+                    req.files['back_image'][0].path,
+                    {
+                        quality: '85',
+                        fetch_format: 'auto',
+                        width: 800,
+                        height: 1000,
+                        crop: 'fill',
+                        gravity: 'auto:faces'
+                    }
+                );
+                updateData.back_image = result.secure_url;
             }
 
-            // If additional images are updated, delete old ones from Cloudinary
+            // Handle additional images update
             if (req.files['images']) {
                 // Delete old images
                 for (const oldImage of product.images) {
                     const oldImageId = extractPublicIdFromUrl(oldImage);
                     if (oldImageId) {
-                        const result = await cloudinary.uploader.destroy(oldImageId);
-                        
+                        await cloudinary.uploader.destroy(oldImageId);
                     }
                 }
-                updateData.images = req.files['images'].map(img => img.path);
+                
+                // Upload new images
+                const results = await Promise.all(
+                    req.files['images'].map(file => 
+                        cloudinary.uploader.upload(file.path, {
+                            quality: '80',
+                            fetch_format: 'auto',
+                            width: 600,
+                            height: 800,
+                            crop: 'fill'
+                        })
+                    )
+                );
+                updateData.images = results.map(img => img.secure_url);
             }
 
-            // Update the product with new data
             await Product.findByIdAndUpdate(id, updateData, { new: true });
-
             res.redirect('/Products');
         } catch (error) {
             console.error('Error updating product:', error);
-     
+            res.status(500).send('Error updating product');
         }
     }
 );
@@ -1016,63 +1050,93 @@ app.get('/cart:id', async (req, res) => {
 
 app.post('/add-product', 
     uploads.fields([
-      { name: 'front_images', maxCount: 1 },
-      { name: 'back_image', maxCount: 1 },
-      { name: 'images', maxCount: 5 }
+        { name: 'front_images', maxCount: 1 },
+        { name: 'back_image', maxCount: 1 },
+        { name: 'images', maxCount: 5 }
     ]),
     async (req, res) => {
-      try {
-        const { name, description, price, brand, bestseller, color, category } = req.body;
-        // console.log("the data is:",req.body,req.files)
+        try {
+            const { name, description, price, brand, bestseller, color, category } = req.body;
+            
+            const sizes = {
+                xsmall: parseInt(req.body.sizes?.xsmall) || 0,
+                small: parseInt(req.body.sizes?.small) || 0,
+                medium: parseInt(req.body.sizes?.medium) || 0,
+                large: parseInt(req.body.sizes?.large) || 0,
+                xlarge: parseInt(req.body.sizes?.xlarge) || 0,
+                xxlarge: parseInt(req.body.sizes?.xxlarge) || 0
+            };
 
-        const sizes = {
-            xsmall: parseInt(req.body.sizes?.xsmall) || 0,
-            small: parseInt(req.body.sizes?.small) || 0,
-            medium: parseInt(req.body.sizes?.medium) || 0,
-            large: parseInt(req.body.sizes?.large) || 0,
-            xlarge: parseInt(req.body.sizes?.xlarge) || 0,
-            xxlarge: parseInt(req.body.sizes?.xxlarge) || 0
-        };
+            // Upload front image with quality settings
+            const frontImageResult = await cloudinary.uploader.upload(
+                req.files['front_images'][0].path, 
+                {
+                    quality: '85',
+                    fetch_format: 'auto',
+                    width: 800,
+                    height: 1000,
+                    crop: 'fill',
+                    gravity: 'auto:faces'
+                }
+            );
 
-        
-        // Get uploaded file URLs from Cloudinary
-        const frontImage = req.files['front_images'][0];
-        const backImage = req.files['back_image'][0];
-        const additionalImages = req.files['images'] || [];
-  
-        // Create product with Cloudinary URLs
-        const product = new Product({
-          name,
-          description,
-          sizes,
-          price,
-          brand,
-          color,
-          category,
-          bestseller,
-          front_image: frontImage.path,  // Cloudinary URL
-          back_image: backImage.path,    // Cloudinary URL
-          images: additionalImages.map(img => img.path) // Array of Cloudinary URLs
-        });
-  
-        await product.save();
-        console.log()
-        return res.send(`
-            <script>
-              
-              window.location.href = '/add-product';
-            </script>
-        `);
-      } catch (error) {
-        console.error('Error adding product:', error);
-        res.status(500).json({ 
-          success: false,
-          message: 'Failed to add product',
-          error: error.message 
-        });
-      }
+            // Upload back image with quality settings
+            const backImageResult = await cloudinary.uploader.upload(
+                req.files['back_image'][0].path,
+                {
+                    quality: '85',
+                    fetch_format: 'auto',
+                    width: 800,
+                    height: 1000,
+                    crop: 'fill',
+                    gravity: 'auto:faces'
+                }
+            );
+
+            // Upload additional images
+            const additionalImagesResults = await Promise.all(
+                req.files['images'].map(file => 
+                    cloudinary.uploader.upload(file.path, {
+                        quality: '80',
+                        fetch_format: 'auto',
+                        width: 600,
+                        height: 800,
+                        crop: 'fill'
+                    })
+                )
+            );
+
+            const product = new Product({
+                name,
+                description,
+                sizes,
+                price,
+                brand,
+                color,
+                category,
+                bestseller,
+                front_image: frontImageResult.secure_url,
+                back_image: backImageResult.secure_url,
+                images: additionalImagesResults.map(img => img.secure_url)
+            });
+
+            await product.save();
+
+            return res.send(`
+                <script>
+                    window.location.href = '/add-product';
+                </script>
+            `);
+        } catch (error) {
+            console.error('Error adding product:', error);
+            res.status(500).json({ 
+                success: false,
+                message: 'Failed to add product',
+                error: error.message 
+            });
+        }
     }
-  );
+);
   
 // Handle signup 
 app.get('/signup', (req, res) => {
