@@ -378,14 +378,14 @@ app.post('/admin/edit-poster/:index', uploads.single('posterImage'), async (req,
 
         if (file) {
             // Upload with quality optimization
+            // AFTER (preserve quality better)
             const result = await cloudinary.uploader.upload(file.path, {
-                quality: 'auto:best',
-                fetch_format: 'auto',
-                width: 1200,
-                height: 600,
-                crop: 'fill',
-                gravity: 'auto'
+                use_filename: true,
+                unique_filename: false,
+                resource_type: 'image'
             });
+
+
             update.image[index] = result.secure_url;
         }
 
@@ -1069,39 +1069,33 @@ app.post('/add-product',
 
             // Upload front image with quality settings
             const frontImageResult = await cloudinary.uploader.upload(
-                req.files['front_images'][0].path, 
+                req.files['front_images'][0].path,
                 {
-                    quality: '85',
-                    fetch_format: 'auto',
-                    width: 800,
-                    height: 1000,
-                    crop: 'fill',
-                    gravity: 'auto:faces'
+                    use_filename: true,
+                    unique_filename: false,
+                    resource_type: 'image'
                 }
             );
+
 
             // Upload back image with quality settings
             const backImageResult = await cloudinary.uploader.upload(
                 req.files['back_image'][0].path,
                 {
-                    quality: '85',
-                    fetch_format: 'auto',
-                    width: 800,
-                    height: 1000,
-                    crop: 'fill',
-                    gravity: 'auto:faces'
+                    use_filename: true,
+                    unique_filename: false,
+                    resource_type: 'image'
                 }
-            );
+            );  
 
             // Upload additional images
+
             const additionalImagesResults = await Promise.all(
                 req.files['images'].map(file => 
                     cloudinary.uploader.upload(file.path, {
-                        quality: '80',
-                        fetch_format: 'auto',
-                        width: 600,
-                        height: 800,
-                        crop: 'fill'
+                        use_filename: true,
+                        unique_filename: false,
+                        resource_type: 'image'
                     })
                 )
             );
