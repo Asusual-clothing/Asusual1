@@ -418,7 +418,7 @@
 
                                 <div class="form-actions">
                                     <button type="button" id="cancel-order" class="cancel-btn">Cancel</button>
-                                    <button class="order">
+                                    <button class="order"  id="cashfree-payment-btn" class="submit-order-btn">
                                         <span class="default">Complete Order</span>
                                         <span class="success">Order Placed
                                             <svg viewbox="0 0 12 10">
@@ -445,7 +445,8 @@
         </div>
     </div>
     <!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script><script >
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+  <script >
     $('.order').click(function(e) {
     let button = $(this);
 
@@ -572,5 +573,9 @@
         }
       });
     </script>
+
+    <script src="https://sdk.cashfree.com/js/v3/cashfree.sandbox.js"></script> 
+<!-- OR for live -->
+<!-- <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>  -->
 </body>
 </html>
