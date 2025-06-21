@@ -32,17 +32,34 @@ mongoose
   .then(() => console.log("Connected to MongoDB Atlas"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-const Cashfree = require("cashfree-pg");
+// Add at top of server.js
+const axios = require('axios');
 
-// Initialize Cashfree with your credentials
+// Correct Cashfree initialization
+const { Cashfree, PG } = require('cashfree-pg');
 
-Cashfree.XClientId = process.env.CASHFREE_APP_ID;
+// Initialize with your credentials
+Cashfree.XClientId = process.env.CASHFREE_APP_ID || process.env.CASHFREE_CLIENT_ID;
 Cashfree.XClientSecret = process.env.CASHFREE_SECRET_KEY;
 
-// For environment, use one of these:
-Cashfree.XEnvironment = process.env.CASHFREE_MODE === 'PROD' 
-    ? 'PRODUCTION' 
-    :'SANDBOX';
+// For environment, use this approach
+if (process.env.CASHFREE_MODE === 'PROD') {
+    Cashfree.XEnvironment = 'PRODUCTION';
+} else {
+    Cashfree.XEnvironment = 'SANDBOX';
+}
+
+// Test the configuration
+console.log('Cashfree Config:', {
+  clientId: Cashfree.XClientId ? 'Configured' : 'Missing',
+  environment: Cashfree.XEnvironment
+});
+
+console.log("Cashfree SDK Loaded?");
+console.log("Cashfree:", typeof Cashfree);
+console.log("PG:", typeof PG);
+console.log("PG.orders:", typeof PG?.orders);
+
 
 // Middleware to attach user to both req and views
 const attachUser = async (req, res, next) => {
@@ -2031,9 +2048,8 @@ app.post("/reset-password", async (req, res) => {
     user.resetTokenExpiration = resetTokenExpiration;
     await user.save();
 
-    const resetLink = `${
-      process.env.BASE_URL || "http://localhost:8000"
-    }/reset-password/${user._id}`;
+    const resetLink = `${process.env.BASE_URL || "http://localhost:8000"
+      }/reset-password/${user._id}`;
 
     const mailOptions = {
       from: "asusualclothing@gmail.com",
@@ -2209,70 +2225,61 @@ app.post("/orders/create", async (req, res) => {
 });
 
 // Generate Payment Link via Cashfree PG API
-// POST /payment/cashfree/create - Initiate Cashfree Payment
-app.post('/payment/cashfree/create', async (req, res) => {
-    try {
-        const { orderId, amount, customerName, customerEmail, customerPhone } = req.body;
+  app.post('/payment/cashfree/create', async (req, res) => {
+      try {
+          const { orderId, amount, customerName, customerEmail, customerPhone } = req.body;
 
-        // Validate required fields
-        if (!orderId || !amount || !customerName || !customerEmail || !customerPhone) {
-            return res.status(400).json({
-                success: false,
-                message: 'Missing required fields'
-            });
-        }
+          if (!orderId || !amount || !customerName || !customerEmail || !customerPhone) {
+              return res.status(400).json({
+                  success: false,
+                  message: 'Missing required fields'
+              });
+          }
 
-        // Generate unique transaction ID
-        const txId = `TXN_${Date.now()}`;
+          const request = {
+              order_id: orderId,
+              order_amount: amount.toString(),
+              order_currency: "INR",
+              customer_details: {
+                  customer_id: req.user ? req.user._id.toString() : "guest_" + Date.now(),
+                  customer_name: customerName,
+                  customer_email: customerEmail,
+                  customer_phone: customerPhone
+              },
+              order_meta: {
+                  return_url: `${process.env.BASE_URL}/payment/verify?order_id=${orderId}`
+              }
+          };
 
-        // Prepare payload for Cashfree
-        const payload = {
-            order_id: orderId,
-            order_amount: amount.toFixed(2),
-            order_currency: "INR",
-            customer_details: {
-                customer_id: req.user ? req.user._id.toString() : "guest",
-                customer_email: customerEmail,
-                customer_phone: customerPhone,
-                customer_name: customerName
-            },
-            return_url: `${process.env.BASE_URL}/payment/verify?order_id=${orderId}`,
-            notify_url: `${process.env.BASE_URL}/payment/webhook`
-        };
+          const response = await PG.orders.createOrder(request);
+          console.log('PG:', typeof PG, 'PG.orders:', typeof PG.orders);
+          console.log('Cashfree Response:', response);
 
-        // Call Cashfree PG API
-        const cashfreeUrl = 'https://api.cashfree.com/pg/orders'; 
-        const headers = {
-            'Content-Type': 'application/json',
-            'x-client-id': process.env.CASHFREE_CLIENT_ID,
-            'x-client-secret': process.env.CASHFREE_CLIENT_SECRET,
-            'x-api-version': '2023-08-01'
-        };
+          if (!response.payment_session_id) {
+              throw new Error('Cashfree did not return payment session ID');
+          }
 
-        const response = await axios.post(cashfreeUrl, payload, { headers });
+          res.json({
+              success: true,
+              payment_session_id: response.payment_session_id,
+              order_id: orderId
+          });
 
-        // Check if response has payment session ID
-        if (response.data && response.data.payment_session_id) {
-            return res.json({
-                success: true,
-                payment_link: response.data.payment_session_id
-            });
-        } else {
-            console.error('Cashfree response missing payment link:', response.data);
-            return res.status(500).json({
-                success: false,
-                message: 'Failed to generate payment link'
-            });
-        }
+      } catch (error) {
+          console.error('Payment Error:', {
+              message: error.message,
+              stack: error.stack,
+              response: error.response?.data
+          });
+          res.status(500).json({
+              success: false,
+              message: 'Payment processing failed',
+              error: error.message
+          });
+      }
+  });
 
-    } catch (error) {
-        console.error('Error initiating Cashfree payment:', error.message);
-        return res.status(500).json({
-            success: false,
-            message: 'An error occurred while initiating payment'
-        });
-    }
-});
+
 app.get("/payment/verify", async (req, res) => {
   try {
     const { order_id } = req.query;

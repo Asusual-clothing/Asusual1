@@ -1,169 +1,174 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart - Dark Theme</title>
-    <link rel="stylesheet" href="/styles/cart.css">
-    <link rel="stylesheet" href="/styles/bookingBtn.css">
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/styles.css">
-    <link rel="stylesheet" href="styles/footer.css">
-    <link rel="stylesheet" href="styles/navbar.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
-    <style>
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Cart - Dark Theme</title>
+      <link rel="stylesheet" href="/styles/cart.css" />
+      <link rel="stylesheet" href="/styles/bookingBtn.css" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap"
+        rel="stylesheet"
+      />
+      <link rel="stylesheet" href="styles/styles.css" />
+      <link rel="stylesheet" href="styles/footer.css" />
+      <link rel="stylesheet" href="styles/navbar.css" />
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      />
+      <style>
         .coupon-error {
-            color: #ff4444;
-            margin-top: 5px;
-            font-size: 0.9em;
+          color: #ff4444;
+          margin-top: 5px;
+          font-size: 0.9em;
         }
 
         .coupon-success {
-            color: #860505;
-            margin-top: 5px;
-            font-size: 0.9em;
+          color: #860505;
+          margin-top: 5px;
+          font-size: 0.9em;
         }
 
         .discount-message {
-            color: #860505;
-            font-size: 0.9em;
-            margin-top: 5px;
+          color: #860505;
+          font-size: 0.9em;
+          margin-top: 5px;
         }
 
         .coupon-input-group {
-            display: flex;
-            margin-bottom: 10px;
+          display: flex;
+          margin-bottom: 10px;
         }
 
         #cart-code {
-            flex: 1;
-            padding: 8px;
-            border: 1px solid #444;
-            background: #222;
-            color: #fff;
-            border-radius: 4px 0 0 4px;
+          flex: 1;
+          padding: 8px;
+          border: 1px solid #444;
+          background: #222;
+          color: #fff;
+          border-radius: 4px 0 0 4px;
         }
 
         .apply-coupon-btn,
         .remove-coupon-btn {
-            padding: 8px 12px;
-            border: none;
-            cursor: pointer;
+          padding: 8px 12px;
+          border: none;
+          cursor: pointer;
         }
 
         .apply-coupon-btn {
-            background: #860505;
-            color: white;
-            border-radius: 0 4px 4px 0;
+          background: #860505;
+          color: white;
+          border-radius: 0 4px 4px 0;
         }
 
         .remove-coupon-btn {
-            background: #f44336;
-            color: white;
-            border-radius: 0 4px 4px 0;
+          background: #f44336;
+          color: white;
+          border-radius: 0 4px 4px 0;
         }
 
         /* Order Controls */
         .order-controls {
-            margin: 20px 0;
+          margin: 20px 0;
         }
 
         .proceed-btn {
-            background: #860505;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-            transition: all 0.3s ease;
+          background: #860505;
+          color: white;
+          border: none;
+          padding: 12px 20px;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 16px;
+          width: 100%;
+          transition: all 0.3s ease;
         }
 
         .shipping-form-container {
-            background: #1e1e1e;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 15px;
-            display: none;
-            animation: fadeIn 0.3s ease-out;
+          background: #1e1e1e;
+          padding: 20px;
+          border-radius: 8px;
+          margin-top: 15px;
+          display: none;
+          animation: fadeIn 0.3s ease-out;
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
 
         .form-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
+          display: flex;
+          gap: 15px;
+          margin-bottom: 15px;
         }
 
         .form-group {
-            flex: 1;
+          flex: 1;
         }
 
         .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #ddd;
+          display: block;
+          margin-bottom: 5px;
+          color: #ddd;
         }
 
         .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #444;
-            background: #222;
-            color: #fff;
-            border-radius: 4px;
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #444;
+          background: #222;
+          color: #fff;
+          border-radius: 4px;
         }
 
         .form-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 20px;
+          display: flex;
+          justify-content: flex-end;
+          gap: 10px;
+          margin-top: 20px;
         }
 
         .cancel-btn {
-            background: #f44336;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
-            cursor: pointer;
+          background: #f44336;
+          color: white;
+          border: none;
+          padding: 10px 15px;
+          border-radius: 4px;
+          cursor: pointer;
         }
 
         .submit-order-btn {
-            background: #860505;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
+          background: #860505;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 4px;
+          cursor: pointer;
         }
-    </style>
-</head>
+      </style>
+    </head>
 
-<body>
-     <!-- Page Loader -->
-     <div id="page-loader" class="page-loader">
-      <h1 class="slide-in">AsUsual</h1>
-      <div class="spinner"></div>
-    </div>
-    <div class="notification-bar">
+    <body>
+      <!-- Page Loader -->
+      <div id="page-loader" class="page-loader">
+        <h1 class="slide-in">AsUsual</h1>
+        <div class="spinner"></div>
+      </div>
+      <div class="notification-bar">
         <span class="notification-text"></span>
-    </div>
-    <!-- this is the responsive navbar -->
-    <nav class="As-navbar">
+      </div>
+      <!-- this is the responsive navbar -->
+      <nav class="As-navbar">
         <div class="As-container">
           <ul class="As-nav-links">
             <li>
@@ -192,23 +197,21 @@
           </ul>
           <div class="As-logo">
             <a href="/"
-              ><img
-                src="assests/horizontalLogo-removebg-preview.png"
-                alt="Logo"
+              ><img src="assests/horizontalLogo-removebg-preview.png" alt="Logo"
             /></a>
           </div>
           <div class="AS-nav-btn">
             <% if (user) { %>
-              <li>
-                <a href="/cart" class="cart-icon">
-                  <i class="fas fa-shopping-cart"></i>
-                  <span>Cart</span>
-                  <% if (cartCount > 0) { %>
-                    <span class="cart-count"><%= cartCount %></span>
-                  <% } %>
-                </a>
-              </li>
-           
+            <li>
+              <a href="/cart" class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Cart</span>
+                <% if (cartCount > 0) { %>
+                <span class="cart-count"><%= cartCount %></span>
+                <% } %>
+              </a>
+            </li>
+
             <!-- Dropdown for logged-in users -->
             <!-- Profile Dropdown -->
             <div class="profile-dropdown">
@@ -226,9 +229,8 @@
                   <i class="fas fa-phone"></i> Phone: <%= user.phone || 'N/A' %>
                 </p>
                 <p>
-                  <i class="fas fa-calendar"></i> Member Since: <%=
-                  user.createdAt ? new Date(user.createdAt).toDateString() :
-                  'N/A' %>
+                  <i class="fas fa-calendar"></i> Member Since: <%= user.createdAt
+                  ? new Date(user.createdAt).toDateString() : 'N/A' %>
                 </p>
               </div>
             </div>
@@ -256,212 +258,266 @@
         </div>
       </nav>
 
-    <div class="cart-container">
+      <div class="cart-container">
         <div class="cart-row">
-            <div class="cart-items-section">
-                <div class="cart-header">
-                    <h4><b>Shopping Cart</b></h4>
-                    <p>Welcome, <b><%= user ? user.name : "Guest" %></b></p>
-                </div>
+          <div class="cart-items-section">
+            <div class="cart-header">
+              <h4><b>Shopping Cart</b></h4>
+              <p>Welcome, <b><%= user ? user.name : "Guest" %></b></p>
+            </div>
 
-                <% if (cart && cart.items && cart.items.length > 0) { %>
-                    <div class="cart-header">
-                        <span class="cart-items-count"><%= cart.items.length %> items</span>
-                    </div>
+            <% if (cart && cart.items && cart.items.length > 0) { %>
+            <div class="cart-header">
+              <span class="cart-items-count"><%= cart.items.length %> items</span>
+            </div>
 
-                    <% cart.items.forEach(item => { %>
-                        <% if (item.product) { %>
-                            <div class="cart-item" data-price="<%= item.product.price %>" data-product-id="<%= item.product._id %>">
-                                <img class="cart-item-image" src="<%= item.product.front_image %>" alt="<%= item.product.name %>">
-                                <div class="cart-item-details">
-                                    <p class="cart-item-category"><%= item.product.category %></p>
-                                    <p class="cart-item-name"><%= item.product.name %></p>
-                                    <p class="cart-item-size">Size: <%= item.size %></p>
-                                </div>
-                                <div class="cart-item-price">
-                                    Rs <span class="item-total"><%= item.product.price * item.quantity %></span>
-                                    <span class="cart-remove">&#10005;</span>
-                                </div>
-                                <div class="cart-item-quantity">
-                                    <button class="decrease">-</button>
-                                    <span class="cart-quantity"><%= item.quantity %></span>
-                                    <button class="increase">+</button>
-                                </div>
-                            </div>
-                        <% } else { %>
-                            <p style="color: red;">Product not found.</p>
-                        <% } %>
-                    <% }) %>
+            <% cart.items.forEach(item => { %> <% if (item.product) { %>
+            <div
+              class="cart-item"
+              data-price="<%= item.product.price %>"
+              data-product-id="<%= item.product._id %>"
+            >
+              <img
+                class="cart-item-image"
+                src="<%= item.product.front_image %>"
+                alt="<%= item.product.name %>"
+              />
+              <div class="cart-item-details">
+                <p class="cart-item-category"><%= item.product.category %></p>
+                <p class="cart-item-name"><%= item.product.name %></p>
+                <p class="cart-item-size">Size: <%= item.size %></p>
+              </div>
+              <div class="cart-item-price">
+                Rs
+                <span class="item-total"
+                  ><%= item.product.price * item.quantity %></span
+                >
+                <span class="cart-remove">&#10005;</span>
+              </div>
+              <div class="cart-item-quantity">
+                <button class="decrease">-</button>
+                <span class="cart-quantity"><%= item.quantity %></span>
+                <button class="increase">+</button>
+              </div>
+            </div>
+            <% } else { %>
+            <p style="color: red">Product not found.</p>
+            <% } %> <% }) %> <% } else { %>
+            <div class="empty-cart-message">
+              <p>No items in cart. Please continue shopping.</p>
+              <a href="/" class="continue-shopping-btn">Continue Shopping</a>
+            </div>
+            <% } %>
+
+            <div class="cart-back">
+              <a href="/">&leftarrow; Back to shop</a>
+            </div>
+          </div>
+
+          <% if (cart && cart.items && cart.items.length > 0) { let subtotal = 0;
+          cart.items.forEach(item => { if (item.product && item.product.price) {
+          subtotal += item.product.price * item.quantity; } }); let total =
+          subtotal + deliveryCost - (discountAmount || 0); %>
+          <div class="cart-summary">
+            <h5><b>Summary</b></h5>
+            <hr />
+            <div class="summary-details">
+              <p>ITEMS <span id="total-items"><%= cart.items.length %></span></p>
+              <p>Rs <span id="total-price"><%= subtotal.toFixed(2) %></span></p>
+            </div>
+
+            <form id="coupon-form" action="/cart/apply-coupon" method="POST">
+              <p style="margin-top: 18px">SHIPPING</p>
+              <select>
+                <option>
+                  Standard Delivery - Rs<%= deliveryCost.toFixed(2) %>
+                </option>
+              </select>
+
+              <p style="margin-top: 15px">DISCOUNT CODE</p>
+              <div class="coupon-input-group">
+                <input
+                  id="cart-code"
+                  name="couponCode"
+                  placeholder="Enter your code"
+                  value="<%= cart.appliedCoupon ? cart.appliedCoupon.code : '' %>"
+                />
+                <% if (!cart.appliedCoupon) { %>
+                <button type="submit" class="apply-coupon-btn">Apply</button>
                 <% } else { %>
-                    <div class="empty-cart-message">
-                        <p>No items in cart. Please continue shopping.</p>
-                        <a href="/" class="continue-shopping-btn">Continue Shopping</a>
-                    </div>
+                <a href="/cart/remove-coupon" class="remove-coupon-btn">Remove</a>
                 <% } %>
+              </div>
 
-                <div class="cart-back">
-                    <a href="/">&leftarrow; Back to shop</a>
+              <% if (cart.appliedCoupon) { %>
+              <p class="coupon-success">
+                Coupon: <b><%= cart.appliedCoupon.code %></b> - <%=
+                cart.appliedCoupon.discountType === 'percentage' ?
+                `${cart.appliedCoupon.discountValue}% off` :
+                `Rs${cart.appliedCoupon.discountValue} off` %> <% if
+                (cart.appliedCoupon.useonce) { %> <br /><small
+                  >(One-time use coupon)</small
+                >
+                <% } %>
+              </p>
+              <% } %> <% if (message) { %>
+              <p
+                class="<%= message.includes('successfully') ? 'coupon-success' : 'coupon-error' %>"
+              >
+                <%= message %>
+              </p>
+              <% } %>
+            </form>
+            <div class="summary-total">
+              <div class="price-breakdown">
+                <div class="price-line total-line">
+                  <span>TOTAL PRICE:</span>
+                  <span
+                    >Rs <%= (subtotal + deliveryCost - (discountAmount ||
+                    0)).toFixed(2) %></span
+                  >
                 </div>
+              </div>
+
+              <% if (discountAmount > 0) { %>
+              <p class="discount-message">
+                You saved: Rs <%= discountAmount.toFixed(2) %>
+              </p>
+              <% } %>
             </div>
 
-            <% if (cart && cart.items && cart.items.length > 0) { 
-    let subtotal = 0;
-    cart.items.forEach(item => {
-        if (item.product && item.product.price) {
-            subtotal += item.product.price * item.quantity;
-        }
-    });
-    
-    let total = subtotal + deliveryCost - (discountAmount || 0);
-%>
-                <div class="cart-summary">
-                    <h5><b>Summary</b></h5>
-                    <hr>
-                    <div class="summary-details">
-                        <p>ITEMS <span id="total-items"><%= cart.items.length %></span></p>
-                        <p>Rs <span id="total-price"><%= subtotal.toFixed(2) %></span></p>
+            <div class="order-controls">
+              <button id="proceed-to-order" class="proceed-btn">
+                Proceed to Order
+              </button>
+
+              <div id="shipping-form-container" class="shipping-form-container">
+                <h5><b>Shipping Details</b></h5>
+                <hr style="margin-bottom: 25px" />
+                <form id="shipping-form">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="shipping-line1">Address Line 1*</label>
+                      <input
+                        type="text"
+                        id="shipping-line1"
+                        name="line1"
+                        required
+                      />
                     </div>
+                    <div class="form-group">
+                      <label for="shipping-line2">Address Line 2</label>
+                      <input type="text" id="shipping-line2" name="line2" />
+                    </div>
+                  </div>
 
-                    <form id="coupon-form" action="/cart/apply-coupon" method="POST">
-    <p style="margin-top: 18px;">SHIPPING</p>
-    <select>
-        <option>Standard Delivery - Rs<%= deliveryCost.toFixed(2) %></option>
-    </select>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="shipping-city">City*</label>
+                      <input
+                        type="text"
+                        id="shipping-city"
+                        name="city"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="shipping-state">State*</label>
+                      <input
+                        type="text"
+                        id="shipping-state"
+                        name="state"
+                        required
+                      />
+                    </div>
+                  </div>
 
-    <p style="margin-top: 15px;">DISCOUNT CODE</p>
-    <div class="coupon-input-group">
-        <input id="cart-code" name="couponCode" placeholder="Enter your code" 
-               value="<%= cart.appliedCoupon ? cart.appliedCoupon.code : '' %>">
-        <% if (!cart.appliedCoupon) { %>
-            <button type="submit" class="apply-coupon-btn">Apply</button>
-        <% } else { %>
-            <a href="/cart/remove-coupon" class="remove-coupon-btn">Remove</a>
-        <% } %>
-    </div>
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="shipping-postalCode">Postal Code*</label>
+                      <input
+                        type="text"
+                        id="shipping-postalCode"
+                        name="postalCode"
+                        maxlength="6"
+                        required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="shipping-country">Country*</label>
+                      <input
+                        type="text"
+                        id="shipping-country"
+                        name="country"
+                        required
+                      />
+                    </div>
+                  </div>
 
-    <% if (cart.appliedCoupon) { %>
-        <p class="coupon-success">
-            Coupon: <b><%= cart.appliedCoupon.code %></b> - 
-            <%= cart.appliedCoupon.discountType === 'percentage' ? 
-                `${cart.appliedCoupon.discountValue}% off` : 
-                `Rs${cart.appliedCoupon.discountValue} off` %>
-            <% if (cart.appliedCoupon.useonce) { %>
-                <br><small>(One-time use coupon)</small>
-            <% } %>
-        </p>
-    <% } %>
+                  <div class="form-group">
+                    <label for="shipping-contactNumber">Contact Number*</label>
+                    <input
+                      type="text"
+                      id="shipping-contactNumber"
+                      name="contactNumber"
+                      maxlength="10"
+                      pattern="\d{10}"
+                      required
+                    />
+                  </div>
 
-    <% if (message) { %>
-        <p class="<%= message.includes('successfully') ? 'coupon-success' : 'coupon-error' %>">
-            <%= message %>
-        </p>
-    <% } %>
-</form>
-                    <div class="summary-total">
-        <div class="price-breakdown">
-            <div class="price-line total-line">
-                <span>TOTAL PRICE:</span>
-                <span>Rs <%= (subtotal + deliveryCost - (discountAmount || 0)).toFixed(2) %></span>
-            </div>
-        </div>
-
-        <% if (discountAmount > 0) { %>
-            <p class="discount-message">You saved: Rs <%= discountAmount.toFixed(2) %></p>
-        <% } %>
-    </div>
-
-                    <div class="order-controls">
-                        <button id="proceed-to-order" class="proceed-btn">Proceed to Order</button>
-
-                        <div id="shipping-form-container" class="shipping-form-container">
-                            <h5><b>Shipping Details</b></h5>
-                            <hr style="    margin-bottom: 25px;">
-                            <form id="shipping-form">
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="shipping-line1">Address Line 1*</label>
-                                        <input type="text" id="shipping-line1" name="line1" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="shipping-line2">Address Line 2</label>
-                                        <input type="text" id="shipping-line2" name="line2">
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="shipping-city">City*</label>
-                                        <input type="text" id="shipping-city" name="city" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="shipping-state">State*</label>
-                                        <input type="text" id="shipping-state" name="state" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="shipping-postalCode">Postal Code*</label>
-                                        <input type="text" id="shipping-postalCode" name="postalCode" maxlength="6"  required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="shipping-country">Country*</label>
-                                        <input type="text" id="shipping-country" name="country" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                        <label for="shipping-contactNumber">Contact Number*</label>
-                                        <input type="text" id="shipping-contactNumber" name="contactNumber" maxlength="10" pattern="\d{10}" required>
-                                </div>
-
-
-                                <div class="form-actions">
-                                    <button type="button" id="cancel-order" class="cancel-btn">Cancel</button>
-                                    <button class="order"  id="cashfree-payment-btn" class="submit-order-btn">
-                                        <span class="default">Complete Order</span>
-                                        <span class="success">Order Placed
-                                            <svg viewbox="0 0 12 10">
-                                                <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
-                                            </svg>
-                                        </span>
-                                        <div class="box"></div>
-                                        <div class="truck">
-                                            <div class="back"></div>
-                                            <div class="front">
-                                                <div class="window"></div>
-                                            </div>
-                                            <div class="light top"></div>
-                                            <div class="light bottom"></div>
-                                        </div>
-                                        <div class="lines"></div>
-                                    </button>
-                                </div>
-                            </form>
+                  <div class="form-actions">
+                    <button type="button" id="cancel-order" class="cancel-btn">
+                      Cancel
+                    </button>
+                    <button
+                      class="order"
+                      id="cashfree-payment-btn"
+                      class="submit-order-btn"
+                    >
+                      <span class="default">Complete Order</span>
+                      <span class="success"
+                        >Order Placed
+                        <svg viewbox="0 0 12 10">
+                          <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                        </svg>
+                      </span>
+                      <div class="box"></div>
+                      <div class="truck">
+                        <div class="back"></div>
+                        <div class="front">
+                          <div class="window"></div>
                         </div>
-                    </div>
-                </div>
-            <% } %>
+                        <div class="light top"></div>
+                        <div class="light bottom"></div>
+                      </div>
+                      <div class="lines"></div>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <% } %>
         </div>
-    </div>
-    <!-- partial -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
-  <script >
-    $('.order').click(function(e) {
-    let button = $(this);
+      </div>
+      <!-- partial -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script>
+        $(".order").click(function (e) {
+          let button = $(this);
 
-    if(!button.hasClass('animate')) {
-        button.addClass('animate');
-        setTimeout(() => {
-            button.removeClass('animate');
-        }, 10000);
-    }
+          if (!button.hasClass("animate")) {
+            button.addClass("animate");
+            setTimeout(() => {
+              button.removeClass("animate");
+            }, 10000);
+          }
+        });
+      </script>
 
-});
-  </script>
-
-    <!-- footer  -->
-    <footer class="footer">
+      <!-- footer  -->
+      <footer class="footer">
         <div class="footer__parralax">
           <div class="footer__parralax-trees"></div>
           <div class="footer__parralax-moto"></div>
@@ -478,14 +534,10 @@
               <nav class="footer__nav">
                 <ul class="footer__nav-list">
                   <li class="footer__nav-item">
-                    <a href="/about" class="/about">
-                      About Us
-                    </a>
+                    <a href="/about" class="/about"> About Us </a>
                   </li>
                   <li class="footer__nav-item">
-                    <a href="/contact" class="/contact">
-                      Contact Us
-                    </a>
+                    <a href="/contact" class="/contact"> Contact Us </a>
                   </li>
                   <li class="footer__nav-item">
                     <a href="/Terms-and-conditions" class="/Terms-and-conditions">
@@ -497,7 +549,6 @@
                       Privacy Policy
                     </a>
                   </li>
-
                 </ul>
               </nav>
             </div>
@@ -515,19 +566,21 @@
                   <li class="footer__nav-item">
                     <a href class="footer__nav-link">
                       <i data-feather="facebook"></i><span>Facebook</span>
-
                     </a>
                   </li>
                   <li class="footer__nav-item">
-                    <a href="https://www.instagram.com/as_usual.clothing/"
-                      class="footer__nav-link">
-                      <i
-                        data-feather="instagram"></i><span>Instagram</span>
-
+                    <a
+                      href="https://www.instagram.com/as_usual.clothing/"
+                      class="footer__nav-link"
+                    >
+                      <i data-feather="instagram"></i><span>Instagram</span>
                     </a>
                   </li>
                   <li class="footer__nav-item footer-nav-email">
-                    <a href="mailto:asusualclothing@gmail.com" class="footer__nav-link">
+                    <a
+                      href="mailto:asusualclothing@gmail.com"
+                      class="footer__nav-link"
+                    >
                       <!-- <i data-feather="mail"></i> -->
                       <i data-feather="at-sign"></i>
                       <span>asusualclothing@gmail.com</span>
@@ -543,7 +596,10 @@
               <nav class="footer__nav">
                 <ul class="footer__nav-list">
                   <li class="footer__nav-item">
-                    <a href="mailto:asusualclothing@gmail.com" class="footer__nav-link">
+                    <a
+                      href="mailto:asusualclothing@gmail.com"
+                      class="footer__nav-link"
+                    >
                       <!-- <i data-feather="mail"></i> -->
                       <i data-feather="at-sign"></i>
                       <span>asusualclothing@gmail.com</span>
@@ -553,29 +609,31 @@
               </nav>
             </div>
           </div>
-          
         </div>
       </footer>
 
-    <script src="/scripts/cart.js"></script>
-    
-     <script src="https://unpkg.com/feather-icons"></script>
-     <script>
-       feather.replace();
-     </script>
-     
-    <script>
-      window.addEventListener("load", function () {
-        const loader = document.getElementById("page-loader");
-        if (loader) {
-          loader.classList.add("fade-out");
-          setTimeout(() => (loader.style.display = "none"), 500);
-        }
-      });
-    </script>
+      <script src="/scripts/cart.js"></script>
 
-    <script src="https://sdk.cashfree.com/js/v3/cashfree.sandbox.js"></script> 
-<!-- OR for live -->
-<!-- <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>  -->
-</body>
-</html>
+      <script src="https://unpkg.com/feather-icons"></script>
+      <script>
+        feather.replace();
+      </script>
+
+      <script>
+        window.addEventListener("load", function () {
+          const loader = document.getElementById("page-loader");
+          if (loader) {
+            loader.classList.add("fade-out");
+            setTimeout(() => (loader.style.display = "none"), 500);
+          }
+        });
+      </script>
+
+      <!-- Replace your Cashfree script with: -->
+      <% if (process.env.CASHFREE_MODE === 'PROD') { %>
+      <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+      <% } else { %>
+      <script src="https://sdk.cashfree.com/js/v3/cashfree.sandbox.js"></script>
+      <% } %>
+    </body>
+  </html>

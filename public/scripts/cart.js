@@ -47,85 +47,84 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Cashfree Payment Button Handler
-    document.getElementById('cashfree-payment-btn')?.addEventListener('click', async function () {
-        const button = this;
-        button.disabled = true;
-        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+   document.getElementById('cashfree-payment-btn')?.addEventListener('click', async function () {
+    const button = this;
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
 
-        try {
-            // Get shipping details
-            const shippingAddress = {
-                line1: document.getElementById('shipping-line1').value,
-                line2: document.getElementById('shipping-line2').value,
-                city: document.getElementById('shipping-city').value,
-                state: document.getElementById('shipping-state').value,
-                postalCode: document.getElementById('shipping-postalCode').value,
-                country: document.getElementById('shipping-country').value,
-                contactNumber: document.getElementById('shipping-contactNumber').value
-            };
+    try {
+        // Get shipping details
+        const shippingAddress = {
+            line1: document.getElementById('shipping-line1').value,
+            line2: document.getElementById('shipping-line2').value,
+            city: document.getElementById('shipping-city').value,
+            state: document.getElementById('shipping-state').value,
+            postalCode: document.getElementById('shipping-postalCode').value,
+            country: document.getElementById('shipping-country').value,
+            contactNumber: document.getElementById('shipping-contactNumber').value
+        };
 
-            // Validate shipping details
-            if (!shippingAddress.line1 || !shippingAddress.city ||
-                !shippingAddress.state || !shippingAddress.postalCode ||
-                !shippingAddress.country || !shippingAddress.contactNumber) {
-                throw new Error('Please fill in all required fields');
-            }
-
-            // Get cart total
-            const totalAmount = parseFloat(document.querySelector(".total-line span:last-child").textContent.replace('Rs ', ''));
-
-            // 1. Create order in database
-            const orderResponse = await fetch('/orders/create', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    shippingAddress,
-                    paymentMethod: 'cashfree',
-                    amount: totalAmount,
-                    items: getCartItemsData()
-                })
-            });
-
-            const orderData = await orderResponse.json();
-
-            if (!orderData.success) {
-                throw new Error(orderData.message || 'Failed to create order');
-            }
-
-            // 2. Initiate Cashfree payment
-            const paymentResponse = await fetch('/payment/cashfree/create', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    orderId: orderData.order._id,
-                    amount: totalAmount,
-                    customerName: orderData.customer.name,
-                    customerEmail: orderData.customer.email,
-                    customerPhone: shippingAddress.contactNumber
-                })
-            });
-
-            const paymentData = await paymentResponse.json();
-
-            // 3. Redirect to Cashfree payment page
-            if (paymentData.payment_link) {
-                // Use Cashfree's JS SDK to open payment modal
-                const cashfree = new window.Cashfree();
-                cashfree.checkout({
-                    paymentSessionId: paymentData.payment_link, // This is now payment_session_id
-                    returnUrl: `/payment/verify?order_id=${orderId}`
-                });
-            } else {
-                throw new Error('Failed to generate payment link');
-            }
-        } catch (error) {
-            console.error('Payment Error:', error);
-            showNotification(error.message, 'error');
-            button.disabled = false;
-            button.textContent = 'Pay with Cashfree';
+        // Validate shipping details
+        if (!shippingAddress.line1 || !shippingAddress.city ||
+            !shippingAddress.state || !shippingAddress.postalCode ||
+            !shippingAddress.country || !shippingAddress.contactNumber) {
+            throw new Error('Please fill in all required fields');
         }
-    });
 
+        // Get cart total
+        const totalAmount = parseFloat(document.querySelector(".total-line span:last-child").textContent.replace('Rs ', ''));
+
+        // 1. Create order in database
+        const orderResponse = await fetch('/orders/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                shippingAddress,
+                paymentMethod: 'cashfree',
+                amount: totalAmount,
+                items: getCartItemsData()
+            })
+        });
+
+        const orderData = await orderResponse.json();
+
+        if (!orderData.success) {
+            throw new Error(orderData.message || 'Failed to create order');
+        }
+
+        // 2. Initiate Cashfree payment
+        const paymentResponse = await fetch('/payment/cashfree/create', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                orderId: orderData.order._id,
+                amount: totalAmount,
+                customerName: orderData.customer.name,
+                customerEmail: orderData.customer.email,
+                customerPhone: shippingAddress.contactNumber
+            })
+        });
+
+        const paymentData = await paymentResponse.json();
+
+        if (!paymentData.success) {
+            throw new Error(paymentData.message || 'Payment failed');
+        }
+
+        // 3. Initialize Cashfree Checkout
+        const cashfree = new Cashfree();
+        cashfree.checkout({
+            paymentSessionId: paymentData.payment_session_id,
+            redirectTarget: "_self"
+        });
+
+    } catch (error) {
+        console.error('Payment Error:', error);
+        showNotification(error.message, 'error');
+        button.disabled = false;
+        button.textContent = 'Pay with Cashfree';
+    }
+});
     // Function to get cart items data
     function getCartItemsData() {
         return Array.from(document.querySelectorAll('.cart-item')).map(item => ({
